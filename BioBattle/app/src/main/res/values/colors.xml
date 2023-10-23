@@ -13,6 +13,7 @@
     <color name="darkBlue">#000033</color>
     <color name="pathGreen">#00FF00</color>
     <color name="darkGrey">#444444</color>
+    <color name="grey">#888888</color>
     <color name="purple">#500090</color>
     <color name="yellow">#FFD700</color>
     <color name="orange">#FFA600</color>
