@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="703dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <!-- Content for the left side -->
+        <!-- You can add your widgets here -->
+    </LinearLayout>
+
+    <GridLayout
+        android:layout_width="105dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:layout_weight="1"
+        android:columnCount="2"
+        android:rowCount="4">
+        <!-- Content for the right side (GridLayout) -->
+        <!-- You can add your widgets here -->
+    </GridLayout>
+
+</FrameLayout>
