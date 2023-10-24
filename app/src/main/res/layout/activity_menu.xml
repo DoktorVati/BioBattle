@@ -23,5 +23,5 @@
         android:onClick="playGame" />
 
     <!-- Add other menu items as needed -->
-
+<!-- Make changes here-->
 </LinearLayout>
