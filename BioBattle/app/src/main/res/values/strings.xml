@@ -20,6 +20,9 @@
     <string name="back">Back</string>
     <string name="sound">Sound</string>
     <string name="menuContentDescription">Main Menu</string>
+    <string name="frameContentDescription">Frame</string>
+    <string name="killerTCellDescription">Killer Tim</string>
+    <string name="killerTCost">$3000</string>
     <string name="music">Music</string>
     <string name="restart">Restart</string>
     <string name="confirm_restart">Are you sure you want to restart the level?</string>
