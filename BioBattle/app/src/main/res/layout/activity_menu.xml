@@ -9,18 +9,25 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="10dp"
         android:layout_weight="1"
-        android:src="@drawable/bio_battle_title"
-        android:contentDescription="@string/menuContentDescription" />
-
-    <Button
+        android:contentDescription="@string/menuContentDescription"
+        android:src="@drawable/bio_battle_title" />
+    <ImageButton
         android:id = "@+id/playButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-100dp"
+        android:layout_marginTop="-150dp"
         android:text="@string/play_text"
-        android:onClick="playGame" />
+        android:onClick="playGame"
+        android:src = "@drawable/playbutton"
+        android:background="000"
+        android:scaleY="0.6"
+        android:scaleX="0.6"
+        android:layout_marginEnd="4dp"
+        android:contentDescription="@string/play_text"
+    />
+
 
     <!-- Add other menu items as needed -->
 </LinearLayout>
