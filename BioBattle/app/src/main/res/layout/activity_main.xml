@@ -11,10 +11,18 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:background="#E1E1E1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/gridLayout">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/gridLayout"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/map"
+            />
 
         <!-- Content for the left side -->
         <!-- Add your widgets here -->
@@ -137,7 +145,8 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="2dp"
                 android:layout_centerVertical="true"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:contentDescription="@string/killerTCellDescription"/>
         </RelativeLayout>
 
     </GridLayout>
