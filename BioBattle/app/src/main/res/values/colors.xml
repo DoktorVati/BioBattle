@@ -18,4 +18,5 @@
     <color name="yellow">#FFD700</color>
     <color name="orange">#FFA600</color>
     <color name="brightRed">#FF0000</color>
+    <color name="invisible">#00FFFFFF</color>
 </resources>
