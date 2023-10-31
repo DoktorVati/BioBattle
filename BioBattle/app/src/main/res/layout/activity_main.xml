@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -22,11 +22,13 @@
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
             android:src="@drawable/map"
+            android:contentDescription="@string/play_text"
             />
 
         <!-- Content for the left side -->
         <!-- Add your widgets here -->
-    </LinearLayout>
+
+    </FrameLayout>
 
     <GridLayout
         android:id="@+id/gridLayout"
@@ -48,6 +50,18 @@
                 android:layout_marginStart="3dp"
                 android:src="@drawable/frame_tower"
                 android:contentDescription="@string/frameContentDescription"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="@string/basicCost"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="5"
+                android:textColor="@color/yellow">
+            </TextView>
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -60,6 +74,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginStart="3dp"
+                android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
                 android:text="@string/buy_text" />
         </RelativeLayout>
@@ -76,13 +91,25 @@
                 android:layout_marginHorizontal="2dp"
                 android:contentDescription="@string/frameContentDescription"
                 android:src="@drawable/frame_tower" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="@string/tacCost"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="5"
+                android:textColor="@color/yellow">
+            </TextView>
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="2dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
+                android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
                 android:text="@string/buy_text" />
         </RelativeLayout>
@@ -99,7 +126,18 @@
                 android:layout_marginStart="3dp"
                 android:contentDescription="@string/frameContentDescription"
                 android:src="@drawable/frame_tower" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="@string/cannonCost"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="5"
+                android:textColor="@color/yellow">
+            </TextView>
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -107,6 +145,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="3dp"
                 android:contentDescription="@string/buy_text"
+                android:background="@color/invisible"
                 android:text="@string/buy_text" />
         </RelativeLayout>
 
@@ -130,6 +169,15 @@
                 android:scaleType="fitXY"
                 android:scaleX="0.7"
                 android:scaleY ="0.7"/>
+            <!--<com.biobattle.DragTower
+                android:id="@+id/draggableImageView"
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:src="@drawable/killertcellp"
+                android:layout_gravity="center"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                />-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -142,14 +190,16 @@
                 android:shadowRadius="5"
                 android:textColor="@color/yellow">
             </TextView>
+
             <ImageButton
-                android:background="0000"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginHorizontal="2dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:contentDescription="@string/killerTCellDescription"/>
+                android:layout_marginHorizontal="2dp"
+                android:background="@color/invisible"
+                android:contentDescription="@string/killerTCellDescription" />
+
         </RelativeLayout>
 
     </GridLayout>
