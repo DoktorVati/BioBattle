@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:backgroundTintMode="src_atop"
+    android:backgroundTint="@color/invisible"
+    android:background="@drawable/main_menu_background">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:contentDescription="@string/menuContentDescription"
         android:src="@drawable/bio_battle_title" />
+
     <ImageButton
         android:id = "@+id/playButton"
         android:layout_width="wrap_content"
@@ -21,7 +26,7 @@
         android:text="@string/play_text"
         android:onClick="playGame"
         android:src = "@drawable/playbutton"
-        android:background="000"
+        android:background="@color/invisible"
         android:scaleY="0.6"
         android:scaleX="0.6"
         android:layout_marginEnd="4dp"
