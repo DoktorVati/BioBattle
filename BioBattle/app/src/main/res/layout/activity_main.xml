@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
+<!-- Add UI for health and money somewhere in frame layout-->
     <FrameLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
@@ -14,7 +14,7 @@
         android:background="#E1E1E1"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/gridLayout"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent" >
 
         <ImageView
             android:layout_width="match_parent"
@@ -24,10 +24,20 @@
             android:src="@drawable/map"
             android:contentDescription="@string/play_text"
             />
-
-        <!-- Content for the left side -->
-        <!-- Add your widgets here -->
-
+        <TextView
+            android:id ="@+id/health"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/health"
+            android:textScaleX="2"
+            android:textScaleY ="2"/>
+        <TextView
+            android:id ="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gold"
+            android:textScaleX="2"
+            android:textScaleY ="2"/>
     </FrameLayout>
 
     <GridLayout
@@ -38,7 +48,7 @@
         android:rowCount="6"
         app:layout_constraintStart_toEndOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent">
-
+  <!--Change the android src for images 1 to 3 to the new drawables   -->
         <!-- Image 1 -->
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -50,6 +60,17 @@
                 android:layout_marginStart="3dp"
                 android:src="@drawable/frame_tower"
                 android:contentDescription="@string/frameContentDescription"/>
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="0.6dp"
+                android:contentDescription="@string/killerTCellDescription"
+                android:src="@drawable/mainmenubackground"
+                android:scaleType="fitXY"
+                android:scaleX="0.7"
+                android:scaleY ="0.7"
+                android:id="@+id/dragBasic"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,11 +92,14 @@
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:id ="@+id/spawnButton1"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginStart="3dp"
                 android:background="@color/invisible"
+                android:src="@drawable/main_menu_background"
                 android:contentDescription="@string/buy_text"
+                android:onClick = "spawnDragTower"
                 android:text="@string/buy_text" />
         </RelativeLayout>
 
@@ -91,6 +115,17 @@
                 android:layout_marginHorizontal="2dp"
                 android:contentDescription="@string/frameContentDescription"
                 android:src="@drawable/frame_tower" />
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="0.6dp"
+                android:contentDescription="@string/killerTCellDescription"
+                android:src="@drawable/playbutton"
+                android:scaleType="fitXY"
+                android:scaleX="0.7"
+                android:scaleY ="0.7"
+                android:id="@+id/dragTac"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,6 +139,7 @@
                 android:textColor="@color/yellow">
             </TextView>
             <ImageButton
+                android:id="@+id/spawnButton2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="2dp"
@@ -119,13 +155,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp">
-
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="3dp"
                 android:contentDescription="@string/frameContentDescription"
                 android:src="@drawable/frame_tower" />
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="0.6dp"
+                android:contentDescription="@string/killerTCellDescription"
+                android:src="@drawable/frame_tower"
+                android:scaleType="fitXY"
+                android:scaleX="0.7"
+                android:scaleY ="0.7"
+                android:id="@+id/dragCannon"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -139,6 +185,7 @@
                 android:textColor="@color/yellow">
             </TextView>
             <ImageButton
+                android:id="@+id/spawnButton3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
@@ -146,11 +193,13 @@
                 android:layout_marginStart="3dp"
                 android:contentDescription="@string/buy_text"
                 android:background="@color/invisible"
+                android:onClick = "spawnDragTower"
                 android:text="@string/buy_text" />
         </RelativeLayout>
 
         <!-- Image 4 -->
         <RelativeLayout
+            android:id= "@+id/container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp">
@@ -168,16 +217,10 @@
                 android:src="@drawable/killertcellp"
                 android:scaleType="fitXY"
                 android:scaleX="0.7"
-                android:scaleY ="0.7"/>
-            <!--<com.biobattle.DragTower
-                android:id="@+id/draggableImageView"
-                android:layout_width="55dp"
-                android:layout_height="50dp"
-                android:src="@drawable/killertcellp"
-                android:layout_gravity="center"
-                android:scaleX="0.7"
-                android:scaleY="0.7"
-                />-->
+                android:scaleY ="0.7"
+                android:id="@+id/dragKillerTom"
+                />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -192,14 +235,15 @@
             </TextView>
 
             <ImageButton
+                android:id="@+id/spawnButton4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2dp"
                 android:background="@color/invisible"
-                android:contentDescription="@string/killerTCellDescription" />
-
+                android:onClick = "spawnDragTower"
+                android:contentDescription="@string/killerTCellDescription"/>
         </RelativeLayout>
 
     </GridLayout>
