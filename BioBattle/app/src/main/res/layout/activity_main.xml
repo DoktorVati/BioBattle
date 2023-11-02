@@ -24,20 +24,7 @@
             android:src="@drawable/map"
             android:contentDescription="@string/play_text"
             />
-        <TextView
-            android:id ="@+id/health"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/health"
-            android:textScaleX="2"
-            android:textScaleY ="2"/>
-        <TextView
-            android:id ="@+id/money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/gold"
-            android:textScaleX="2"
-            android:textScaleY ="2"/>
+
     </FrameLayout>
 
     <GridLayout
@@ -45,9 +32,43 @@
         android:layout_width="107dp"
         android:layout_height="match_parent"
         android:columnCount="2"
+        android:background="@color/cyan"
         android:rowCount="6"
         app:layout_constraintStart_toEndOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:id ="@+id/wave"
+            android:layout_columnSpan="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wave"
+            android:layout_gravity="start"
+            android:textScaleX="1.5"
+            android:textScaleY ="2"
+            android:textColor="@color/yellow"
+            />
+        <TextView
+            android:id ="@+id/health"
+            android:layout_columnSpan="2"
+            android:layout_width="wrap_content"
+            android:layout_gravity="start"
+            android:layout_height="wrap_content"
+            android:text="@string/health"
+            android:textScaleX="1.5"
+            android:textScaleY ="2"
+            android:textColor="@color/yellow"
+            />
+        <TextView
+            android:id ="@+id/money"
+            android:layout_columnSpan="2"
+            android:layout_gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gold"
+            android:textScaleX="1.5"
+            android:textScaleY ="2"
+            android:textColor="@color/yellow"
+            />
   <!--Change the android src for images 1 to 3 to the new drawables   -->
         <!-- Image 1 -->
         <RelativeLayout
@@ -97,7 +118,6 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="3dp"
                 android:background="@color/invisible"
-                android:src="@drawable/main_menu_background"
                 android:contentDescription="@string/buy_text"
                 android:onClick = "spawnDragTower"
                 android:text="@string/buy_text" />
@@ -245,7 +265,32 @@
                 android:onClick = "spawnDragTower"
                 android:contentDescription="@string/killerTCellDescription"/>
         </RelativeLayout>
-
+        <ImageButton
+            android:layout_marginTop="0dp"
+            android:layout_marginStart="3dp"
+            android:scaleType="fitXY"
+            android:scaleY="1"
+            android:scaleX="1"
+            android:src="@drawable/buybutton2"
+            android:layout_columnSpan="1"
+            android:layout_width="50dp"
+            android:layout_height ="48dp"
+            android:background="@color/invisible"
+            android:contentDescription="@string/sell_text"
+            />
+        <ImageButton
+            android:layout_marginTop="1dp"
+            android:layout_marginStart="1dp"
+            android:scaleY="1"
+            android:scaleX="0.96"
+            android:scaleType="fitXY"
+            android:src ="@drawable/sellbutton2"
+            android:layout_columnSpan="1"
+            android:layout_width="50dp"
+            android:layout_height ="48dp"
+            android:background="@color/invisible"
+            android:contentDescription="@string/buy_text"
+            />
     </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
