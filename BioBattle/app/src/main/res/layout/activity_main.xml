@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-<!-- Add UI for health and money somewhere in frame layout-->
     <FrameLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
@@ -69,12 +68,21 @@
             android:textScaleY ="2"
             android:textColor="@color/yellow"
             />
+        <!-- Make the text below in strings folder-->
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:id= "@+id/store"
+            android:text="Store"
+            android:layout_columnSpan="2"
+            android:textColor="@color/seaGreen"
+            />
   <!--Change the android src for images 1 to 3 to the new drawables   -->
         <!-- Image 1 -->
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="5dp">
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -127,7 +135,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="5dp">
 
             <ImageView
                 android:layout_width="50dp"
@@ -271,7 +279,7 @@
             android:scaleType="fitXY"
             android:scaleY="1"
             android:scaleX="1"
-            android:src="@drawable/buybutton2"
+            android:src="@drawable/buybutton"
             android:layout_columnSpan="1"
             android:layout_width="50dp"
             android:layout_height ="48dp"
@@ -284,7 +292,7 @@
             android:scaleY="1"
             android:scaleX="0.96"
             android:scaleType="fitXY"
-            android:src ="@drawable/sellbutton2"
+            android:src ="@drawable/sellbutton"
             android:layout_columnSpan="1"
             android:layout_width="50dp"
             android:layout_height ="48dp"
