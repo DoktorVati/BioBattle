@@ -42,8 +42,10 @@
             android:layout_height="wrap_content"
             android:text="@string/wave"
             android:layout_gravity="start"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textColor="@color/yellow"
+            android:shadowRadius="1"
+            android:shadowColor="@color/black"
             />
         <TextView
             android:id ="@+id/health"
@@ -52,8 +54,10 @@
             android:layout_gravity="start"
             android:layout_height="wrap_content"
             android:text="@string/health"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textColor="@color/yellow"
+            android:shadowRadius="1"
+            android:shadowColor="@color/black"
             />
         <TextView
             android:id ="@+id/money"
@@ -62,8 +66,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gold"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textColor="@color/yellow"
+            android:shadowRadius="1"
+            android:shadowColor="@color/black"
             />
         <TextView
             android:layout_marginTop="10dp"
@@ -73,6 +79,8 @@
             android:textSize="20sp"
             android:layout_columnSpan="2"
             android:textColor="@color/seaGreen"
+            android:shadowRadius="1"
+            android:shadowColor="@color/black"
             />
         <!-- Image 1 -->
         <RelativeLayout
@@ -105,7 +113,7 @@
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
-                android:shadowRadius="5"
+                android:shadowRadius="2"
                 android:textColor="@color/yellow">
             </TextView>
             <ImageView
@@ -159,7 +167,7 @@
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
-                android:shadowRadius="5"
+                android:shadowRadius="2"
                 android:textColor="@color/yellow">
             </TextView>
             <ImageButton
@@ -205,7 +213,7 @@
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
-                android:shadowRadius="5"
+                android:shadowRadius="2"
                 android:textColor="@color/yellow">
             </TextView>
             <ImageButton
@@ -253,7 +261,7 @@
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
-                android:shadowRadius="5"
+                android:shadowRadius="2"
                 android:textColor="@color/yellow">
             </TextView>
 
@@ -299,6 +307,95 @@
             android:contentDescription="@string/sell_text"
             android:onClick="deleteSelectedTower"
             />
+
+        <ImageButton
+            android:id ="@+id/upgradeMenu"
+            android:scaleType="fitCenter"
+            android:scaleX="1.25"
+            android:scaleY="2"
+            android:layout_marginTop="34dp"
+            android:src="@drawable/frame_tower"
+            android:layout_columnSpan="2"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:visibility="visible"
+            android:background="@color/invisible"
+            android:contentDescription="@string/nothing"
+            />
+        <TextView
+            android:layout_columnWeight="0"
+            android:layout_columnSpan="2"
+            android:text="@string/upgrade"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="-110dp"
+            android:textColor="@color/yellow"
+            android:shadowRadius="1"
+            android:shadowColor="@color/black"
+            />
+
+        <!-- This will be the stats that are increasing -->
+        <TextView
+            android:layout_columnWeight="0"
+            android:layout_columnSpan="2"
+            android:text="@string/upgradeStatOne"
+            android:textSize="11sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/yellow"
+            android:shadowRadius="1"
+            android:shadowColor="@color/black"
+            />
+        <TextView
+            android:layout_columnWeight="0"
+            android:layout_columnSpan="2"
+            android:text="@string/upgradeStatTwo"
+            android:textSize="11sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/yellow"
+            android:shadowRadius="1"
+            android:shadowColor="@color/black"
+            />
+        <TextView
+            android:layout_columnWeight="0"
+            android:layout_columnSpan="2"
+            android:text="@string/upgradeStatThree"
+            android:textSize="11sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/yellow"
+            android:shadowRadius="1"
+            android:shadowColor="@color/black"
+            />
+        <!--this is the one that displays upgrade cost -->
+        <TextView
+            android:layout_columnWeight="0"
+            android:layout_columnSpan="1"
+            android:text="@string/upgradeCostOne"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/yellow"
+            android:shadowRadius="1"
+            android:shadowColor="@color/black"
+            />
+
+        <TextView
+            android:layout_columnWeight="0"
+            android:layout_columnSpan="1"
+            android:text="@string/gold"
+            android:layout_gravity="start"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/yellow"
+            android:shadowRadius="1"
+            android:shadowColor="@color/black"
+            />
+
     </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
