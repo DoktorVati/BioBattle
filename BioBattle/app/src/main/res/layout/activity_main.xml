@@ -42,8 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@string/wave"
             android:layout_gravity="start"
-            android:textScaleX="1.5"
-            android:textScaleY ="2"
+            android:textSize="20sp"
             android:textColor="@color/yellow"
             />
         <TextView
@@ -53,8 +52,7 @@
             android:layout_gravity="start"
             android:layout_height="wrap_content"
             android:text="@string/health"
-            android:textScaleX="1.5"
-            android:textScaleY ="2"
+            android:textSize="20sp"
             android:textColor="@color/yellow"
             />
         <TextView
@@ -64,20 +62,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gold"
-            android:textScaleX="1.5"
-            android:textScaleY ="2"
+            android:textSize="20sp"
             android:textColor="@color/yellow"
             />
-        <!-- Make the text below in strings folder-->
         <TextView
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
             android:id= "@+id/store"
-            android:text="Store"
+            android:text="@string/store"
+            android:textSize="20sp"
             android:layout_columnSpan="2"
             android:textColor="@color/seaGreen"
             />
-  <!--Change the android src for images 1 to 3 to the new drawables   -->
         <!-- Image 1 -->
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -93,12 +89,12 @@
                 android:layout_width="55dp"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="0.6dp"
-                android:contentDescription="@string/killerTCellDescription"
-                android:src="@drawable/mainmenubackground"
+                android:contentDescription="@string/simpleTowerDesc"
+                android:src="@drawable/simpletower"
                 android:scaleType="fitXY"
                 android:scaleX="0.7"
                 android:scaleY ="0.7"
-                android:id="@+id/dragBasic"
+
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -119,16 +115,16 @@
                 android:contentDescription="@string/frameContentDescription" />
 
             <ImageButton
+                android:id="@+id/dragBasic"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id ="@+id/spawnButton1"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginStart="3dp"
                 android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
-                android:onClick = "spawnDragTower"
-                android:text="@string/buy_text" />
+                android:text="@string/buy_text"
+                android:onClick="spawnDragTower" />
         </RelativeLayout>
 
         <!-- Image 2 -->
@@ -147,12 +143,12 @@
                 android:layout_width="55dp"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="0.6dp"
-                android:contentDescription="@string/killerTCellDescription"
-                android:src="@drawable/playbutton"
+                android:contentDescription="@string/golgiTowerDesc"
+                android:src="@drawable/golgitower"
                 android:scaleType="fitXY"
-                android:scaleX="0.7"
-                android:scaleY ="0.7"
-                android:id="@+id/dragTac"
+                android:scaleX="1"
+                android:scaleY ="1"
+
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -167,7 +163,7 @@
                 android:textColor="@color/yellow">
             </TextView>
             <ImageButton
-                android:id="@+id/spawnButton2"
+                android:id="@+id/dragTac"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="2dp"
@@ -175,7 +171,8 @@
                 android:layout_gravity="center"
                 android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
-                android:text="@string/buy_text" />
+                android:text="@string/buy_text"
+                android:onClick="spawnDragTower" />
         </RelativeLayout>
 
         <!-- Image 3 -->
@@ -193,12 +190,11 @@
                 android:layout_width="55dp"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="0.6dp"
-                android:contentDescription="@string/killerTCellDescription"
-                android:src="@drawable/frame_tower"
+                android:contentDescription="@string/cannonTowerDesc"
+                android:src="@drawable/cannontower"
                 android:scaleType="fitXY"
                 android:scaleX="0.7"
                 android:scaleY ="0.7"
-                android:id="@+id/dragCannon"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -213,16 +209,16 @@
                 android:textColor="@color/yellow">
             </TextView>
             <ImageButton
-                android:id="@+id/spawnButton3"
+                android:id="@+id/dragCannon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginStart="3dp"
-                android:contentDescription="@string/buy_text"
                 android:background="@color/invisible"
-                android:onClick = "spawnDragTower"
-                android:text="@string/buy_text" />
+                android:contentDescription="@string/buy_text"
+                android:text="@string/buy_text"
+                android:onClick="spawnDragTower" />
         </RelativeLayout>
 
         <!-- Image 4 -->
@@ -246,7 +242,6 @@
                 android:scaleType="fitXY"
                 android:scaleX="0.7"
                 android:scaleY ="0.7"
-                android:id="@+id/dragKillerTom"
                 />
 
             <TextView
@@ -263,30 +258,34 @@
             </TextView>
 
             <ImageButton
-                android:id="@+id/spawnButton4"
+                android:id="@+id/dragKillerTom"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="2dp"
                 android:background="@color/invisible"
-                android:onClick = "spawnDragTower"
-                android:contentDescription="@string/killerTCellDescription"/>
+                android:contentDescription="@string/buy_text"
+                android:text="@string/buy_text"
+                android:onClick="spawnDragTower" />
         </RelativeLayout>
         <ImageButton
+            android:id="@+id/buyButton"
             android:layout_marginTop="0dp"
             android:layout_marginStart="3dp"
             android:scaleType="fitXY"
             android:scaleY="1"
             android:scaleX="1"
             android:src="@drawable/buybutton"
+            android:onClick="BuyButtonClick"
             android:layout_columnSpan="1"
             android:layout_width="50dp"
             android:layout_height ="48dp"
             android:background="@color/invisible"
-            android:contentDescription="@string/sell_text"
+            android:contentDescription="@string/buy_text"
             />
         <ImageButton
+            android:id ="@+id/sellButton"
             android:layout_marginTop="1dp"
             android:layout_marginStart="1dp"
             android:scaleY="1"
@@ -297,7 +296,8 @@
             android:layout_width="50dp"
             android:layout_height ="48dp"
             android:background="@color/invisible"
-            android:contentDescription="@string/buy_text"
+            android:contentDescription="@string/sell_text"
+            android:onClick="deleteSelectedTower"
             />
     </GridLayout>
 
