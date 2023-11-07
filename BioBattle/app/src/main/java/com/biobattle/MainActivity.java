@@ -15,6 +15,9 @@ public class MainActivity extends AppCompatActivity {
     private int offsetX;
     private int offsetY;
     private boolean isDragging = false;
+    private boolean towerSelected = false;
+    private ImageView selectedTower; // Store the selected tower
+    private int selectedTowerResource = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,85 +25,96 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         container = findViewById(R.id.container);
+
         // Find and associate ImageViews with buttons
         ImageView dragBasic = findViewById(R.id.dragBasic);
         ImageView dragTac = findViewById(R.id.dragTac);
         ImageView dragCannon = findViewById(R.id.dragCannon);
         ImageView dragKillerTom = findViewById(R.id.dragKillerTom);
-        //Change the R drawables to the new towers names
 
-        // Find and set image resources for ImageButtons
-        setupSpawnButton(R.id.spawnButton1, dragBasic, R.drawable.map);
-        setupSpawnButton(R.id.spawnButton2, dragTac, R.drawable.playbutton);
-        setupSpawnButton(R.id.spawnButton3, dragCannon, R.drawable.frame_tower);
-        setupSpawnButton(R.id.spawnButton4, dragKillerTom, R.drawable.killertcellp);
-    }
+        // Set up the tower selection
+        setupTowerSelection(dragBasic, R.drawable.simpletower);
+        setupTowerSelection(dragTac, R.drawable.golgitower);
+        setupTowerSelection(dragCannon, R.drawable.cannontower);
+        setupTowerSelection(dragKillerTom, R.drawable.killertcellp);
 
-    private void setupSpawnButton(int spawnButtonId, final ImageView dragImageView, final int imageResource) {
-        ImageButton spawnButton = findViewById(spawnButtonId);
-
-        spawnButton.setOnClickListener(new View.OnClickListener() {
+        // Set up the "Buy" button
+        ImageButton buyButton = findViewById(R.id.buyButton);
+        buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spawnDragTower(dragImageView, imageResource);
+                if (towerSelected) {
+                    // Spawn the selected tower
+                    spawnDragTower(selectedTowerResource);
+                    // Reset tower selection
+                    towerSelected = false;
+                    selectedTowerResource = 0;
+                }
             }
         });
 
-        dragImageView.setOnTouchListener(new View.OnTouchListener() {
-            int lastX, lastY;
-
+        // Find the "Sell" button
+        ImageButton sellButton = findViewById(R.id.sellButton);
+        sellButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        isDragging = true;
-                        offsetX = (int) event.getX();
-                        offsetY = (int) event.getY();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (isDragging) {
-                            int x = (int) event.getRawX();
-                            int y = (int) event.getRawY();
-
-                            dragImageView.setX(x - offsetX);
-                            dragImageView.setY(y - offsetY);
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        isDragging = false;
-                        break;
+            public void onClick(View v) {
+                // Delete the selected tower if it's not null
+                if (selectedTower != null) {
+                    deleteSelectedTower(selectedTower);
                 }
-                return true;
             }
         });
     }
 
+    private void setupTowerSelection(final ImageView towerImageView, final int imageResource) {
+        towerImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle tower selection
+                selectedTowerResource = imageResource;
+                towerSelected = true;
+            }
+        });
+    }
 
-    public void spawnDragTower(ImageView dragImageView, int imageResource) {
+    public void spawnDragTower(final int imageResource) {
         // Create a new ImageView with the specified image resource
         final ImageView newDragImageView = new ImageView(this);
         newDragImageView.setImageResource(imageResource);
 
+        // Get the original image's dimensions
+        int originalWidth = newDragImageView.getDrawable().getIntrinsicWidth();
+        int originalHeight = newDragImageView.getDrawable().getIntrinsicHeight();
+        float scale = 1f;
+
+        // Set the scaling factor for the tower based on imageResource
+        if (imageResource == R.drawable.simpletower) {
+            scale = 0.85f; // Adjust the scale factor as needed
+        } else if (imageResource == R.drawable.golgitower) {
+            scale = 1.7f;
+        } else if (imageResource == R.drawable.cannontower) {
+            scale = 1f;
+        } else if (imageResource == R.drawable.killertcellp) {
+            scale = 0.07f;
+        }
+
+        // Calculate the scaled width and height
+        int scaledWidth = (int) (originalWidth * scale);
+        int scaledHeight = (int) (originalHeight * scale);
+
+        // Resize the new ImageView
+        newDragImageView.setLayoutParams(new ViewGroup.LayoutParams(scaledWidth, scaledHeight));
+
         // Optionally, you can set the initial position:
-        initialX = (container.getWidth() - newDragImageView.getWidth()) / 2;
-        initialY = (container.getHeight() - newDragImageView.getHeight()) / 2;
+        initialX = (container.getWidth() - scaledWidth) / 2;
+        initialY = (container.getHeight() - scaledHeight) / 2;
         newDragImageView.setX(initialX);
         newDragImageView.setY(initialY);
-
-        // Add a click listener to the new ImageView
-        newDragImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Add your JavaScript code here to handle the click event
-                // For example, you can open a web page in a WebView or perform other actions.
-                // You may need to set up a WebView or define your JavaScript code accordingly.
-            }
-        });
 
         // Implement touch event handling for dragging
         newDragImageView.setOnTouchListener(new View.OnTouchListener() {
             int lastX, lastY;
+            boolean isBeingDragged = false;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -109,25 +123,41 @@ public class MainActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         lastX = (int) event.getRawX();
                         lastY = (int) event.getRawY();
+                        isBeingDragged = true;
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        int deltaX = (int) event.getRawX() - lastX;
-                        int deltaY = (int) event.getRawY() - lastY;
+                        if (isBeingDragged) {
+                            int deltaX = (int) event.getRawX() - lastX;
+                            int deltaY = (int) event.getRawY() - lastY;
 
-                        float newX = v.getX() + deltaX;
-                        float newY = v.getY() + deltaY;
+                            float newX = v.getX() + deltaX;
+                            float newY = v.getY() + deltaY;
 
-                        // Update the position of the ImageView
-                        v.setX(newX);
-                        v.setY(newY);
+                            // Update the position of the ImageView
+                            v.setX(newX);
+                            v.setY(newY);
 
-                        lastX = (int) event.getRawX();
-                        lastY = (int) event.getRawY();
+                            lastX = (int) event.getRawX();
+                            lastY = (int) event.getRawY();
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        isBeingDragged = false;
+                        v.setOnTouchListener(null); // Remove the touch listener
                         break;
                     default:
                         break;
                 }
                 return true;
+            }
+        });
+
+        // Add an individual click listener to freeze and sell the tower
+        newDragImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Store the selected tower and disable further selection
+                selectedTower = newDragImageView;
             }
         });
 
@@ -143,4 +173,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void deleteSelectedTower(ImageView towerImageView) {
+        if (towerImageView != null) {
+            ViewGroup parentView = (ViewGroup) towerImageView.getParent();
+            if (parentView != null) {
+                parentView.removeView(towerImageView);
+                // Reset the selected tower
+                selectedTower = null;
+            }
+        }
+    }
 }
