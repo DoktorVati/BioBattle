@@ -105,11 +105,16 @@ public class MainActivity extends AppCompatActivity {
         // Resize the new ImageView
         newDragImageView.setLayoutParams(new ViewGroup.LayoutParams(scaledWidth, scaledHeight));
 
-        // Optionally, you can set the initial position:
-        initialX = (container.getWidth() - scaledWidth) / 2;
-        initialY = (container.getHeight() - scaledHeight) / 2;
+        // Calculate the initial position in the center of the screen
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        int screenHeight = getResources().getDisplayMetrics().heightPixels;
+
+        initialX = (screenWidth - scaledWidth) / 2;
+        initialY = (screenHeight - scaledHeight) / 2;
+
         newDragImageView.setX(initialX);
         newDragImageView.setY(initialY);
+
 
         // Implement touch event handling for dragging
         newDragImageView.setOnTouchListener(new View.OnTouchListener() {
