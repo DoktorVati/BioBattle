@@ -41,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/wave"
+            android:textStyle="bold"
             android:layout_gravity="start"
             android:textSize="15sp"
             android:textColor="@color/yellow"
@@ -54,6 +55,7 @@
             android:layout_gravity="start"
             android:layout_height="wrap_content"
             android:text="@string/health"
+            android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="@color/yellow"
             android:shadowRadius="1"
@@ -66,6 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gold"
+            android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="@color/yellow"
             android:shadowRadius="1"
@@ -76,6 +79,7 @@
             android:layout_gravity="center_horizontal"
             android:id= "@+id/store"
             android:text="@string/store"
+            android:textStyle="bold"
             android:textSize="20sp"
             android:layout_columnSpan="2"
             android:textColor="@color/seaGreen"
@@ -114,6 +118,7 @@
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"
+                android:textStyle="bold"
                 android:textColor="@color/yellow">
             </TextView>
             <ImageView
@@ -164,6 +169,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:text="@string/tacCost"
+                android:textStyle="bold"
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
@@ -210,6 +216,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:text="@string/cannonCost"
+                android:textStyle="bold"
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
@@ -258,6 +265,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:text="@string/killerTCost"
+                android:textStyle="bold"
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
@@ -327,6 +335,7 @@
             android:layout_columnSpan="2"
             android:text="@string/upgrade"
             android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="-4dp"
             android:layout_marginTop="-110dp"
@@ -374,6 +383,7 @@
             />
         <!--this is the one that displays upgrade cost -->
         <TextView
+            android:textStyle="bold"
             android:layout_columnWeight="0"
             android:layout_columnSpan="1"
             android:text="@string/upgradeCostOne"
@@ -386,6 +396,7 @@
             />
 
         <TextView
+            android:textStyle="bold"
             android:layout_columnWeight="0"
             android:layout_columnSpan="1"
             android:text="@string/gold"
