@@ -10,7 +10,6 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="#E1E1E1"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/gridLayout"
         app:layout_constraintStart_toStartOf="parent" >
@@ -45,7 +44,7 @@
             android:layout_gravity="start"
             android:textSize="15sp"
             android:textColor="@color/yellow"
-            android:shadowRadius="1"
+            android:shadowRadius="2"
             android:shadowColor="@color/black"
             />
         <TextView
@@ -58,7 +57,7 @@
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="@color/yellow"
-            android:shadowRadius="1"
+            android:shadowRadius="2"
             android:shadowColor="@color/black"
             />
         <TextView
@@ -71,7 +70,7 @@
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="@color/yellow"
-            android:shadowRadius="1"
+            android:shadowRadius="2"
             android:shadowColor="@color/black"
             />
         <TextView
@@ -300,6 +299,7 @@
             android:background="@color/invisible"
             android:contentDescription="@string/buy_text"
             />
+
         <ImageButton
             android:id ="@+id/sellButton"
             android:layout_marginTop="1dp"
@@ -315,9 +315,10 @@
             android:contentDescription="@string/sell_text"
             android:onClick="deleteSelectedTower"
             />
-
+        <!-- start tags for upgrade menu -->
         <ImageButton
             android:id ="@+id/upgradeMenu"
+            android:tag ="UpgradeMenu"
             android:scaleType="fitCenter"
             android:scaleX="1.25"
             android:scaleY="2"
@@ -326,11 +327,12 @@
             android:layout_columnSpan="2"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:background="@color/invisible"
             android:contentDescription="@string/nothing"
             />
         <TextView
+            android:tag ="UpgradeMenu"
             android:layout_columnWeight="0"
             android:layout_columnSpan="2"
             android:text="@string/upgrade"
@@ -341,11 +343,13 @@
             android:layout_marginTop="-110dp"
             android:textColor="@color/yellow"
             android:shadowRadius="1"
+            android:visibility="invisible"
             android:shadowColor="@color/black"
             />
 
         <!-- This will be the stats that are increasing -->
         <TextView
+            android:tag ="UpgradeMenu"
             android:layout_columnWeight="0"
             android:layout_columnSpan="2"
             android:text="@string/upgradeStatOne"
@@ -353,37 +357,43 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="-4dp"
             android:layout_marginTop="10dp"
-            android:textColor="@color/yellow"
-            android:shadowRadius="1"
+            android:textColor="@color/black"
+            android:visibility="invisible"
             android:shadowColor="@color/black"
             />
         <TextView
+            android:tag ="UpgradeMenu"
             android:layout_columnWeight="0"
             android:layout_columnSpan="2"
             android:text="@string/upgradeStatTwo"
             android:textSize="11sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="-4dp"
+            android:visibility="invisible"
             android:layout_marginTop="3dp"
-            android:textColor="@color/yellow"
-            android:shadowRadius="1"
+            android:textColor="@color/lightBlue"
+            android:shadowRadius="0.6"
             android:shadowColor="@color/black"
             />
         <TextView
+            android:tag ="UpgradeMenu"
             android:layout_columnWeight="0"
             android:layout_columnSpan="2"
+            android:visibility="invisible"
             android:text="@string/upgradeStatThree"
             android:textSize="11sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="-4dp"
             android:layout_marginTop="3dp"
-            android:textColor="@color/yellow"
-            android:shadowRadius="1"
+            android:textColor="@color/pathGreen"
+            android:shadowRadius="0.1"
             android:shadowColor="@color/black"
             />
         <!--this is the one that displays upgrade cost -->
         <TextView
+            android:tag ="UpgradeMenu"
             android:textStyle="bold"
+            android:visibility="invisible"
             android:layout_columnWeight="0"
             android:layout_columnSpan="1"
             android:text="@string/upgradeCostOne"
@@ -396,7 +406,9 @@
             />
 
         <TextView
+            android:tag ="UpgradeMenu"
             android:textStyle="bold"
+            android:visibility="invisible"
             android:layout_columnWeight="0"
             android:layout_columnSpan="1"
             android:text="@string/gold"
