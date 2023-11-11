@@ -2,7 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.BioBattle" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
         <item name="colorPrimary">@color/cyan</item>
         <item name="colorPrimaryDark">@color/deepBlue</item>
         <item name="colorSecondary">@color/grey</item>
