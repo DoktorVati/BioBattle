@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BioBattle"
+        android:theme="@style/Base.Theme.BioBattle"
         tools:targetApi="31">
         <activity
             android:name=".MainMenu"
@@ -24,7 +24,9 @@
 <!--test-->
         <activity
             android:name=".MainActivity"
+            android:windowSoftInputMode="stateAlwaysVisible"
             android:exported="true">
+
         </activity>
     </application>
 
