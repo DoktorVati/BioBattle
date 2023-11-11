@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
+
     <FrameLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gridLayout"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/map"
             android:contentDescription="@string/play_text"
-            />
+            android:scaleType="fitXY"
+            android:src="@drawable/map" />
 
     </FrameLayout>
 
@@ -29,97 +32,111 @@
         android:id="@+id/gridLayout"
         android:layout_width="107dp"
         android:layout_height="match_parent"
+        android:background="@drawable/background1"
         android:columnCount="2"
-        android:background="@color/cyan"
-        android:rowCount="6"
+        android:rowCount="8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
-            android:id ="@+id/wave"
-            android:layout_columnSpan="2"
+            android:id="@+id/wave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="start"
+            android:shadowColor="@color/black"
+            android:shadowRadius="2"
             android:text="@string/wave"
-            android:textStyle="bold"
-            android:layout_gravity="start"
-            android:textSize="15sp"
             android:textColor="@color/yellow"
-            android:shadowRadius="2"
-            android:shadowColor="@color/black"
-            />
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
         <TextView
-            android:id ="@+id/health"
-            android:layout_columnSpan="2"
+            android:id="@+id/health"
             android:layout_width="wrap_content"
-            android:layout_gravity="start"
             android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="start"
+            android:shadowColor="@color/black"
+            android:shadowRadius="2"
             android:text="@string/health"
-            android:textStyle="bold"
-            android:textSize="15sp"
             android:textColor="@color/yellow"
-            android:shadowRadius="2"
-            android:shadowColor="@color/black"
-            />
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
         <TextView
-            android:id ="@+id/money"
-            android:layout_columnSpan="2"
-            android:layout_gravity="start"
+            android:id="@+id/money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/gold"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textColor="@color/yellow"
-            android:shadowRadius="2"
-            android:shadowColor="@color/black"
-            />
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
-            android:id= "@+id/store"
-            android:text="@string/store"
-            android:textStyle="bold"
-            android:textSize="20sp"
             android:layout_columnSpan="2"
-            android:textColor="@color/seaGreen"
-            android:shadowRadius="1"
+            android:layout_gravity="start"
             android:shadowColor="@color/black"
-            />
+            android:shadowRadius="2"
+            android:text="@string/gold"
+            android:textColor="@color/yellow"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/store"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0dp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="1"
+            android:text="@string/store"
+            android:textColor="@color/pathGreen"
+            android:textSize="20sp"
+            android:textStyle="bold" />
         <!-- Image 1 -->
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="0dp">
+
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="3dp"
-                android:src="@drawable/frame_tower"
-                android:contentDescription="@string/frameContentDescription"/>
+                android:contentDescription="@string/frameContentDescription"
+                android:src="@drawable/frame_tower" />
+
+            <ImageView
+                android:id="@+id/selectframe1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="3dp"
+                android:src="@drawable/selectframe"
+                android:visibility="invisible"
+                android:contentDescription="@string/nothing" />
+
             <ImageView
                 android:layout_width="55dp"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="0.6dp"
                 android:contentDescription="@string/simpleTowerDesc"
-                android:src="@drawable/simpletower"
                 android:scaleType="fitXY"
                 android:scaleX="0.7"
-                android:scaleY ="0.7"
+                android:scaleY="0.7"
+                android:src="@drawable/simpletower"
 
                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:text="@string/basicCost"
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"
-                android:textStyle="bold"
-                android:textColor="@color/yellow">
-            </TextView>
+                android:text="@string/basicCost"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"></TextView>
+
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -135,15 +152,15 @@
                 android:layout_marginStart="3dp"
                 android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
-                android:text="@string/buy_text"
-                android:onClick="spawnDragTower" />
+                android:onClick="spawnDragTower"
+                android:text="@string/buy_text" />
         </RelativeLayout>
 
         <!-- Image 2 -->
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="0dp">
 
             <ImageView
                 android:layout_width="50dp"
@@ -151,41 +168,52 @@
                 android:layout_marginHorizontal="2dp"
                 android:contentDescription="@string/frameContentDescription"
                 android:src="@drawable/frame_tower" />
+
+            <ImageView
+                android:id="@+id/selectframe2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="2dp"
+                android:src="@drawable/selectframe"
+                android:visibility="invisible"
+                android:contentDescription="@string/nothing" />
+
             <ImageView
                 android:layout_width="55dp"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="0.6dp"
                 android:contentDescription="@string/golgiTowerDesc"
-                android:src="@drawable/golgitower"
                 android:scaleType="fitXY"
                 android:scaleX="1"
-                android:scaleY ="1"
+                android:scaleY="1"
+                android:src="@drawable/golgitower"
 
                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:text="@string/tacCost"
-                android:textStyle="bold"
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"
-                android:textColor="@color/yellow">
-            </TextView>
+                android:text="@string/tacCost"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"></TextView>
+
             <ImageButton
                 android:id="@+id/dragTac"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginHorizontal="2dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
+                android:layout_marginHorizontal="2dp"
                 android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
-                android:text="@string/buy_text"
-                android:onClick="spawnDragTower" />
+                android:onClick="spawnDragTower"
+                android:text="@string/buy_text" />
         </RelativeLayout>
 
         <!-- Image 3 -->
@@ -193,35 +221,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp">
+
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="3dp"
                 android:contentDescription="@string/frameContentDescription"
                 android:src="@drawable/frame_tower" />
+
+            <ImageView
+                android:id="@+id/selectframe3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="3dp"
+                android:src="@drawable/selectframe"
+                android:visibility="invisible"
+                android:contentDescription="@string/nothing" />
+
             <ImageView
                 android:layout_width="55dp"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="0.6dp"
                 android:contentDescription="@string/cannonTowerDesc"
-                android:src="@drawable/cannontower"
                 android:scaleType="fitXY"
                 android:scaleX="0.7"
-                android:scaleY ="0.7"
-                />
+                android:scaleY="0.7"
+                android:src="@drawable/cannontower" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:text="@string/cannonCost"
-                android:textStyle="bold"
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"
-                android:textColor="@color/yellow">
-            </TextView>
+                android:text="@string/cannonCost"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"></TextView>
+
             <ImageButton
                 android:id="@+id/dragCannon"
                 android:layout_width="50dp"
@@ -231,46 +270,54 @@
                 android:layout_marginStart="3dp"
                 android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
-                android:text="@string/buy_text"
-                android:onClick="spawnDragTower" />
+                android:onClick="spawnDragTower"
+                android:text="@string/buy_text" />
         </RelativeLayout>
 
         <!-- Image 4 -->
         <RelativeLayout
-            android:id= "@+id/container"
+            android:id="@+id/container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp">
+
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="3dp"
-                android:src="@drawable/frame_tower"
-                android:contentDescription="@string/frameContentDescription"/>
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/frameContentDescription"
+                android:src="@drawable/frame_tower" />
+
+            <ImageView
+                android:id="@+id/selectframe4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="2dp"
+                android:src="@drawable/selectframe"
+                android:visibility="invisible"
+                android:contentDescription="@string/nothing" />
+
             <ImageView
                 android:layout_width="55dp"
                 android:layout_height="50dp"
-                android:layout_marginHorizontal="0.6dp"
                 android:contentDescription="@string/killerTCellDescription"
-                android:src="@drawable/killertcellp"
                 android:scaleType="fitXY"
                 android:scaleX="0.7"
-                android:scaleY ="0.7"
-                />
+                android:scaleY="0.7"
+                android:src="@drawable/killertcellp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:text="@string/killerTCost"
-                android:textStyle="bold"
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="2"
-                android:textColor="@color/yellow">
-            </TextView>
+                android:text="@string/killerTCost"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"></TextView>
 
             <ImageButton
                 android:id="@+id/dragKillerTom"
@@ -281,143 +328,146 @@
                 android:layout_marginHorizontal="2dp"
                 android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
-                android:text="@string/buy_text"
-                android:onClick="spawnDragTower" />
+                android:onClick="spawnDragTower"
+                android:text="@string/buy_text" />
         </RelativeLayout>
-        <ImageButton
-            android:id="@+id/buyButton"
-            android:layout_marginTop="0dp"
-            android:layout_marginStart="3dp"
-            android:scaleType="fitXY"
-            android:scaleY="1"
-            android:scaleX="1"
-            android:src="@drawable/buybutton"
-            android:onClick="BuyButtonClick"
-            android:layout_columnSpan="1"
-            android:layout_width="50dp"
-            android:layout_height ="48dp"
-            android:background="@color/invisible"
-            android:contentDescription="@string/buy_text"
-            />
 
         <ImageButton
-            android:id ="@+id/sellButton"
-            android:layout_marginTop="1dp"
-            android:layout_marginStart="1dp"
-            android:scaleY="1"
-            android:scaleX="0.96"
-            android:scaleType="fitXY"
-            android:src ="@drawable/sellbutton"
-            android:layout_columnSpan="1"
+            android:id="@+id/buyButton"
             android:layout_width="50dp"
-            android:layout_height ="48dp"
+            android:layout_height="48dp"
+            android:layout_columnSpan="1"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/invisible"
+            android:contentDescription="@string/buy_text"
+            android:onClick="BuyButtonClick"
+            android:scaleType="fitXY"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:src="@drawable/buybutton" />
+
+        <ImageButton
+            android:id="@+id/sellButton"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_columnSpan="1"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
             android:background="@color/invisible"
             android:contentDescription="@string/sell_text"
             android:onClick="deleteSelectedTower"
-            />
+            android:scaleType="fitXY"
+            android:scaleX="0.96"
+            android:scaleY="1"
+            android:src="@drawable/sellbutton" />
         <!-- start tags for upgrade menu -->
         <ImageButton
-            android:id ="@+id/upgradeMenu"
-            android:tag ="UpgradeMenu"
-            android:scaleType="fitCenter"
-            android:scaleX="1.25"
-            android:scaleY="2"
-            android:layout_marginTop="34dp"
-            android:src="@drawable/frame_tower"
-            android:layout_columnSpan="2"
+            android:id="@+id/upgradeMenu"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
-            android:visibility="invisible"
+            android:layout_columnSpan="2"
+            android:layout_marginTop="4dp"
             android:background="@color/invisible"
             android:contentDescription="@string/nothing"
+            android:scaleType="fitCenter"
+            android:scaleX="1.25"
+            android:scaleY="1.45"
+            android:src="@drawable/frame_tower"
+            android:tag="UpgradeMenu"
+            android:visibility="invisible"
+            android:paddingBottom="1dp"
+            android:paddingVertical="2dp"
             />
+
         <TextView
-            android:tag ="UpgradeMenu"
-            android:layout_columnWeight="0"
             android:layout_columnSpan="2"
-            android:text="@string/upgrade"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:layout_columnWeight="0"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="-4dp"
-            android:layout_marginTop="-110dp"
-            android:textColor="@color/yellow"
-            android:shadowRadius="1"
-            android:visibility="invisible"
+            android:layout_marginTop="-94dp"
             android:shadowColor="@color/black"
-            />
+            android:shadowRadius="1"
+            android:tag="UpgradeMenu"
+            android:text="@string/upgrade"
+            android:textColor="@color/yellow"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
         <!-- This will be the stats that are increasing -->
         <TextView
-            android:tag ="UpgradeMenu"
-            android:layout_columnWeight="0"
             android:layout_columnSpan="2"
+            android:layout_columnWeight="0"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="9dp"
+            android:shadowColor="@color/black"
+            android:tag="UpgradeMenu"
             android:text="@string/upgradeStatOne"
-            android:textSize="11sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="-4dp"
-            android:layout_marginTop="10dp"
             android:textColor="@color/black"
-            android:visibility="invisible"
-            android:shadowColor="@color/black"
-            />
-        <TextView
-            android:tag ="UpgradeMenu"
-            android:layout_columnWeight="0"
-            android:layout_columnSpan="2"
-            android:text="@string/upgradeStatTwo"
             android:textSize="11sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="-4dp"
-            android:visibility="invisible"
-            android:layout_marginTop="3dp"
-            android:textColor="@color/lightBlue"
-            android:shadowRadius="0.6"
-            android:shadowColor="@color/black"
-            />
-        <TextView
-            android:tag ="UpgradeMenu"
-            android:layout_columnWeight="0"
-            android:layout_columnSpan="2"
-            android:visibility="invisible"
-            android:text="@string/upgradeStatThree"
-            android:textSize="11sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="-4dp"
-            android:layout_marginTop="3dp"
-            android:textColor="@color/pathGreen"
-            android:shadowRadius="0.1"
-            android:shadowColor="@color/black"
-            />
-        <!--this is the one that displays upgrade cost -->
-        <TextView
-            android:tag ="UpgradeMenu"
             android:textStyle="bold"
-            android:visibility="invisible"
-            android:layout_columnWeight="0"
-            android:layout_columnSpan="1"
-            android:text="@string/upgradeCostOne"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/yellow"
-            android:shadowRadius="1"
-            android:shadowColor="@color/black"
-            />
+            android:visibility="invisible" />
 
         <TextView
-            android:tag ="UpgradeMenu"
-            android:textStyle="bold"
-            android:visibility="invisible"
+            android:layout_columnSpan="2"
             android:layout_columnWeight="0"
-            android:layout_columnSpan="1"
-            android:text="@string/gold"
-            android:layout_gravity="start"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/yellow"
-            android:shadowRadius="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="2dp"
             android:shadowColor="@color/black"
-            />
+            android:shadowRadius="0.6"
+            android:tag="UpgradeMenu"
+            android:text="@string/upgradeStatTwo"
+            android:textColor="@color/lightBlue"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_columnSpan="2"
+            android:layout_columnWeight="0"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="2dp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="0.1"
+            android:tag="UpgradeMenu"
+            android:text="@string/upgradeStatThree"
+            android:textColor="@color/pathGreen"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+        <!--this is the one that displays upgrade cost -->
+        <TextView
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="0"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="1"
+            android:tag="UpgradeMenu"
+            android:paddingBottom="1dp"
+            android:text="@string/upgradeCostOne"
+            android:textColor="@color/yellow"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="0"
+            android:layout_gravity="start"
+            android:layout_marginTop="0dp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="1"
+            android:tag="UpgradeMenu"
+            android:paddingBottom="1dp"
+            android:text="@string/gold"
+            android:textColor="@color/yellow"
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
     </GridLayout>
 
