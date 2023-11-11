@@ -1,9 +1,11 @@
 package com.biobattle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,12 +14,15 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout container;
     private int initialX;
     private int initialY;
-    private int offsetX;
-    private int offsetY;
     private boolean isDragging = false;
     private boolean towerSelected = false;
     private ImageView selectedTower; // Store the selected tower
     private int selectedTowerResource = 0;
+
+    private Tower basicTower;
+    private Tower tacTower;
+    private Tower cannonTower;
+    private Tower killerTomTower;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +30,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         container = findViewById(R.id.container);
+        View backgroundView = findViewById(R.id.map);
 
         // Find and associate ImageViews with buttons
         ImageView dragBasic = findViewById(R.id.dragBasic);
         ImageView dragTac = findViewById(R.id.dragTac);
         ImageView dragCannon = findViewById(R.id.dragCannon);
         ImageView dragKillerTom = findViewById(R.id.dragKillerTom);
+
+        basicTower = new Tower(dragBasic);
+        tacTower = new Tower(dragTac);
+        cannonTower = new Tower(dragCannon);
+        killerTomTower = new Tower(dragKillerTom);
 
         // Set up the tower selection
         setupTowerSelection(dragBasic, R.drawable.simpletower);
@@ -44,12 +55,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (towerSelected) {
-                    // Spawn the selected tower
+                    // Buy the tower only when the "Buy" button is clicked
                     spawnDragTower(selectedTowerResource);
                     // Reset tower selection
                     towerSelected = false;
                     selectedTowerResource = 0;
+                    hideUpgradeMenus(true);
                 }
+            }
+        });
+
+        // This is the upgrade button
+        ImageButton upgradeButton = findViewById(R.id.upgradeMenu);
+        upgradeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                // Upgrade the selected tower
+                upgradeSelectedTower(selectedTower);
             }
         });
 
@@ -59,9 +82,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Delete the selected tower if it's not null
-                if (selectedTower != null) {
+                if (selectedTower != null)
+                {
+                    hideUpgradeMenus(true);
                     deleteSelectedTower(selectedTower);
                 }
+            }
+        });
+
+        // This should turn menu invisible when selecting other stuff
+        backgroundView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Hide the upgrade menu when the background is touched
+                hideUpgradeMenus(true);
+                return false;
             }
         });
     }
@@ -70,13 +105,91 @@ public class MainActivity extends AppCompatActivity {
         towerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle tower selection
+
+                // If no tower is selected, set the selected tower resource
                 selectedTowerResource = imageResource;
                 towerSelected = true;
+
+                // Set visibility for select frames based on the clicked tower
+                setSelectFrameVisibility(towerImageView);
+            }
+        });
+
+        // Set up touch event listener for individual towers to prevent the upgrade menu from showing up when the parent is touched
+        towerImageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
             }
         });
     }
+    private void setSelectFrameVisibility(ImageView towerImageView)
+    {
 
+        // Find the select frames
+        ImageView selectFrame1 = findViewById(R.id.selectframe1);
+        ImageView selectFrame2 = findViewById(R.id.selectframe2);
+        ImageView selectFrame3 = findViewById(R.id.selectframe3);
+        ImageView selectFrame4 = findViewById(R.id.selectframe4);
+
+        // Hide all select frames
+        selectFrame1.setVisibility(View.INVISIBLE);
+        selectFrame2.setVisibility(View.INVISIBLE);
+        selectFrame3.setVisibility(View.INVISIBLE);
+        selectFrame4.setVisibility(View.INVISIBLE);
+
+        // Determine which parent tower was clicked and show the corresponding select frame
+        if (towerImageView.getId() == R.id.dragBasic) {
+            selectFrame1.setVisibility(View.VISIBLE);
+            hideUpgradeMenus(false);
+        } else if (towerImageView.getId() == R.id.dragTac) {
+            selectFrame2.setVisibility(View.VISIBLE);
+            hideUpgradeMenus(false);
+        } else if (towerImageView.getId() == R.id.dragCannon) {
+            selectFrame3.setVisibility(View.VISIBLE);
+            hideUpgradeMenus(false);
+        } else if (towerImageView.getId() == R.id.dragKillerTom) {
+            selectFrame4.setVisibility(View.VISIBLE);
+            hideUpgradeMenus(false);
+        }
+    }
+    // Method to make all assets with the tag "UpgradeMenu" visible
+    private void showUpgradeMenus()
+    {
+        //this hides the select frame
+        ImageView map = findViewById(R.id.map);
+        setSelectFrameVisibility(map);
+        // Find the container view where UpgradeMenu assets are located
+        GridLayout upgradeContainer = findViewById(R.id.gridLayout);
+
+        // Iterate through child views of the container
+        for (int i = 0; i < upgradeContainer.getChildCount(); i++) {
+            View child = upgradeContainer.getChildAt(i);
+            if (child.getTag() != null && child.getTag().equals("UpgradeMenu")) {
+                // Set visibility to VISIBLE for UpgradeMenu assets
+                child.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+    // Method to hide all assets with the tag "UpgradeMenu"
+    private void hideUpgradeMenus(boolean isSelectFrame) {
+        // Find the container view where UpgradeMenu assets are located
+        GridLayout upgradeContainer = findViewById(R.id.gridLayout);
+
+        //this hides the select frame
+        if(isSelectFrame) {
+            ImageView map = findViewById(R.id.map);
+            setSelectFrameVisibility(map);
+        }
+        // Iterate through child views of the container
+        for (int i = 0; i < upgradeContainer.getChildCount(); i++) {
+            View child = upgradeContainer.getChildAt(i);
+            if (child.getTag() != null && child.getTag().equals("UpgradeMenu")) {
+                // Set visibility to GONE for UpgradeMenu assets
+                child.setVisibility(View.GONE);
+            }
+        }
+    }
     public void spawnDragTower(final int imageResource) {
         // Create a new ImageView with the specified image resource
         final ImageView newDragImageView = new ImageView(this);
@@ -163,29 +276,57 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Store the selected tower and disable further selection
                 selectedTower = newDragImageView;
+                showUpgradeMenus();
             }
         });
+
 
         // Find the target view where you want to add the new ImageView
         View targetView = findViewById(R.id.linearLayout);
 
-        if (targetView instanceof ViewGroup) {
+        if (targetView instanceof ViewGroup)
+        {
             // Add the new ImageView to the target view
             ((ViewGroup) targetView).addView(newDragImageView);
-        } else {
-            // Handle the case where the target view is not a ViewGroup
-            // You can display an error message or perform other actions.
         }
     }
 
-    private void deleteSelectedTower(ImageView towerImageView) {
+    private void deleteSelectedTower(ImageView towerImageView)
+    {
         if (towerImageView != null) {
             ViewGroup parentView = (ViewGroup) towerImageView.getParent();
             if (parentView != null) {
                 parentView.removeView(towerImageView);
-                // Reset the selected tower
+                //reset the selected tower
                 selectedTower = null;
             }
         }
     }
+
+    //make towers unique
+    private Tower getTowerByImageView(ImageView imageView)
+    {
+        if (imageView == basicTower.getImageView()) {
+            return basicTower;
+        } else if (imageView == tacTower.getImageView()) {
+            return tacTower;
+        } else if (imageView == cannonTower.getImageView()) {
+            return cannonTower;
+        } else if (imageView == killerTomTower.getImageView()) {
+            return killerTomTower;
+        } else {
+            return null;
+        }
+    }
+    private void upgradeSelectedTower(ImageView selectedTower)
+    {
+        if (selectedTower != null) {
+            // upgrades the selected tower
+            Tower tower = getTowerByImageView(selectedTower);
+            if (tower != null) {
+                tower.upgrade();
+            }
+        }
+    }
+
 }
