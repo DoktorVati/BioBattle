@@ -1,6 +1,7 @@
 package com.biobattle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -328,5 +329,37 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    
+    public void spawnEnemy(final int type) {
+        int imageResource = 0;
 
+        if (type == 1) {
+            imageResource = R.drawable.enemyB;
+        } else if (type == 2) {
+            imageResource = R.drawable.enemyY;
+        } else if (type == 3) {
+            imageResource = R.drawable.enemyR;
+        } else {
+            imageResource = R.drawable.enemyB;
+        }
+
+        final ImageView newEnemyImageView = new ImageView(this);
+        newEnemyImageView.setImageResource(imageResource);
+        // create ID for new enemy
+        newEnemyImageView.generateViewId();
+        // start path method
+        Enemy.Path(newEnemyImageView);
+
+        // variable for display metrics.
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        // get metrics for our display
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        //get height and width in dp
+        float screenHeight = displayMetrics.ydpi;
+        float screenWidth = displayMetrics.xdpi;
+
+        newEnemyImageView.setX(screenWidth);
+        newEnemyImageView.setY(screenHeight);
+
+    }
 }
