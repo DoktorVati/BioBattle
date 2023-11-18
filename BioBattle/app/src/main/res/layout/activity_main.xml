@@ -16,7 +16,13 @@
         app:layout_constraintEnd_toStartOf="@+id/gridLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
+        <com.biobattle.AttackRangeView
+            android:id="@+id/attackRangeCircleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:visibility="invisible"
+            android:elevation="1dp" />
         <ImageView
             android:id="@+id/map"
             android:layout_width="match_parent"
@@ -25,6 +31,7 @@
             android:contentDescription="@string/play_text"
             android:scaleType="fitXY"
             android:src="@drawable/map" />
+
 
     </FrameLayout>
 
@@ -99,7 +106,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="2dp"
                 android:contentDescription="@string/frameContentDescription"
                 android:src="@drawable/frame_tower" />
 
@@ -107,7 +114,7 @@
                 android:id="@+id/selectframe1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="2dp"
                 android:src="@drawable/selectframe"
                 android:visibility="invisible"
                 android:contentDescription="@string/nothing" />
@@ -121,7 +128,7 @@
                 android:scaleX="0.7"
                 android:scaleY="0.7"
                 android:src="@drawable/simpletower"
-
+                android:tag ="simple"
                 />
 
             <TextView
@@ -140,7 +147,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="2dp"
                 android:contentDescription="@string/frameContentDescription" />
 
             <ImageButton
@@ -149,7 +156,7 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="2dp"
                 android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
                 android:onClick="spawnDragTower"
@@ -165,7 +172,6 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginHorizontal="2dp"
                 android:contentDescription="@string/frameContentDescription"
                 android:src="@drawable/frame_tower" />
 
@@ -173,7 +179,6 @@
                 android:id="@+id/selectframe2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="2dp"
                 android:src="@drawable/selectframe"
                 android:visibility="invisible"
                 android:contentDescription="@string/nothing" />
@@ -181,19 +186,19 @@
             <ImageView
                 android:layout_width="55dp"
                 android:layout_height="50dp"
-                android:layout_marginHorizontal="0.6dp"
+                android:layout_marginStart="-2dp"
                 android:contentDescription="@string/golgiTowerDesc"
                 android:scaleType="fitXY"
                 android:scaleX="1"
                 android:scaleY="1"
                 android:src="@drawable/golgitower"
-
+                android:tag ="golgi"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="30dp"
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
@@ -209,7 +214,7 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="2dp"
+                android:layout_marginStart="-1dp"
                 android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
                 android:onClick="spawnDragTower"
@@ -225,7 +230,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="2dp"
                 android:contentDescription="@string/frameContentDescription"
                 android:src="@drawable/frame_tower" />
 
@@ -233,7 +238,7 @@
                 android:id="@+id/selectframe3"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="2dp"
                 android:src="@drawable/selectframe"
                 android:visibility="invisible"
                 android:contentDescription="@string/nothing" />
@@ -241,12 +246,12 @@
             <ImageView
                 android:layout_width="55dp"
                 android:layout_height="50dp"
-                android:layout_marginHorizontal="0.6dp"
                 android:contentDescription="@string/cannonTowerDesc"
                 android:scaleType="fitXY"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                android:src="@drawable/cannontower" />
+                android:src="@drawable/cannontower"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -267,7 +272,7 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="2dp"
                 android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
                 android:onClick="spawnDragTower"
@@ -284,7 +289,6 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="2dp"
                 android:contentDescription="@string/frameContentDescription"
                 android:src="@drawable/frame_tower" />
 
@@ -292,7 +296,7 @@
                 android:id="@+id/selectframe4"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="2dp"
+                android:layout_marginStart="-0.3dp"
                 android:src="@drawable/selectframe"
                 android:visibility="invisible"
                 android:contentDescription="@string/nothing" />
@@ -300,7 +304,9 @@
             <ImageView
                 android:layout_width="55dp"
                 android:layout_height="50dp"
+                android:layout_marginStart="-3dp"
                 android:contentDescription="@string/killerTCellDescription"
+                android:tag = "anim4"
                 android:scaleType="fitXY"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
@@ -309,7 +315,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="30dp"
                 android:shadowColor="@color/black"
                 android:shadowDx="1"
@@ -325,7 +331,6 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="2dp"
                 android:background="@color/invisible"
                 android:contentDescription="@string/buy_text"
                 android:onClick="spawnDragTower"
