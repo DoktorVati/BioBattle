@@ -1,32 +1,32 @@
 package com.biobattle;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import java.util.ArrayList;
 import java.util.HashMap;
 import android.util.DisplayMetrics;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private RelativeLayout container;
     private int initialX;
     private int initialY;
     public int animationResource;
-    private boolean isDragging = false;
+    public float setAttackRange, setAttackDamage, setAttackSpeed;
     private boolean towerSelected = false;
     private ImageView selectedTower; // Store the selected tower
     private int selectedTowerResource = 0;
     private Map<ImageView, AttackRangeView> attackRangeMap = new HashMap<>();
+    private List<Tower> purchasedTowers = new ArrayList<>(); // Store purchased towers
 
     private Tower basicTower;
     private Tower tacTower;
@@ -34,16 +34,14 @@ public class MainActivity extends AppCompatActivity {
     private Tower killerTomTower;
 
     private AttackRangeView attackRangeView;
-
+    //These are the buyable towers in a list
+    private List<Tower> towers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         attackRangeView = findViewById(R.id.attackRangeCircleView);
-        attackRangeView.setVisibility(View.INVISIBLE);
-
-        container = findViewById(R.id.container);
         View backgroundView = findViewById(R.id.map);
 
         // Find and associate ImageViews with buttons
@@ -52,12 +50,19 @@ public class MainActivity extends AppCompatActivity {
         ImageView dragCannon = findViewById(R.id.dragCannon);
         ImageView dragKillerTom = findViewById(R.id.dragKillerTom);
 
-        basicTower = new Tower(dragBasic);
-        tacTower = new Tower(dragTac);
-        cannonTower = new Tower(dragCannon);
-        killerTomTower = new Tower(dragKillerTom);
+        //adds button functionality
+        basicTower = new Tower(dragBasic, 720, 100, 110);
+        tacTower = new Tower(dragTac, 280, 110, 90);
+        cannonTower = new Tower(dragCannon, 1000, 160, 80);
+        killerTomTower = new Tower(dragKillerTom, 1600, 250, 250);
 
-        // Set up the tower selection
+        //adds frames
+        towers.add(basicTower);
+        towers.add(tacTower);
+        towers.add(cannonTower);
+        towers.add(killerTomTower);
+
+        // Set up the tower button selection
         setupTowerSelection(dragBasic, R.drawable.simpletower);
         setupTowerSelection(dragTac, R.drawable.golgitower);
         setupTowerSelection(dragCannon, R.drawable.cannontower);
@@ -79,14 +84,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // This is the upgrade button
         ImageButton upgradeButton = findViewById(R.id.upgradeMenu);
         upgradeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                // Upgrade the selected tower
-                upgradeSelectedTower(selectedTower);
+            public void onClick(View v) {
+                if (selectedTower != null) {
+                    Tower tower = getTowerByImageView(selectedTower);
+                    if (tower != null) {
+                        // Pass the tower's current attack range to the upgrade method
+                        tower.upgrade(selectedTowerResource);
+                        showAttackRange(tower.getAttackRange());
+                    }
+                }
             }
         });
 
@@ -119,14 +128,17 @@ public class MainActivity extends AppCompatActivity {
         towerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for (Tower tower : towers) {
+                    if (tower.getImageView() == towerImageView) {
+                        selectedTowerResource = imageResource; // Store the selected tower resource
+                        towerSelected = true; // Flag to indicate tower selection
+                        setSelectFrameVisibility(towerImageView);
 
-                // If no tower is selected, set the selected tower resource
-                selectedTowerResource = imageResource;
-                towerSelected = true;
-
-                // Set visibility for select frames based on the clicked tower
-                setSelectFrameVisibility(towerImageView);
-                createAttackRange(towerImageView);
+                        break;
+                    }
+                }
+                hideUpgradeMenus(false);
+                 // Hide attack range and upgrade menus
             }
         });
 
@@ -134,9 +146,21 @@ public class MainActivity extends AppCompatActivity {
         towerImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                // Consume touch events for the parent tower
                 return false;
             }
         });
+    }
+
+    private void showAttackRange(float attackRange) {
+        attackRangeView.invalidate();
+        attackRangeView.setRadius(attackRange);
+        if (selectedTower != null) {
+            attackRangeView.setCenter(selectedTower.getX() + selectedTower.getWidth() / 2,
+                    selectedTower.getY() + selectedTower.getHeight() / 2);
+            attackRangeView.setVisibility(View.VISIBLE);
+        }
+
     }
     private void setSelectFrameVisibility(ImageView towerImageView)
     {
@@ -207,34 +231,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    private void createAttackRange(ImageView towerImageView) {
-        // Create a new AttackRangeView for the tower
-        AttackRangeView attackRangeView = new AttackRangeView(this);
-        attackRangeView.setVisibility(View.INVISIBLE);
-        attackRangeMap.put(towerImageView, attackRangeView);
 
-        // Show the attack range for the selected tower
-        showAttackRange(towerImageView);
-    }
-
-
-
-    private void showAttackRange(ImageView towerImageView) {
-        // Create a new AttackRangeView for the tower if it doesn't exist
-        if (!attackRangeMap.containsKey(towerImageView)) {
-            createAttackRange(towerImageView);
-        }
-
-        AttackRangeView attackRangeView = attackRangeMap.get(towerImageView);
-        if (attackRangeView != null) {
-            // Show the attack range circle for the touched tower
-            attackRangeView.setVisibility(View.VISIBLE);
-            attackRangeView.setRadius(250); // Set the radius (adjust as needed)
-            attackRangeView.invalidate(); // Force redraw
-        }
-    }
     private Map<ImageView, ImageView> towerAnimationMap = new HashMap<>();
 
+    private void createAttackRange(ImageView towerImageView) {
+        if (!attackRangeMap.containsKey(towerImageView)) {
+            AttackRangeView attackRangeView = new AttackRangeView(this);
+            attackRangeView.setVisibility(View.INVISIBLE);
+            attackRangeMap.put(towerImageView, attackRangeView);
+        }
+    }
     public void spawnDragTower(final int imageResource) {
         // Create a new ImageView with the specified image resource
         final ImageView newDragImageView = new ImageView(this);
@@ -244,22 +250,37 @@ public class MainActivity extends AppCompatActivity {
         int originalWidth = newDragImageView.getDrawable().getIntrinsicWidth();
         int originalHeight = newDragImageView.getDrawable().getIntrinsicHeight();
         float scale = 1f;
+        // Create a new Tower instance for this spawned tower
 
         // Set the scaling factor for the tower based on imageResource
         if (imageResource == R.drawable.simpletower) {
             scale = 0.85f; // Adjust the scale factor as needed
             animationResource = 0;
+            setAttackRange = 325;
+            setAttackDamage = 100;
+            setAttackSpeed = 110;
         } else if (imageResource == R.drawable.golgitower) {
             scale = 1.7f;
             animationResource = 0;
+            setAttackRange = 250;
+            setAttackDamage = 110;
+            setAttackSpeed = 90;
         } else if (imageResource == R.drawable.cannontower) {
             scale = 1f;
             animationResource = 0;
+            setAttackRange = 375;
+            setAttackDamage = 220;
+            setAttackSpeed = 75;
         } else if (imageResource == R.drawable.killertframe1) {
             scale = 1f;
             animationResource = R.drawable.killeridleanim;
+            setAttackRange = 450;
+            setAttackDamage = 300;
+            setAttackSpeed = 300;
         }
-
+        Tower tower = new Tower(newDragImageView, setAttackRange, setAttackDamage, setAttackSpeed);
+        tower.setTowerNumber(purchasedTowers.size() + 1); // Assign a unique number to the tower
+        purchasedTowers.add(tower);
         // Calculate the scaled width and height
         int scaledWidth = (int) (originalWidth * scale);
         int scaledHeight = (int) (originalHeight * scale);
@@ -320,8 +341,20 @@ public class MainActivity extends AppCompatActivity {
                             attackRangeView.setCenter(v.getX() + scaledWidth / 2, v.getY() + scaledHeight / 2);
                             attackRangeView.setVisibility(View.VISIBLE);
 
-                            //Make this set radius to attack range from tower class
-                            attackRangeView.setRadius(250);
+                            // Calculate the center of the tower
+                            float centerX = newX + (scaledWidth / 2);
+                            float centerY = newY + (scaledHeight / 2);
+                            Tower tower = getTowerByImageView((ImageView) v);
+                            if (tower != null) {
+                                tower.setAttackRange(setAttackRange);
+                                tower.setDamage(setAttackDamage);
+                                tower.setAttackSpeed(setAttackSpeed);
+                            }
+
+                            // Update the position of the AttackRangeView
+                            attackRangeView.setCenter(centerX, centerY);
+                            attackRangeView.setRadius(setAttackRange); // Apply the tower's attack range
+                            attackRangeView.setVisibility(View.VISIBLE);
                             attackRangeView.invalidate(); // Force redraw
                         }
                         break;
@@ -347,6 +380,7 @@ public class MainActivity extends AppCompatActivity {
                         animationImageView.setTag(imageResource); // Use the same tag
                         towerAnimationMap.put(newDragImageView, animationImageView);
 
+
                         // Get the drawable from the ImageView and start the animation
                         Drawable animationDrawable = animationImageView.getDrawable();
                         if (animationDrawable != null && animationDrawable instanceof AnimationDrawable) {
@@ -367,8 +401,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Store the selected tower and disable further selection
                 selectedTower = newDragImageView;
-                showAttackRange(newDragImageView);
+                //hide attack ranges and redraws
+                attackRangeView.invalidate();
                 showUpgradeMenus();
+                showAttackRange(tower.getAttackRange());
             }
         });
 
@@ -376,14 +412,11 @@ public class MainActivity extends AppCompatActivity {
         // Find the target view where you want to add the new ImageView
         View targetView = findViewById(R.id.linearLayout);
 
-        if (targetView instanceof ViewGroup)
-        {
-            // Add the new ImageView to the target view
+        if (targetView instanceof ViewGroup) {
             ((ViewGroup) targetView).addView(newDragImageView);
+            createAttackRange(newDragImageView); // Associate AttackRangeView with the tower
         }
     }
-
-    private ImageView animationImageView;
 
     private void deleteSelectedTower(ImageView towerImageView) {
         if (towerImageView != null) {
@@ -407,30 +440,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     //make towers unique
-    private Tower getTowerByImageView(ImageView imageView)
-    {
-        if (imageView == basicTower.getImageView()) {
-            return basicTower;
-        } else if (imageView == tacTower.getImageView()) {
-            return tacTower;
-        } else if (imageView == cannonTower.getImageView()) {
-            return cannonTower;
-        } else if (imageView == killerTomTower.getImageView()) {
-            return killerTomTower;
-        } else {
-            return null;
-        }
-    }
-    private void upgradeSelectedTower(ImageView selectedTower)
-    {
-        if (selectedTower != null) {
-            // upgrades the selected tower
-            Tower tower = getTowerByImageView(selectedTower);
-            if (tower != null) {
-                tower.upgrade();
+    private Tower getTowerByImageView(ImageView imageView) {
+        for (Tower tower : purchasedTowers) {
+            if (tower.getImageView() == imageView) {
+                return tower;
             }
         }
+        return null;
     }
+
+
     public void spawnEnemy(final int type) {
         int imageResource = 0;
 
