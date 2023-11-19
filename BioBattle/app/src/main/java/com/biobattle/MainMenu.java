@@ -1,79 +1,56 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:backgroundTintMode="src_atop"
-    android:backgroundTint="@color/invisible"
-    android:background="@drawable/main_menu_background">
+package com.biobattle;
 
-    <ImageView
-        android:id ="@+id/mainMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="320dp"
-        android:layout_alignParentTop="false"
-        android:contentDescription="@string/menuContentDescription"
-        android:src="@drawable/bio_battle_title" />
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.content.Intent;
+import android.media.MediaPlayer;
 
-    <ImageButton
-        android:id="@+id/playButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/mainMenu"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-100dp"
-        android:layout_marginBottom="40dp"
-        android:text="@string/play_text"
-        android:onClick="playGame"
-        android:src="@drawable/playbutton1"
-        android:background="@color/invisible"
-        android:scaleY="0.5"
-        android:scaleX="0.5"
-        android:contentDescription="@string/play_text"
-        />
+public class MainMenu extends AppCompatActivity {
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/simpletower"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="255dp" />
+    private MediaPlayer mediaPlayer;
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/golgitower"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="150dp"
-        android:layout_marginBottom="255dp"
-        android:scaleType="center"
-        android:scaleY="2"
-        android:scaleX="2"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/killeridleanim"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="130dp"
-        android:layout_marginBottom="90dp"
-        android:scaleX="1.2"
-        android:scaleType="center"
-        android:scaleY = "1.2"/>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_menu);
+        mediaPlayer = MediaPlayer.create(this, R.raw.menu); // Assuming your MP3 file is in the 'res/raw' directory
+        mediaPlayer.setLooping(true); // Set looping to true for continuous playback
+        mediaPlayer.start();
+    }
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/cannontower"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="150dp"
-        android:layout_marginBottom="105dp"
-        android:scaleType="center"
-        android:scaleY="1.2"
-        android:scaleX="1.2"/>
-    <!-- Add other menu items as needed -->
-</RelativeLayout>
+    public void playGame(View view) {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            mediaPlayer.seekTo(0); // Reset to the beginning
+        }
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+}
