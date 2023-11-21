@@ -29,6 +29,7 @@
         android:onClick="playGame"
         android:src="@drawable/playbutton1"
         android:background="@color/invisible"
+        android:scaleType="fitCenter"
         android:scaleY="0.5"
         android:scaleX="0.5"
         android:contentDescription="@string/play_text"
