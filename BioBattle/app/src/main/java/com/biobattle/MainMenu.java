@@ -17,7 +17,7 @@ public class MainMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        selectMediaPlayer = MediaPlayer.create(this, R.raw.select);
+        selectMediaPlayer = MediaPlayer.create(this, R.raw.selection);
         menuMediaPlayer = MediaPlayer.create(this, R.raw.menu);
         menuMediaPlayer.setLooping(true);
         menuMediaPlayer.start();
