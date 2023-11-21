@@ -151,6 +151,7 @@
                 android:contentDescription="@string/frameContentDescription" />
 
             <ImageButton
+                android:soundEffectsEnabled="false"
                 android:id="@+id/dragBasic"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -209,6 +210,7 @@
                 android:textStyle="bold"></TextView>
 
             <ImageButton
+                android:soundEffectsEnabled="false"
                 android:id="@+id/dragTac"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -267,6 +269,7 @@
                 android:textStyle="bold"></TextView>
 
             <ImageButton
+                android:soundEffectsEnabled="false"
                 android:id="@+id/dragCannon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -326,6 +329,7 @@
                 android:textStyle="bold"></TextView>
 
             <ImageButton
+                android:soundEffectsEnabled="false"
                 android:id="@+id/dragKillerTom"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -338,6 +342,7 @@
         </RelativeLayout>
 
         <ImageButton
+            android:soundEffectsEnabled="false"
             android:id="@+id/buyButton"
             android:layout_width="50dp"
             android:layout_height="48dp"
@@ -353,6 +358,7 @@
             android:src="@drawable/buybutton" />
 
         <ImageButton
+            android:soundEffectsEnabled="false"
             android:id="@+id/sellButton"
             android:layout_width="50dp"
             android:layout_height="48dp"
@@ -368,6 +374,7 @@
             android:src="@drawable/sellbutton" />
         <!-- start tags for upgrade menu -->
         <ImageButton
+            android:soundEffectsEnabled="false"
             android:id="@+id/upgradeMenu"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
