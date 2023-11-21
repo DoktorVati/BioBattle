@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+
 public class AttackRangeView extends View {
 
     private Paint paint;
@@ -30,16 +32,20 @@ public class AttackRangeView extends View {
     }
     private void init() {
         paint = new Paint();
-        paint.setColor(Color.DKGRAY); // Change color as needed
-        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.TRANSPARENT); // Set color as transparent initially
+        paint.setStyle(Paint.Style.FILL_AND_STROKE); // Fill and stroke
         paint.setStrokeWidth(5); // Change stroke width as needed
+        paint.setAlpha(50); // Set alpha to control transparency (0 to 255)
     }
 
     public void setCenter(float x, float y) {
         this.centerX = x;
         this.centerY = y;
     }
-
+    public void setColor(Context context, int colorResource) {
+        int color = ContextCompat.getColor(context, colorResource);
+        this.paint.setColor(color);
+    }
     public void setRadius(float radius) {
         this.radius = radius;
     }
