@@ -8,22 +8,28 @@ import android.media.MediaPlayer;
 
 public class MainMenu extends AppCompatActivity {
 
-    private MediaPlayer mediaPlayer;
+
+    private MediaPlayer selectMediaPlayer;
+    private MediaPlayer menuMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        mediaPlayer = MediaPlayer.create(this, R.raw.menu); // Assuming your MP3 file is in the 'res/raw' directory
-        mediaPlayer.setLooping(true); // Set looping to true for continuous playback
-        mediaPlayer.start();
+
+        selectMediaPlayer = MediaPlayer.create(this, R.raw.select);
+        menuMediaPlayer = MediaPlayer.create(this, R.raw.menu);
+        menuMediaPlayer.setLooping(true);
+        menuMediaPlayer.start();
     }
 
     public void playGame(View view) {
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-            mediaPlayer.seekTo(0); // Reset to the beginning
-        }
+        selectMediaPlayer.start();
+        menuMediaPlayer.pause();
+        menuMediaPlayer.seekTo(0);
+        selectMediaPlayer.stop();
+
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -31,26 +37,28 @@ public class MainMenu extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
+        if (menuMediaPlayer != null && menuMediaPlayer.isPlaying()) {
+            menuMediaPlayer.pause();
+            selectMediaPlayer.pause();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
+        if (menuMediaPlayer != null && !menuMediaPlayer.isPlaying()) {
+            menuMediaPlayer.start();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = null;
+        if (menuMediaPlayer != null) {
+            menuMediaPlayer.stop();
+            menuMediaPlayer.release();
+            selectMediaPlayer.release();
+            menuMediaPlayer = null;
         }
     }
 }
