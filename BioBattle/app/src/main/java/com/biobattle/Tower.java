@@ -1,5 +1,7 @@
 package com.biobattle;
 
+import android.util.Log;
+
 import android.widget.ImageView;
 
 public class Tower {
