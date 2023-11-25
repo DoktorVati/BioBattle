@@ -33,6 +33,7 @@ public class Tower {
         attackRange = (newAttackRange *= upgradePercentage);
         attackDamage = (newAttackDamage *= upgradePercentage);
         attackSpeed = (newAttackSpeed *= upgradePercentage);
+        totalUpgrades ++;
     }
     public ImageView getImageView()
     {
@@ -62,10 +63,47 @@ public class Tower {
     {
         this.attackSpeed = attackSpeed;
     }
-
-    //optional in case we want to have a limit on upgrades, currently Infinite
-    public int getTotalUpgrades()
+    public float getTotalUpgrades()
     {
-        return totalUpgrades;
+        if (imageView == null) {
+            return totalUpgrades; // Return default value for towers without an image view
+        } else if (imageView.getTag().equals(R.drawable.simpletower)) {
+            return totalUpgrades * 1;
+        } else if (imageView.getTag().equals(R.drawable.golgitower)) {
+            return totalUpgrades * 1.5f;
+        } else if (imageView.getTag().equals(R.drawable.cannontower)) {
+            return totalUpgrades * 2.25f;
+        } else if (imageView.getTag().equals(R.drawable.killertframe1)) {
+            return totalUpgrades * 3;
+        } else {
+            return totalUpgrades; // Default multiplier for unrecognized towers
+        }
     }
+    public boolean hasReachedMaxUpgrades(boolean upgradeMenu) {
+        int maxUpgrades = 3; // Maximum upgrades allowed
+        if (imageView == null) {
+            return totalUpgrades >= maxUpgrades; // Return true if upgrades reach the limit for towers without an image view
+        } else if (imageView.getTag().equals(R.drawable.simpletower)) {
+            if(upgradeMenu)
+                return totalUpgrades >= 5;
+            return totalUpgrades >= 6;
+        } else if (imageView.getTag().equals(R.drawable.golgitower)) {
+            if(upgradeMenu)
+                return totalUpgrades >= 4;
+            return totalUpgrades >= 5;
+        } else if (imageView.getTag().equals(R.drawable.cannontower)) {
+            if(upgradeMenu)
+                return totalUpgrades >= 3;
+            return totalUpgrades >= 4;
+        } else if (imageView.getTag().equals(R.drawable.killertframe1)) {
+            if(upgradeMenu)
+                return totalUpgrades >= 2;
+            return totalUpgrades >= 3;
+        }
+        else
+        {
+            return totalUpgrades >= 3;
+        }
+    }
+
 }
