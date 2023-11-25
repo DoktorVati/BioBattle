@@ -10,14 +10,13 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import android.util.DisplayMetrics;
+import android.widget.TextView;
 import java.util.List;
 import java.util.Map;
 
@@ -73,8 +72,15 @@ public class MainActivity extends AppCompatActivity {
         towers.add(cannonTower);
         towers.add(killerTomTower);
 
+        backgroundMediaPlayer = MediaPlayer.create(this, R.raw.main);
+        backgroundMediaPlayer.setLooping(true);
+        backgroundMediaPlayer.start();
+        backgroundMediaPlayer.setVolume(0.5f,0.5f);
         selectMediaPlayer = MediaPlayer.create(this, R.raw.selection);
         selectMediaPlayer.setVolume(0.2f, 0.2f);
+        buyMediaPlayer = MediaPlayer.create(this, R.raw.place);
+        sellMediaPlayer = MediaPlayer.create(this, R.raw.sell);
+        upgradeMediaPlayer = MediaPlayer.create(this, R.raw.upgrade);
         // Set up the tower button selection
         setupTowerSelection(dragBasic, R.drawable.simpletower);
         setupTowerSelection(dragTac, R.drawable.golgitower);
@@ -87,13 +93,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (towerSelected) {
-                    //buy sound
-                    //buyMediaPlayer.start();
                     // Buy the tower only when the "Buy" button is clicked
                     spawnDragTower(selectedTowerResource, 0, 0, false);
                     // Reset tower selection
                     towerSelected = false;
-                    //selectedTowerResource = 0;
+                    buyMediaPlayer.start();
                     hideUpgradeMenus(true);
                 }
             }
@@ -106,10 +110,20 @@ public class MainActivity extends AppCompatActivity {
                 if (selectedTower != null) {
                     Tower tower = getTowerByImageView(selectedTower);
                     if (tower != null) {
+                        if(tower.hasReachedMaxUpgrades(true) == true) {
+                            hideUpgradeMenus(false);
+                        }
                         // Pass the tower's current attack range to the upgrade method
                         tower.upgrade(selectedTowerResource);
+                        TextView upgradeMenuTextView = findViewById(R.id.UpgradeMenu);
+                        if (upgradeMenuTextView != null) {
+                            float upgrades = tower.getTotalUpgrades();
+                            int upgradeCost = calculateUpgradeCost(upgrades);
+                            upgradeMenuTextView.setText(String.valueOf(upgradeCost));
+                        }
                         //upgrade sound
-                        //upgradeMediaPlayer.play();
+                        upgradeMediaPlayer.start();
+                        upgradeMediaPlayer.seekTo(0);
                         showAttackRange(tower.getAttackRange());
                     }
                 }
@@ -121,11 +135,11 @@ public class MainActivity extends AppCompatActivity {
         sellButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //sell sound
-                //sellMediaPlayer.start();
                 // Delete the selected tower if it's not null
                 if (selectedTower != null)
                 {
+                    //sell sound
+                    sellMediaPlayer.start();
                     hideUpgradeMenus(true);
                     deleteSelectedTower(selectedTower);
                 }
@@ -154,9 +168,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupTowerSelection(final ImageView towerImageView, final int imageResource) {
         towerImageView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                selectMediaPlayer.start();
+                //selectMediaPlayer.start();
                 for (Tower tower : towers) {
                     if (tower.getImageView() == towerImageView) {
                         selectedTowerResource = imageResource; // Store the selected tower resource
@@ -177,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // Consume touch events for the parent tower
+                selectMediaPlayer.start();
                 return false;
             }
         });
@@ -310,7 +326,7 @@ public float towerRadius = 80f;
             setAttackRange = 325;
             setAttackDamage = 100;
             setAttackSpeed = 110;
-            towerRadius = 170;
+            towerRadius = 100;
         } else if (imageResource == R.drawable.golgitower) {
             scale = 1.7f;
             animationResource = 0;
@@ -331,7 +347,7 @@ public float towerRadius = 80f;
             setAttackRange = 450;
             setAttackDamage = 300;
             setAttackSpeed = 300;
-            towerRadius = 100;
+            towerRadius = 170;
         }
         Tower tower = new Tower(newDragImageView, setAttackRange, setAttackDamage, setAttackSpeed);
         tower.setTowerNumber(purchasedTowers.size() + 1); // Assign a unique number to the tower
@@ -367,7 +383,40 @@ public float towerRadius = 80f;
 
             @Override
             public void onClick(View v) {
+                float scale = 1f;
+
+                if (imageResource == R.drawable.simpletower) {
+                    scale = 0.85f; // Adjust the scale factor as needed
+                    animationResource = 0;
+                    setAttackRange = 325;
+                    setAttackDamage = 100;
+                    setAttackSpeed = 110;
+                    towerRadius = 100;
+                } else if (imageResource == R.drawable.golgitower) {
+                    scale = 1.7f;
+                    animationResource = 0;
+                    setAttackRange = 250;
+                    setAttackDamage = 110;
+                    setAttackSpeed = 90;
+                    towerRadius = 170;
+                } else if (imageResource == R.drawable.cannontower) {
+                    scale = 1f;
+                    animationResource = 0;
+                    setAttackRange = 375;
+                    setAttackDamage = 220;
+                    setAttackSpeed = 75;
+                    towerRadius = 100;
+                } else if (imageResource == R.drawable.killertframe1) {
+                    scale = 1f;
+                    animationResource = R.drawable.killeridleanim;
+                    setAttackRange = 450;
+                    setAttackDamage = 300;
+                    setAttackSpeed = 300;
+                    towerRadius = 170;
+                }
                 if (!animationRun && isMapPress) {
+                    selectMediaPlayer.start();
+
                     // Create the animation ImageView
                     ImageView animationImageView = new ImageView(v.getContext());
 
@@ -398,16 +447,38 @@ public float towerRadius = 80f;
                     selectedTower = newDragImageView;
                     // Hide attack ranges and redraws
                     attackRangeView.invalidate();
-                    showUpgradeMenus();
+                    if(tower.hasReachedMaxUpgrades(false) == false) {
+                        showUpgradeMenus();
+                        TextView upgradeMenuTextView = findViewById(R.id.UpgradeMenu);
+                        if (upgradeMenuTextView != null) {
+                            float upgrades = tower.getTotalUpgrades();
+                            int upgradeCost = calculateUpgradeCost(upgrades); // Calculate upgrade cost based on tower and upgrade count
+                            upgradeMenuTextView.setText(String.valueOf(upgradeCost));
+                        }
+                    }
                     showAttackRange(tower.getAttackRange());
                     // Set the flag to true so that the animation runs only once
                     animationRun = true;
                 } else {
+
+                    //play tower selection noise
+                    selectMediaPlayer.start();
                     // Store the selected tower and disable further selection
                     selectedTower = newDragImageView;
                     // Hide attack ranges and redraws
                     attackRangeView.invalidate();
-                    showUpgradeMenus();
+                    if(tower.hasReachedMaxUpgrades(false) == false) {
+                        showUpgradeMenus();
+                        TextView upgradeMenuTextView = findViewById(R.id.UpgradeMenu);
+                        if (upgradeMenuTextView != null) {
+                            float upgrades = tower.getTotalUpgrades();
+                            int upgradeCost = calculateUpgradeCost(upgrades); // Calculate upgrade cost based on tower and upgrade count
+                            upgradeMenuTextView.setText(String.valueOf(upgradeCost));
+                        }
+                    }
+                    else {
+                        hideUpgradeMenus(false);
+                    }
                     showAttackRange(tower.getAttackRange());
                 }
             }
@@ -418,6 +489,8 @@ public float towerRadius = 80f;
             // For map press, place the tower at the touched location
             newDragImageView.setX(touchX - scaledWidth / 2);
             newDragImageView.setY(touchY - scaledHeight / 2);
+            buyMediaPlayer.start();
+            addTower(newDragImageView.getX() + scaledWidth / 2, newDragImageView.getY() + scaledHeight / 2);
         }
         else {
             newDragImageView.setX(initialX);
@@ -491,6 +564,7 @@ public float towerRadius = 80f;
                             break;
                         case MotionEvent.ACTION_UP:
                             if (canPlace) {
+                                buyMediaPlayer.start();
                                 isBeingDragged = false;
                                 attackRangeView.setVisibility(View.INVISIBLE);
                                 // Create a new ImageView for the animation
@@ -511,7 +585,7 @@ public float towerRadius = 80f;
                                 newDragImageView.setTag(imageResource); // Use a unique identifier as the tag
                                 animationImageView.setTag(imageResource); // Use the same tag
                                 towerAnimationMap.put(newDragImageView, animationImageView);
-                                addTower(v.getX() + scaledWidth / 2, v.getY() + scaledHeight / 2); // Add tower position here
+                                addTower(newDragImageView.getX() + scaledWidth / 2, newDragImageView.getY() + scaledHeight / 2);
 
                                 // Get the drawable from the ImageView and start the animation
                                 Drawable animationDrawable = animationImageView.getDrawable();
@@ -531,11 +605,37 @@ public float towerRadius = 80f;
         }
 
     }
+    private int calculateUpgradeCost(float upgrades) {
+        int baseUpgradeCost = 125; // Initial upgrade cost
+        int costMultiplier = 2; // Cost multiplier for each upgrade
+        // Calculate upgrade cost based on upgrades
+        int upgradeCost = baseUpgradeCost * (int) Math.pow(costMultiplier, upgrades);
+        return upgradeCost;
+    }
+
+
     public List<Pair<Float, Float>> towerPositions = new ArrayList<>();
+    private void delTower(float x, float y) {
+        Pair<Float, Float> towerToRemove = null;
+        float tolerance = 0.001f; // Define a tolerance level for float comparisons
+
+        for (Pair<Float, Float> position : towerPositions) {
+            if (Math.abs(position.first - x) < tolerance && Math.abs(position.second - y) < tolerance) {
+                towerToRemove = position;
+                break;
+            }
+        }
+
+        if (towerToRemove != null) {
+            towerPositions.remove(towerToRemove);
+        }
+    }
 
     private void addTower(float x, float y) {
-        towerPositions.add(new Pair<>(x, y));
+        Pair<Float, Float> towerPosition = new Pair<>(x, y);
+        towerPositions.add(towerPosition);
     }
+
 
     public boolean canPlaceTower(float x, float y, float radius) {
         if (towerPositions.isEmpty()) {
@@ -558,6 +658,9 @@ public float towerRadius = 80f;
 
     public void deleteSelectedTower(ImageView towerImageView) {
         if (towerImageView != null) {
+            float x = towerImageView.getX(); // Get X position
+            float y = towerImageView.getY(); // Get Y position
+
             ViewGroup parentView = (ViewGroup) towerImageView.getParent();
             if (parentView != null) {
                 // Check if the tower has an associated animation
@@ -571,9 +674,13 @@ public float towerRadius = 80f;
                 parentView.removeView(towerImageView);
                 // Reset the selected tower
                 selectedTower = null;
+
+                // Remove tower from positions list
+                delTower(towerImageView.getX() + towerImageView.getWidth() / 2, towerImageView.getY() + towerImageView.getHeight() / 2);
             }
         }
     }
+
 
 
 
@@ -587,7 +694,33 @@ public float towerRadius = 80f;
         return null;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (backgroundMediaPlayer != null && backgroundMediaPlayer.isPlaying()) {
+            backgroundMediaPlayer.pause();
+            backgroundMediaPlayer.pause();
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (backgroundMediaPlayer != null && !backgroundMediaPlayer.isPlaying()) {
+            backgroundMediaPlayer.start();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (backgroundMediaPlayer != null) {
+            backgroundMediaPlayer.stop();
+            backgroundMediaPlayer.release();
+            selectMediaPlayer.release();
+            backgroundMediaPlayer = null;
+        }
+    }
     public void spawnEnemy(final int type) {
         int imageResource = 0;
 
