@@ -19,6 +19,6 @@
     <color name="orange">#FFA600</color>
     <color name="brightRed">#FF0000</color>
     <color name="invisible">#00FFFFFF</color>
-    <color name="transRed">#3FF00000</color>
+    <color name="transRed">#5FF00000</color>
     <color name="transGrey">#34444444</color>
 </resources>
