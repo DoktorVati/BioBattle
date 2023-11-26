@@ -45,4 +45,15 @@
     <string name="settings_saved">Settings saved</string>
     <string name="confirm_quit">Are you sure you want to quit the game?</string>
     <string name ="nothing">.</string>
+    <string name="placement">Select a tower from the store and the position you want to place it. Tap Next Wave to start the first wave.</string>
+    <string name="level1">You defeated the first wave, the next one wont be so easy.</string>
+    <string name="level2">You\'re getting the hang of this.</string>
+    <string name="level3">The infection gets stronger each wave, be careful.</string>
+    <string name="level4">Each cell type has a specific amount of upgrades that can be applied.</string>
+    <string name="level9">The next wave contains a boss, prepare accordingly.</string>
+    <string name="level10">Congrats, make sure to keep your lives from reaching 0!</string>
+    <string name="level25">Congrats, youv\'e made it a quarter of the way to 100!</string>
+    <string name="level50">Congrats, youv\'e made it halfway to 100!</string>
+    <string name="level100">Wave 100 did not stand a chance against you!</string>
+    <string name="level115">Okay now you\'re just showing off!</string>
 </resources>
