@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
             View child = upgradeContainer.getChildAt(i);
             if (child.getTag() != null && child.getTag().equals("UpgradeMenu")) {
                 // Set visibility to GONE for UpgradeMenu assets
-                child.setVisibility(View.GONE);
+                child.setVisibility(View.INVISIBLE);
             }
         }
     }
