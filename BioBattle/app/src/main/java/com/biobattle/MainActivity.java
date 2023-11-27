@@ -332,21 +332,21 @@ public float towerRadius = 80f;
         // Set the scaling factor for the tower based on imageResource
         if (imageResource == R.drawable.simpletower) {
             scale = 0.85f; // Adjust the scale factor as needed
-            animationResource = 0;
+            animationResource = R.drawable.simpleidleanim;
             setAttackRange = 325;
             setAttackDamage = 100;
             setAttackSpeed = 110;
             towerRadius = 100;
         } else if (imageResource == R.drawable.golgitower) {
             scale = 1.7f;
-            animationResource = 0;
+            animationResource = R.drawable.golgiidleanim;
             setAttackRange = 250;
             setAttackDamage = 110;
             setAttackSpeed = 90;
             towerRadius = 170;
         } else if (imageResource == R.drawable.cannontower) {
             scale = 1f;
-            animationResource = 0;
+            animationResource = R.drawable.cannonidleanim;
             setAttackRange = 375;
             setAttackDamage = 220;
             setAttackSpeed = 75;
@@ -397,21 +397,21 @@ public float towerRadius = 80f;
 
                 if (imageResource == R.drawable.simpletower) {
                     scale = 0.85f; // Adjust the scale factor as needed
-                    animationResource = 0;
+                    animationResource = R.drawable.simpleidleanim;
                     setAttackRange = 325;
                     setAttackDamage = 100;
                     setAttackSpeed = 110;
                     towerRadius = 100;
                 } else if (imageResource == R.drawable.golgitower) {
                     scale = 1.7f;
-                    animationResource = 0;
+                    animationResource = R.drawable.golgiidleanim;
                     setAttackRange = 250;
                     setAttackDamage = 110;
                     setAttackSpeed = 90;
                     towerRadius = 170;
                 } else if (imageResource == R.drawable.cannontower) {
                     scale = 1f;
-                    animationResource = 0;
+                    animationResource = R.drawable.cannonidleanim;
                     setAttackRange = 375;
                     setAttackDamage = 220;
                     setAttackSpeed = 75;
