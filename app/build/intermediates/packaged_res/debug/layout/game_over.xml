@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Game Over Image -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/game_over"
+        android:scaleType="centerCrop" />
+
+    <!-- Horizontal LinearLayout to contain buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal">
+
+        <!-- Play Again ImageButton -->
+        <ImageButton
+            android:id="@+id/playAgainButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/play_again"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Space between buttons -->
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <!-- Quit ImageButton -->
+        <ImageButton
+            android:id="@+id/quitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/quit_button"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="32dp" />
+
+    </LinearLayout>
+</RelativeLayout>

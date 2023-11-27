@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" android:tag = "anim4">
+    <item android:drawable="@drawable/killertframe1" android:duration="10"/>
+    <item android:drawable="@drawable/killertframe2" android:duration="10"/>
+    <item android:drawable="@drawable/killertframe3" android:duration="10"/>
+    <item android:drawable="@drawable/killertframe4" android:duration="10"/>
+    <item android:drawable="@drawable/killertframe5" android:duration="10"/>
+    <item android:drawable="@drawable/killertframe6" android:duration="10"/>
+    <item android:drawable="@drawable/killertframe7" android:duration="10"/>
+</animation-list>
+
