@@ -56,7 +56,7 @@
     <string name="next_wave">Next Wave</string>
     <string name="nothing">.</string>
     <string name="pause">Pause</string>
-    <string name="placement">Select a tower from the store and the position you want to place it. Tap Next Wave to start the first wave.</string>
+    <string name="placement">Select a tower from the store and the position you want to place it. Tap Start Wave to start the first wave.</string>
     <string name="playAgain">Play Again?</string>
     <string name="play_text">Play Now</string>
     <string name="restart">Restart</string>
