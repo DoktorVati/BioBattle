@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" android:tag = "anim1">
+    <item android:drawable="@drawable/simpleframe1" android:duration="300"/>
+    <item android:drawable="@drawable/simpleframe2" android:duration="200"/>
+    <item android:drawable="@drawable/simpleframe3" android:duration="200"/>
+    <item android:drawable="@drawable/simpleframe4" android:duration="100"/>
+    <item android:drawable="@drawable/simpleframe3" android:duration="200"/>
+    <item android:drawable="@drawable/simpleframe2" android:duration="200"/>
+    <item android:drawable="@drawable/simpleframe1" android:duration="300"/>
+</animation-list>
+
