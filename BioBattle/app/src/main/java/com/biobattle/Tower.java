@@ -1,8 +1,12 @@
 package com.biobattle;
 
+import android.os.Handler;
 import android.util.Log;
 
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import java.util.List;
 
 public class Tower {
     private int towerNumber;
@@ -13,13 +17,31 @@ public class Tower {
     private float upgradePercentage = 1.15f;
     private int totalUpgrades = 0;
     private AttackRangeView attackRangeView;
+    private boolean isOnCooldown = false;
+    public MainActivity mainActivity;
+    private TowerScript towerScript;
+
+
     private float newAttackRange, newAttackDamage, newAttackSpeed;
-    public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed)
+    public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed, MainActivity mainActivity)
     {
         this.imageView = imageView;
         this.attackRange = attackRange;
+        this.newAttackRange = attackRange;
         this.attackDamage = attackDamage;
         this.attackSpeed = attackSpeed;
+        this.mainActivity = mainActivity;
+        this.dontrun = false;
+    }
+    public void setTowerScript(TowerScript script) {
+        this.towerScript = script;
+    }
+
+    public void cleanupScriptIfImageViewDeleted() {
+
+            towerScript.stop(); // Assuming there's a method to stop the script execution
+            towerScript = null; // Clear the reference to the script
+
     }
     public void setTowerNumber(int towerNumber) {
         this.towerNumber = towerNumber;
@@ -32,7 +54,7 @@ public class Tower {
 
         attackRange = (newAttackRange *= upgradePercentage);
         attackDamage = (newAttackDamage *= upgradePercentage);
-        attackSpeed = (newAttackSpeed *= upgradePercentage);
+        attackSpeed = (newAttackSpeed /= upgradePercentage);
         totalUpgrades ++;
     }
     public ImageView getImageView()
@@ -105,5 +127,67 @@ public class Tower {
             return totalUpgrades >= 3;
         }
     }
+    public boolean dontrun;
+    public void checkEnemyInRange(List<Enemy> enemiesInWave) {
+        if (towerScript != null && towerScript.isRunning() == false) {
+            dontrun = true;
+        }
+        if (!isOnCooldown && dontrun == false){
+            for (Enemy enemy : enemiesInWave) {
+                float enemyX = enemy.getX();
+                float enemyY = enemy.getY();
+
+                float towerX = imageView.getX() + imageView.getWidth() / 2;
+                float towerY = imageView.getY() + imageView.getHeight() / 2;
+                float distance = calculateDistance(towerX, towerY, enemyX, enemyY);
+
+                if (distance <= this.newAttackRange) {
+                    startCooldown(); // Start the cooldown before deleting the enemy
+                    deleteEnemy(enemy); // Delete the enemy within range
+                    break; // Exit the loop when an enemy is found within range
+                }
+            }
+        }
+
+    }
+
+
+    private float calculateDistance(float x1, float y1, float x2, float y2) {
+        return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    private void deleteEnemy(Enemy enemy) {
+        ImageView enemyImageView = enemy.getImageView();
+        FrameLayout containerLayout = (FrameLayout) enemyImageView.getParent();
+        Log.d("EnemyAttempt", "Attempt");
+
+        if (mainActivity == null) {
+            Log.d("WaveNull", "Wave object is null");
+            return; // Exit the method if wave is null
+        }
+
+        if (containerLayout != null && towerScript != null) {
+            containerLayout.removeView(enemyImageView);
+            Log.d("EnemyDestroyed", "WeGotEm");
+            mainActivity.deleteEnemyView(enemy);
+        }
+    }
+
+    private void startCooldown() {
+        if (!isOnCooldown) {
+            isOnCooldown = true;
+            // Cooldown period
+            final int cooldownDuration = (int) (attackSpeed / 10); // in milliseconds
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("CooldownFinished", "cooldowndone");
+                    isOnCooldown = false; // Cooldown finished, tower can attack again
+                }
+            }, cooldownDuration);
+        }
+    }
+
 
 }
+
