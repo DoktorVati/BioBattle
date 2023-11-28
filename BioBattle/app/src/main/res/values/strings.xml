@@ -56,4 +56,6 @@
     <string name="level50">Congrats, youv\'e made it halfway to 100!</string>
     <string name="level100">Wave 100 did not stand a chance against you!</string>
     <string name="level115">Okay now you\'re just showing off!</string>
+    <string name="startWave">Start Wave</string>
+    <string name="playAgain">Play Again?</string>
 </resources>
