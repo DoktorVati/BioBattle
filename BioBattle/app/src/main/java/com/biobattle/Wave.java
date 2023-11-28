@@ -64,7 +64,7 @@ public class Wave {
 
         containerLayout.addView(newEnemyImageView);
 
-        enemy.startPath(containerLayout.getWidth(), containerLayout.getHeight());
+        enemy.startPath(newEnemyImageView, containerLayout.getWidth(), containerLayout.getHeight());
     }
 
     // Getter for accessing the list of enemies in the wave
