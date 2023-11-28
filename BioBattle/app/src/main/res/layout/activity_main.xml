@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/rootLayout"
+
     tools:context=".MainActivity">
 
     <FrameLayout
@@ -74,7 +76,16 @@
         </RelativeLayout>
 
     </FrameLayout>
-
+    <FrameLayout
+        android:id="@+id/enemyContainerLayout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- This FrameLayout will serve as the container for displaying enemies -->
+    </FrameLayout>
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="107dp"
@@ -521,7 +532,21 @@
             android:textColor="@color/yellow"
             android:textStyle="bold"
             android:visibility="invisible" />
-
+        <ImageButton
+            android:id="@+id/startWave"
+            android:layout_width="107dp"
+            android:layout_height="50dp"
+            android:layout_columnSpan="2"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/invisible"
+            android:contentDescription="@string/startWave"
+            android:onClick="startWave"
+            android:scaleType="fitXY"
+            android:scaleX="0.96"
+            android:scaleY="1"
+            android:soundEffectsEnabled="false"
+            android:src="@drawable/start_wave" />
     </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
