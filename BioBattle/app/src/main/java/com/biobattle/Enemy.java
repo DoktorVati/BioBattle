@@ -33,9 +33,11 @@ public class Enemy {
     public float getY() {
         return currentY;
     }
-    public void startPath(float width, float height) {
+    public void startPath(ImageView enemyImageView, float width, float height) {
+        float offset = (float) (height * 0.08);
+        enemyImageView.setY(offset);
         AnimatorSet path = new AnimatorSet();
-        ObjectAnimator first = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) 0, (float) (width * 0.1f));
+        ObjectAnimator first = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) 0 - offset, (float) (width * 0.1f) - offset);
         first.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -43,63 +45,63 @@ public class Enemy {
             }
         });
 
-        ObjectAnimator second = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, (float) (height * 0.16), (float) (height * 0.845));
+        ObjectAnimator second = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, (float) (height * 0.16) - offset, (float) (height * 0.845) - offset);
         second.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 currentY = enemyImageView.getY(); // Update Y-coordinate during animation
             }
         });
-        ObjectAnimator third = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) (width * 0.14), (float) (width * 0.32));
+        ObjectAnimator third = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) (width * 0.14) - offset, (float) (width * 0.32) - offset);
         second.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 currentY = enemyImageView.getX();
             }
         });
-        ObjectAnimator fourth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, (float) (height * 0.845), (float) (height * 0.175));
+        ObjectAnimator fourth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, (float) (height * 0.845) - offset, (float) (height * 0.175) - offset);
         second.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 currentY = enemyImageView.getY(); // Update Y-coordinate during animation
             }
         });
-        ObjectAnimator fifth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) (width * 0.32), (float) (width * 0.71));
+        ObjectAnimator fifth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) (width * 0.32) - offset, (float) (width * 0.71) - offset);
         second.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 currentY = enemyImageView.getY(); // Update Y-coordinate during animation
             }
         });
-        ObjectAnimator sixth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, (float) (height * 0.175), (float) (height * 0.505));
+        ObjectAnimator sixth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, (float) (height * 0.175) - offset, (float) (height * 0.505) - offset);
         second.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 currentY = enemyImageView.getY(); // Update Y-coordinate during animation
             }
         });
-        ObjectAnimator seventh = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) (width * 0.71), (float) (width * 0.49));
+        ObjectAnimator seventh = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) (width * 0.71) - offset, (float) (width * 0.49) - offset);
         second.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 currentY = enemyImageView.getY(); // Update Y-coordinate during animation
             }
         });
-        ObjectAnimator eighth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, (float) (height * 0.505), (float) (height * 0.84));
+        ObjectAnimator eighth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, (float) (height * 0.505) - offset, (float) (height * 0.84) - offset);
         second.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 currentY = enemyImageView.getY(); // Update Y-coordinate during animation
             }
         });
-        ObjectAnimator ninth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) (width * 0.49), (float) (width * 0.708));
+        ObjectAnimator ninth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) (width * 0.49) - offset, (float) (width * 0.708) - offset);
         second.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 currentY = enemyImageView.getY(); // Update Y-coordinate during animation
             }
         });
-        ObjectAnimator tenth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, (float) (height * 0.84), (float) (height));
+        ObjectAnimator tenth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, (float) (height * 0.84) - offset, (float) (height) - offset);
         second.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
