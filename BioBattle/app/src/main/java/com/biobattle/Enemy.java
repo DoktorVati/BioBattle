@@ -37,7 +37,7 @@ public class Enemy {
         float offset = (float) (height * 0.08);
         enemyImageView.setY(offset);
         AnimatorSet path = new AnimatorSet();
-        ObjectAnimator first = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) 0 - offset, (float) (width * 0.1f) - offset);
+        ObjectAnimator first = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, (float) 0 - offset, (float) (width * 0.14f) - offset);
         first.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
