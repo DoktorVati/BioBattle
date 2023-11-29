@@ -23,7 +23,7 @@ public class Tower {
 
 
     private float newAttackRange, newAttackDamage, newAttackSpeed;
-    public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed, MainActivity mainActivity)
+    public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed, MainActivity mainActivity, float upgradePercentages)
     {
         this.imageView = imageView;
         this.attackRange = attackRange;
@@ -32,6 +32,7 @@ public class Tower {
         this.attackSpeed = attackSpeed;
         this.mainActivity = mainActivity;
         this.dontrun = false;
+        this.upgradePercentage = upgradePercentages;
     }
     public void setTowerScript(TowerScript script) {
         this.towerScript = script;
@@ -52,7 +53,7 @@ public class Tower {
         newAttackDamage = attackDamage * upgradePercentage;
         newAttackSpeed = attackSpeed * upgradePercentage;
 
-        attackRange = (newAttackRange *= upgradePercentage);
+        attackRange = (newAttackRange += upgradePercentage);
         attackDamage = (newAttackDamage *= upgradePercentage);
         attackSpeed = (newAttackSpeed /= upgradePercentage);
         totalUpgrades ++;
@@ -132,29 +133,38 @@ public class Tower {
         if (towerScript != null && towerScript.isRunning() == false) {
             dontrun = true;
         }
-        if (!isOnCooldown && dontrun == false){
+        if (!isOnCooldown && dontrun == false) {
+            Enemy targetEnemy = null;
+            float closestDistance = Float.MAX_VALUE;
             for (Enemy enemy : enemiesInWave) {
-                float enemyX = enemy.getX();
-                float enemyY = enemy.getY();
+                float enemyX = enemy.getCenterX();
+                float enemyY = enemy.getCenterY();
 
                 float towerX = imageView.getX() + imageView.getWidth() / 2;
                 float towerY = imageView.getY() + imageView.getHeight() / 2;
+
                 float distance = calculateDistance(towerX, towerY, enemyX, enemyY);
 
                 if (distance <= this.newAttackRange) {
-                    startCooldown(); // Start the cooldown before deleting the enemy
-                    deleteEnemy(enemy); // Delete the enemy within range
-                    break; // Exit the loop when an enemy is found within range
+                    // Check if the enemy is closer than the current target
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        targetEnemy = enemy;
+                    }
                 }
             }
+            if (targetEnemy != null) {
+                startCooldown(); // Start the cooldown before deleting the enemy
+                deleteEnemy(targetEnemy); // Delete the closest enemy within range
+            }
         }
-
     }
 
 
     private float calculateDistance(float x1, float y1, float x2, float y2) {
         return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
+
 
     private void deleteEnemy(Enemy enemy) {
         ImageView enemyImageView = enemy.getImageView();
@@ -167,6 +177,7 @@ public class Tower {
         }
 
         if (containerLayout != null && towerScript != null) {
+            //add to here so that the tower shoots something at the targeted enemy
             containerLayout.removeView(enemyImageView);
             Log.d("EnemyDestroyed", "WeGotEm");
             mainActivity.deleteEnemyView(enemy);
