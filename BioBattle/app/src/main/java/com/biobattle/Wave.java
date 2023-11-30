@@ -35,15 +35,28 @@ public class Wave {
     // Method to spawn a single enemy of the specified type
     private void spawnEnemy(int type) {
         int imageResource;
+        int animationResource = R.drawable.enemybanim;
+        int enemyHealth = 0;
+        int enemySpeed = 0;
         // Determine the image resource based on enemy type
         if (type == 1) {
             imageResource = R.drawable.enemyb;
+            animationResource = R.drawable.enemybanim;
+            enemyHealth = 2;
+            enemySpeed = 3500;
         } else if (type == 2) {
             imageResource = R.drawable.enemyy;
+            animationResource = R.drawable.enemyyanim;
+            enemyHealth = 5;
+            enemySpeed = 1500;
         } else if (type == 3) {
             imageResource = R.drawable.enemyr;
+            animationResource = R.drawable.enemyranim;
+            enemyHealth = 10;
+            enemySpeed = 6000;
         } else {
             imageResource = R.drawable.enemyb; // Default to a type if unspecified
+            animationResource = R.drawable.enemybanim;
         }
 
         ImageView newEnemyImageView = new ImageView(context);
@@ -59,12 +72,13 @@ public class Wave {
         newEnemyImageView.setLayoutParams(params);
 
         // Create an Enemy object and add it to the wave
-        Enemy enemy = new Enemy(newEnemyImageView);
+        Enemy enemy = new Enemy(newEnemyImageView, enemyHealth, enemySpeed);
         enemiesInWave.add(enemy);
 
         containerLayout.addView(newEnemyImageView);
 
-        enemy.startPath(newEnemyImageView, containerLayout.getWidth(), containerLayout.getHeight());
+        enemy.startPath(newEnemyImageView, containerLayout.getWidth(), containerLayout.getHeight(), animationResource);
+
     }
 
     // Getter for accessing the list of enemies in the wave
