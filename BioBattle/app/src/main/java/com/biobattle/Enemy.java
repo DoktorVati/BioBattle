@@ -1,13 +1,13 @@
 package com.biobattle;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.graphics.drawable.AnimationDrawable;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 public class Enemy {
@@ -20,6 +20,17 @@ public class Enemy {
     private float y;
     private int width;
     private int height;
+    private MainActivity mainActivity;
+
+    private Tower tower;
+
+    public void setMainActivity(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
+
+    //public void setTower(Tower tower) {
+        //this.tower = tower;
+    //}
     public Enemy(ImageView imageView, int enemyHealth, int enemySpeed) {
         this.speed = enemySpeed;
         this.health = enemyHealth;
@@ -27,6 +38,7 @@ public class Enemy {
         // Set initial positions based on imageView's current position
         this.currentX = imageView.getX();
         this.currentY = imageView.getY();
+
     }
 
     public ImageView getImageView()
@@ -101,11 +113,38 @@ public class Enemy {
             currentY = enemyImageView.getY();
         });
 
-        ObjectAnimator tenth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.84f * height - offset, height - offset);
+        ObjectAnimator tenth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.84f * height - offset, height - offset - 1);
         tenth.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
         });
+        tenth.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                //FrameLayout containerLayout = (FrameLayout) enemyImageView.getParent();
+                //containerLayout.removeView(enemyImageView);
+                mainActivity.losePlayerHealth();
+                //mainActivity.deleteEnemyView(Enemy.this);
+
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
 
         AnimatorSet pathSet = new AnimatorSet();
         pathSet.playSequentially(
@@ -114,6 +153,7 @@ public class Enemy {
         pathSet.setInterpolator(new LinearInterpolator());
         pathSet.setDuration(speed);
         pathSet.start();
+
     }
 
     public static void startAnimation(ImageView enemyImageView, int animationResource){
