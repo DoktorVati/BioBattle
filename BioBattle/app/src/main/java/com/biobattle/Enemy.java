@@ -3,6 +3,7 @@ package com.biobattle;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.graphics.drawable.AnimationDrawable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +11,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 public class Enemy {
-
+    private int speed;
+    private int health;
     private ImageView enemyImageView;
     private float currentX;
     private float currentY;
@@ -18,7 +20,9 @@ public class Enemy {
     private float y;
     private int width;
     private int height;
-    public Enemy(ImageView imageView) {
+    public Enemy(ImageView imageView, int enemyHealth, int enemySpeed) {
+        this.speed = enemySpeed;
+        this.health = enemyHealth;
         this.enemyImageView = imageView;
         // Set initial positions based on imageView's current position
         this.currentX = imageView.getX();
@@ -36,10 +40,12 @@ public class Enemy {
     public float getY() {
         return this.currentY;
     }
-    public void startPath(ImageView enemyImageView, float width, float height) {
+    public void startPath(ImageView enemyImageView, float width, float height, int animationResource) {
         float offset = 0.08f * height;
 
         enemyImageView.setY(offset);
+        enemyImageView.setImageResource(R.drawable.invis);
+        startAnimation(enemyImageView, animationResource);
 
         ObjectAnimator first = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0 - offset, 0.14f * width - offset);
         first.addUpdateListener(animation -> {
@@ -106,8 +112,16 @@ public class Enemy {
                 first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth
         );
         pathSet.setInterpolator(new LinearInterpolator());
-        pathSet.setDuration(3500);
+        pathSet.setDuration(speed);
         pathSet.start();
+    }
+
+    public static void startAnimation(ImageView enemyImageView, int animationResource){
+        ImageView animatedEnemy = enemyImageView;
+        animatedEnemy.setBackgroundResource(animationResource);
+        AnimationDrawable enemyAnimation = (AnimationDrawable) animatedEnemy.getBackground();
+
+        enemyAnimation.start();
     }
     public float getCenterX() {
         return getX() + getWidth() / 2;
