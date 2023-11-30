@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer backgroundMediaPlayer;
     private Wave wave; //Declaring a Wave instance
     private FrameLayout enemyContainerLayout;
+    float setMultiplier;
 
 
     @Override
@@ -71,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
         ImageView dragKillerTom = findViewById(R.id.dragKillerTom);
 
         //adds button functionality
-        basicTower = new Tower(dragBasic, 0, 0, 0, null);
-        tacTower = new Tower(dragTac, 0, 0, 0, null);
-        cannonTower = new Tower(dragCannon, 0, 0, 0, null);
-        killerTomTower = new Tower(dragKillerTom, 0, 0, 0, null);
+        basicTower = new Tower(dragBasic, 0, 0, 0, null, 0);
+        tacTower = new Tower(dragTac, 0, 0, 0, null, 0);
+        cannonTower = new Tower(dragCannon, 0, 0, 0, null, 0);
+        killerTomTower = new Tower(dragKillerTom, 0, 0, 0, null, 0);
 
         //adds frames
         towers.add(basicTower);
@@ -359,6 +360,7 @@ public float towerRadius = 80f;
             setAttackDamage = 100;
             setAttackSpeed = 110;
             towerRadius = 100;
+            setMultiplier = 1.14f;
         } else if (imageResource == R.drawable.golgitower) {
             scale = 1.7f;
             animationResource = R.drawable.golgiidleanim;
@@ -366,6 +368,7 @@ public float towerRadius = 80f;
             setAttackDamage = 110;
             setAttackSpeed = 90;
             towerRadius = 170;
+            setMultiplier = 1.25f;
         } else if (imageResource == R.drawable.cannontower) {
             scale = 1f;
             animationResource = R.drawable.cannonidleanim;
@@ -373,6 +376,7 @@ public float towerRadius = 80f;
             setAttackDamage = 220;
             setAttackSpeed = 75;
             towerRadius = 100;
+            setMultiplier = 1.5f;
         } else if (imageResource == R.drawable.killertframe1) {
             scale = 1f;
             animationResource = R.drawable.killeridleanim;
@@ -380,9 +384,11 @@ public float towerRadius = 80f;
             setAttackDamage = 300;
             setAttackSpeed = 300;
             towerRadius = 170;
+            setMultiplier = 2f;
         }
+
         TowerScript towerScript = new TowerScript();
-        Tower tower = new Tower(newDragImageView, setAttackRange, setAttackDamage, setAttackSpeed, this);
+        Tower tower = new Tower(newDragImageView, setAttackRange, setAttackDamage, setAttackSpeed, this, setMultiplier);
         tower.setTowerNumber(purchasedTowers.size() + 1); // Assign a unique number to the tower
         tower.setTowerScript(towerScript);
 
@@ -413,6 +419,7 @@ public float towerRadius = 80f;
             createAttackRange(newDragImageView); // Associate AttackRangeView with the tower
         }
 
+        int cloud = R.drawable.cloudanim;
         newDragImageView.setOnClickListener(new View.OnClickListener() {
             boolean animationRun = false; // Flag to track if animation has run for this tower
 
@@ -449,11 +456,17 @@ public float towerRadius = 80f;
                     setAttackSpeed = 300;
                     towerRadius = 170;
                 }
-                if (!animationRun && isMapPress) {
+                if (!animationRun && isMapPress/*add so that it checks if not on path in future*/) {
                     selectMediaPlayer.start();
                     // Create the animation ImageView
                     ImageView animationImageView = new ImageView(v.getContext());
+                    ImageView cloudView = new ImageView(v.getContext());
+                    cloudView.setLayoutParams(new ViewGroup.LayoutParams(scaledWidth, scaledHeight));
+                    cloudView.setX(v.getX());
+                    cloudView.setY(v.getY()+50f);
+                    cloudView.setImageResource(cloud);
 
+                    animationImageView.setImageResource(animationResource);
                     // Apply the same scaling factor as the original ImageView
                     animationImageView.setLayoutParams(new ViewGroup.LayoutParams(scaledWidth, scaledHeight));
 
@@ -466,17 +479,35 @@ public float towerRadius = 80f;
                     // Add the new ImageView to the same parent as the original view
                     ViewGroup parentView = (ViewGroup) v.getParent();
                     parentView.addView(animationImageView);
-
+                    parentView.addView(cloudView);
                     // Set tags and manage the tower animation map
                     newDragImageView.setTag(imageResource); // Use a unique identifier as the tag
                     animationImageView.setTag(imageResource); // Use the same tag
                     towerAnimationMap.put(newDragImageView, animationImageView);
+                    Drawable cloudDrawable = cloudView.getDrawable();
 
+                    if (cloudDrawable != null && cloudDrawable instanceof AnimationDrawable) {
+                        AnimationDrawable animationDrawable = (AnimationDrawable) cloudDrawable;
+                        animationDrawable.start();
+
+                        // Calculate the total duration of the animation
+                        int totalDuration = 0;
+                        for (int i = 0; i < animationDrawable.getNumberOfFrames(); i++) {
+                            totalDuration += animationDrawable.getDuration(i);
+                        }
+
+                        // Use a Handler to remove the cloudView after the animation completes
+                        new Handler().postDelayed(() -> {
+                            parentView.removeView(cloudView);
+                            // Add code here if you want to perform any actions after the animation is removed
+                        }, totalDuration);
+                    }
                     // Get the drawable from the ImageView and start the animation
                     Drawable animationDrawable = animationImageView.getDrawable();
                     if (animationDrawable != null && animationDrawable instanceof AnimationDrawable) {
                         ((AnimationDrawable) animationDrawable).start();
                     }
+
                     // Store the selected tower and disable further selection
                     selectedTower = newDragImageView;
                     // Hide attack ranges and redraws
@@ -605,7 +636,11 @@ public float towerRadius = 80f;
                                 attackRangeView.setVisibility(View.INVISIBLE);
                                 // Create a new ImageView for the animation
                                 ImageView animationImageView = new ImageView(v.getContext());
-
+                                ImageView cloudView = new ImageView(v.getContext());
+                                cloudView.setLayoutParams(new ViewGroup.LayoutParams(scaledWidth, scaledHeight));
+                                cloudView.setX(v.getX());
+                                cloudView.setY(v.getY()+5f);
+                                cloudView.setImageResource(cloud);
                                 // Apply the same scaling factor as the original ImageView
                                 animationImageView.setLayoutParams(new ViewGroup.LayoutParams(scaledWidth, scaledHeight));
 
@@ -618,6 +653,25 @@ public float towerRadius = 80f;
                                 // Add the new ImageView to the same parent as the original view
                                 ViewGroup parentView = (ViewGroup) v.getParent();
                                 parentView.addView(animationImageView);
+                                parentView.addView(cloudView);
+                                Drawable cloudDrawable = cloudView.getDrawable();
+
+                                if (cloudDrawable != null && cloudDrawable instanceof AnimationDrawable) {
+                                    AnimationDrawable animationDrawable = (AnimationDrawable) cloudDrawable;
+                                    animationDrawable.start();
+
+                                    // Calculate the total duration of the animation
+                                    int totalDuration = 0;
+                                    for (int i = 0; i < animationDrawable.getNumberOfFrames(); i++) {
+                                        totalDuration += animationDrawable.getDuration(i);
+                                    }
+
+                                    // Use a Handler to remove the cloudView after the animation completes
+                                    new Handler().postDelayed(() -> {
+                                        parentView.removeView(cloudView);
+                                        // Add code here if you want to perform any actions after the animation is removed
+                                    }, totalDuration);
+                                }
                                 newDragImageView.setTag(imageResource); // Use a unique identifier as the tag
                                 animationImageView.setTag(imageResource); // Use the same tag
                                 towerAnimationMap.put(newDragImageView, animationImageView);
@@ -703,25 +757,30 @@ public float towerRadius = 80f;
 
             ViewGroup parentView = (ViewGroup) towerImageView.getParent();
             if (parentView != null) {
+                // Remove the tower ImageView instantly
+                purchasedTowers.remove(towerImageView);
+                parentView.removeView(towerImageView);
+                tower.cleanupScriptIfImageViewDeleted();
+                selectedTower = null;
+                delTower(towerImageView.getX() + towerImageView.getWidth() / 2, towerImageView.getY() + towerImageView.getHeight() / 2);
+
                 // Check if the tower has an associated animation
                 ImageView animationImageView = towerAnimationMap.get(towerImageView);
                 if (animationImageView != null) {
                     parentView.removeView(animationImageView);
-                    towerAnimationMap.remove(towerImageView); // Remove the mapping
+                    // Set layout parameters for cloudView
+                    ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    // Remove the tower's animation view from the map
+                    towerAnimationMap.remove(towerImageView);
                 }
-                purchasedTowers.remove(towerImageView);
-                // Remove the tower ImageView
-                parentView.removeView(towerImageView);
-                tower.cleanupScriptIfImageViewDeleted();
-                // Reset the selected tower
-                selectedTower = null;
-
-                // Remove tower from positions list
-                delTower(towerImageView.getX() + towerImageView.getWidth() / 2, towerImageView.getY() + towerImageView.getHeight() / 2);
-
             }
         }
     }
+
+
 
 
 
