@@ -73,6 +73,8 @@ public class Wave {
 
         // Create an Enemy object and add it to the wave
         Enemy enemy = new Enemy(newEnemyImageView, enemyHealth, enemySpeed);
+
+        enemy.setMainActivity(mainActivity);
         enemiesInWave.add(enemy);
 
         containerLayout.addView(newEnemyImageView);
