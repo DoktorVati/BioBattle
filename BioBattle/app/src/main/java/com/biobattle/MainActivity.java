@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private Wave wave; //Declaring a Wave instance
     private FrameLayout enemyContainerLayout;
     float setMultiplier;
+    private int playerHealth = 100;
+    private String stringPlayerHealth;
 
 
     @Override
@@ -194,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout enemyContainerLayout = findViewById(R.id.enemyContainerLayout);
         wave = new Wave (MainActivity.this, 1, enemyContainerLayout);
         wave.setMainActivity(this);
+
     }
 
 
@@ -942,5 +945,12 @@ public float towerRadius = 80f;
                 // restartGame();
             }
         });
+    }
+
+    public void losePlayerHealth(){
+        playerHealth = playerHealth - 1;
+        stringPlayerHealth = "Health " + playerHealth;
+        TextView playerHealthView = (TextView) findViewById(R.id.health);
+        playerHealthView.setText(stringPlayerHealth);
     }
 }
