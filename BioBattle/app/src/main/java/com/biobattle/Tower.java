@@ -29,10 +29,14 @@ public class Tower {
     private TowerScript towerScript;
 
     private boolean shots;
+    private boolean hasPlacedDown;
+    private boolean doesSplashDamage;
 
     private float newAttackRange, newAttackDamage, newAttackSpeed;
-    public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed, MainActivity mainActivity, float upgradePercentages)
+    private int projectileResource;
+    public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed, MainActivity mainActivity, float upgradePercentages, boolean hasPlaced, int projectile)
     {
+        this.hasPlacedDown = hasPlaced;
         this.imageView = imageView;
         this.attackRange = attackRange;
         this.newAttackRange = attackRange;
@@ -42,6 +46,7 @@ public class Tower {
         this.dontrun = false;
         this.upgradePercentage = upgradePercentages;
         this.shots = true;
+        this.projectileResource = projectile;
     }
     public void setTowerScript(TowerScript script) {
         this.towerScript = script;
@@ -140,7 +145,7 @@ public class Tower {
         if (towerScript != null && towerScript.isRunning() == false) {
             dontrun = true;
         }
-        if (!isOnCooldown && dontrun == false) {
+        if (!isOnCooldown && dontrun == false && hasPlacedDown == true) {
             Enemy targetEnemy = null;
             float closestDistance = Float.MAX_VALUE;
 
@@ -158,7 +163,6 @@ public class Tower {
                     if (distance < closestDistance) {
                         closestDistance = distance;
                         targetEnemy = enemy;
-                        int projectileResource = R.drawable.cannonshot1; // Default resource ID
                         if(targetEnemy != null && towerScript != null) {
                             ImageView projectile = new ImageView(containerLayout.getContext());
                             float projectileStartX = towerX + imageView.getWidth() / 2 - projectile.getWidth() / 2;
@@ -169,55 +173,62 @@ public class Tower {
                             ObjectAnimator projectileAnimatorX = null;
                             ObjectAnimator projectileAnimatorY = null;
 
-
-                            projectile.setScaleX(0.1f); // Set X scale factor as desired (e.g., 0.5 for half size)
-                            projectile.setScaleY(0.1f);
-                            if (imageView != null && imageView.getTag() != null) {
+                            if (imageView.getTag() != null) {
                                 if (imageView.getTag().equals(R.drawable.simpletower)) {
-                                    projectileResource = R.drawable.cannonshot1;
-                                    projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1050, enemyX - 1040);
+                                    projectileResource = R.drawable.singleshot1;
+                                    projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1060, enemyX - 1040);
                                     projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 500, enemyY - 440);
-                                } else if (imageView.getTag().equals(R.drawable.golgitower)) {
-                                    projectileResource = R.drawable.cannonshot1;
-                                    projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1150, enemyX - 1040);
-                                    projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 550, enemyY - 440);
+                                    projectile.setScaleX(0.5f); // Set X scale factor as desired (e.g., 0.5 for half size)
+                                    projectile.setScaleY(0.5f);
                                 } else if (imageView.getTag().equals(R.drawable.cannontower)) {
                                     projectileResource = R.drawable.cannonshot1;
-                                     projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1055, enemyX - 1040);
-                                     projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 500, enemyY - 440);
+                                    projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1055, enemyX - 1040);
+                                    projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 500, enemyY - 440);
+                                    projectile.setScaleX(0.5f); // Set X scale factor as desired (e.g., 0.5 for half size)
+                                    projectile.setScaleY(0.5f);
                                 } else if (imageView.getTag().equals(R.drawable.killertframe1)) {
-                                    projectileResource = R.drawable.cannonshot1;
+                                    projectileResource = R.drawable.killershot1;
                                     projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1150, enemyX - 1040);
                                     projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 550, enemyY - 440);
+                                    projectile.setScaleX(0.1f); // Set X scale factor as desired (e.g., 0.5 for half size)
+                                    projectile.setScaleY(0.1f);
+                                } else if (imageView.getTag().equals(R.drawable.golgitower)) {
+                                    projectileResource = 0;
                                 }
                             } else {
                                 projectileResource = R.drawable.cannonshot1;
                                 projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1050, enemyX - 1040);
                                 projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 500, enemyY - 440);
                             }
-                            projectile.setImageResource(projectileResource);
-                            containerLayout.addView(projectile);
+                            if (projectileResource != 0) {
+                                projectile.setImageResource(projectileResource);
+                                containerLayout.addView(projectile);
 
 
-                            AnimatorSet projectileAnimation = new AnimatorSet();
-                            projectileAnimation.playTogether(projectileAnimatorX, projectileAnimatorY);
-                            projectileAnimation.setDuration(50); // Set the duration of the animation (adjust as needed)
-                            projectileAnimation.addListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    // Remove the projectile view after the animation completes
-                                    containerLayout.removeView(projectile);
-                                    shots = true;
-                                }
-                            });
-
-                            /*
-                            //do something like this to specify attack type per tower
-                            if(imageView.getTag().equals(R.drawable.cannonshot1)) {
+                                AnimatorSet projectileAnimation = new AnimatorSet();
+                                projectileAnimation.playTogether(projectileAnimatorX, projectileAnimatorY);
+                                projectileAnimation.setDuration(50); // Set the duration of the animation (adjust as needed)
+                                projectileAnimation.addListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        if(projectileResource != R.drawable.cannonshot1) {
+                                            // Remove the projectile view after the animation completes
+                                            containerLayout.removeView(projectile);
+                                            shots = true;
+                                        }
+                                        else {
+                                            // create a new type of projectile animation called explosion that spreads out at dead enemy location
+                                            //does damage to enemies in a certain DamageRadius
+                                            containerLayout.removeView(projectile);
+                                            shots = true;
+                                        }
+                                    }
+                                });
                                 projectileAnimation.start();
                             }
-                            */
-                            projectileAnimation.start();
+                            else{
+                                shots = true;
+                            }
                         }
                     }
                 }
@@ -234,7 +245,10 @@ public class Tower {
     private float calculateDistance(float x1, float y1, float x2, float y2) {
         return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
-
+    public void setPlacedDown()
+    {
+        hasPlacedDown = true;
+    }
 
     private void deleteEnemy(Enemy enemy) {
         ImageView enemyImageView = enemy.getImageView();
@@ -246,11 +260,11 @@ public class Tower {
             return; // Exit the method if wave is null
         }
 
-        if (containerLayout != null && towerScript != null) {
+        if (containerLayout != null && towerScript != null && hasPlacedDown == true) {
             //add to here so that the tower shoots something at the targeted enemy
             containerLayout.removeView(enemyImageView);
-            Log.d("EnemyDestroyed", "WeGotEm");
             mainActivity.deleteEnemyView(enemy);
+            mainActivity.addGold(5);
         }
     }
 
@@ -262,13 +276,11 @@ public class Tower {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d("CooldownFinished", "cooldowndone");
                     isOnCooldown = false; // Cooldown finished, tower can attack again
                 }
             }, cooldownDuration);
         }
     }
-
 
 }
 
