@@ -119,6 +119,7 @@ public class Wave {
         for (Enemy enemy : enemiesInWave) {
             //enemy.stopMovement();
             mainActivity.stopEnemyCheck();
+            mainActivity.addGold(25 * waveNumber);
         }
         enemiesInWave.clear(); // Clear the list of enemies in the wave
     }
