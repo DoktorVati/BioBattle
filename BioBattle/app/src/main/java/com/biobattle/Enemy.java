@@ -11,8 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 public class Enemy {
-    private int speed;
-    private int health;
+    private final int speed;
+    private float health;
     private ImageView enemyImageView;
     private float currentX;
     private float currentY;
@@ -23,6 +23,7 @@ public class Enemy {
     private MainActivity mainActivity;
 
     private Tower tower;
+    private boolean isDead = false;
 
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -126,10 +127,14 @@ public class Enemy {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                //FrameLayout containerLayout = (FrameLayout) enemyImageView.getParent();
-                //containerLayout.removeView(enemyImageView);
-                mainActivity.losePlayerHealth();
-                //mainActivity.deleteEnemyView(Enemy.this);
+                if (!isDead) {
+                    FrameLayout containerLayout = (FrameLayout) enemyImageView.getParent();
+                    //containerLayout.removeView(enemyImageView);
+                    //mainActivity.deleteEnemyView(Enemy.this);
+                    containerLayout.removeView(enemyImageView);
+                    mainActivity.deleteEnemyView(Enemy.this);
+                    mainActivity.losePlayerHealth();
+                }
 
 
             }
@@ -183,5 +188,22 @@ public class Enemy {
 
     public float getYRelativeToTower(float towerY) {
         return y - towerY + height / 2; // Subtract towerY from enemy's y and add half its height
+    }
+    public void loseHealth(float damage){
+        health = health - damage;
+    if (health <= 0){
+        //if enemy health drops to zero or lower set to dead
+        isDead = true;
+    }
+    }
+    public float getHealth(){
+        return health;
+    }
+    public void die(){
+        //set isDead Boolean to true for debugging purposes
+        isDead = true;
+    }
+    public Boolean checkIsDead(){
+        return isDead;
     }
 }
