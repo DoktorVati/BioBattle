@@ -12,7 +12,7 @@
     <string name="victory">Victory!</string>
     <string name="defeat">Defeat</string>
     <string name="score">Score</string>
-    <string name="health">Health</string>
+    <string name="health">Health 100</string>
     <string name="gold">Gold</string>
     <string name="upgrade">Upgrade</string>
     <string name="pause">Pause</string>
