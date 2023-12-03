@@ -42,17 +42,17 @@ public class Wave {
         if (type == 1) {
             imageResource = R.drawable.enemyb;
             animationResource = R.drawable.enemybanim;
-            enemyHealth = 2;
+            enemyHealth = 200;
             enemySpeed = 3500;
         } else if (type == 2) {
             imageResource = R.drawable.enemyy;
             animationResource = R.drawable.enemyyanim;
-            enemyHealth = 5;
+            enemyHealth = 500;
             enemySpeed = 1500;
         } else if (type == 3) {
             imageResource = R.drawable.enemyr;
             animationResource = R.drawable.enemyranim;
-            enemyHealth = 10;
+            enemyHealth = 1000;
             enemySpeed = 6000;
         } else {
             imageResource = R.drawable.enemyb; // Default to a type if unspecified
