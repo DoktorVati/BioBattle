@@ -1082,4 +1082,9 @@ public float towerRadius = 80f;
             playerHealthView.setText(stringPlayerHealth);
         }
     }
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+
+    }
 }
