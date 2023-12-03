@@ -332,6 +332,7 @@ public class Tower {
             containerLayout.removeView(enemyImageView);
             mainActivity.deleteEnemyView(enemy);
             mainActivity.addGold(5);
+            enemy.die();
         }
     }
 
