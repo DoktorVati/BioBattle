@@ -243,7 +243,10 @@ public class Tower {
             }
             if (targetEnemy != null && hasShot == true && !isGolgi) {
                 startCooldown();
-                deleteEnemy(targetEnemy); // this deletes the closest enemy within range
+                targetEnemy.loseHealth(attackDamage);
+                if(targetEnemy.getHealth() <= 0) {
+                    deleteEnemy(targetEnemy); // this deletes the closest enemy within range
+                }
                 targetEnemy = null;
             }
         }
@@ -283,12 +286,18 @@ public class Tower {
         if(isCannon) {
             for (Enemy enemy : getAllEnemiesInRadius(centerX, centerY, damageRadius, enemiesInWave)) {
                 //enemy.takeDamage(50);
-                deleteEnemy(enemy);
+                enemy.loseHealth(attackDamage);
+                if (enemy.getHealth() <= 0) {
+                    deleteEnemy(enemy); // this deletes the closest enemy within range
+                }
             }
         }
         else {
             for (Enemy enemy : getAllEnemiesInRadius(centerX, centerY, damageRadius, enemiesInWave)) {
-                deleteEnemy(enemy);
+                enemy.loseHealth(attackDamage);
+                if (enemy.getHealth() <= 0) {
+                    deleteEnemy(enemy); // this deletes the closest enemy within range
+                }
             }
         }
 
@@ -332,7 +341,6 @@ public class Tower {
             containerLayout.removeView(enemyImageView);
             mainActivity.deleteEnemyView(enemy);
             mainActivity.addGold(5);
-            enemy.die();
         }
     }
 
