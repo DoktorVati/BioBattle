@@ -23,7 +23,7 @@ public class Enemy {
     private MainActivity mainActivity;
 
     private Tower tower;
-    private boolean isDead = false;
+    private boolean isDead;
 
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -39,6 +39,7 @@ public class Enemy {
         // Set initial positions based on imageView's current position
         this.currentX = imageView.getX();
         this.currentY = imageView.getY();
+        this.isDead = false;
 
     }
 
