@@ -157,7 +157,16 @@ public class Enemy {
                 first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth
         );
         pathSet.setInterpolator(new LinearInterpolator());
-        pathSet.setDuration(speed);
+        first.setDuration(speed);
+        second.setDuration((speed * (2 + (3/4))));
+        third.setDuration(speed * (1 + (3/10)));
+        fourth.setDuration(speed * (2 + (3/4)));
+        fifth.setDuration(speed * (2 + (85/100)));
+        sixth.setDuration(speed * (1 + (35/100)));
+        seventh.setDuration(speed * (1 + (70/100)));
+        eighth.setDuration(speed * (1 + (35/100)));
+        ninth.setDuration(speed * (1 + (70/100)));
+        tenth.setDuration(speed/2);
         pathSet.start();
 
     }
