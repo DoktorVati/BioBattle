@@ -29,6 +29,8 @@ public class Tower {
     private float GOLGI_COOLDOWN_DURATION = 3000;
     private boolean isInfiniteAttack = false;
     private MediaPlayer deathMediaPlayer;
+    private MediaPlayer cannonFireMediaPlayer;
+    private MediaPlayer cannonHitMediaPlayer;
 
     public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed, MainActivity mainActivity, float upgradePercentages, boolean hasPlaced, int projectile)
     {
@@ -45,6 +47,9 @@ public class Tower {
         this.projectileResource = projectile;
         if(mainActivity != null) {
             deathMediaPlayer = MediaPlayer.create(mainActivity, R.raw.death);
+            cannonFireMediaPlayer = MediaPlayer.create(mainActivity, R.raw.cannonf);
+            cannonFireMediaPlayer.setVolume(0.2f,0.2f);
+            cannonHitMediaPlayer = MediaPlayer.create(mainActivity, R.raw.cannonh);
         }
     }
     public void setTowerScript(TowerScript script) {
@@ -224,6 +229,7 @@ public class Tower {
                                             containerLayout.removeView(projectile);
                                             hasShot = true;
                                             isAnimating = false;
+                                            isCannon = true;
                                         }
                                         else {
                                             startCooldown();
@@ -247,6 +253,10 @@ public class Tower {
             }
             if (targetEnemy != null && hasShot == true && !isGolgi) {
                 startCooldown();
+                if(isCannon)
+                {
+                    cannonFireMediaPlayer.start();
+                }
                 targetEnemy.loseHealth(attackDamage);
                 if(targetEnemy.getHealth() <= 0) {
                     deleteEnemy(targetEnemy); // this deletes the closest enemy within range
@@ -288,9 +298,12 @@ public class Tower {
     }
     private void doSplashDamage(float centerX, float centerY, float damageRadius, List<Enemy> enemiesInWave, boolean isCannon) {
         if(isCannon) {
+            cannonHitMediaPlayer.start();
+
             for (Enemy enemy : getAllEnemiesInRadius(centerX, centerY, damageRadius, enemiesInWave)) {
                 //enemy.takeDamage(50);
                 enemy.loseHealth(attackDamage / 2);
+
                 if (enemy.getHealth() <= 0) {
                     deleteEnemy(enemy); // this deletes the closest enemy within range
                 }
