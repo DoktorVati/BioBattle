@@ -24,7 +24,7 @@ public class Tower {
     private boolean isCannon, isGolgi, hasShot, hasPlacedDown;
     private boolean isOnCooldown = false;
     private boolean isAnimating = false;
-    private float GOLGI_ATTACK_DURATION = 3000;
+    private float GOLGI_ATTACK_DURATION = 300;
     private float GOLGI_COOLDOWN_DURATION = 3000;
     private boolean isInfiniteAttack = false;
     public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed, MainActivity mainActivity, float upgradePercentages, boolean hasPlaced, int projectile)
@@ -61,10 +61,8 @@ public class Tower {
         attackRange = (newAttackRange += upgradePercentage);
         attackDamage = (newAttackDamage *= upgradePercentage);
         attackSpeed = (newAttackSpeed *= upgradePercentage);
-        GOLGI_ATTACK_DURATION /= upgradePercentage;
-        GOLGI_COOLDOWN_DURATION = GOLGI_ATTACK_DURATION;
+        GOLGI_COOLDOWN_DURATION /= upgradePercentage;
         totalUpgrades ++;
-
     }
     public ImageView getImageView()
     {
@@ -174,19 +172,19 @@ public class Tower {
                                     projectileResource = R.drawable.singleshot1;
                                     projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1060, enemyX - 1040);
                                     projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 500, enemyY - 440);
-                                    projectile.setScaleX(0.5f); // Set X scale factor as desired (e.g., 0.5 for half size)
+                                    projectile.setScaleX(0.5f);
                                     projectile.setScaleY(0.5f);
                                 } else if (imageView.getTag().equals(R.drawable.cannontower)) {
                                     projectileResource = R.drawable.cannonshot1;
                                     projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1055, enemyX - 1040);
                                     projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 500, enemyY - 440);
-                                    projectile.setScaleX(0.2f); // Set X scale factor as desired (e.g., 0.5 for half size)
+                                    projectile.setScaleX(0.2f);
                                     projectile.setScaleY(0.2f);
                                 } else if (imageView.getTag().equals(R.drawable.killertframe1)) {
                                     projectileResource = R.drawable.killershot1;
                                     projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1150, enemyX - 1040);
                                     projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 550, enemyY - 440);
-                                    projectile.setScaleX(0.1f); // Set X scale factor as desired (e.g., 0.5 for half size)
+                                    projectile.setScaleX(0.1f);
                                     projectile.setScaleY(0.1f);
                                 } else if (imageView.getTag().equals(R.drawable.golgitower)) {
                                     projectileResource = 0;
@@ -264,7 +262,7 @@ public class Tower {
                     startGolgiCooldown();
                 }
             };
-            golgiAttackHandler.postDelayed(golgiAttackRunnable,(long) GOLGI_ATTACK_DURATION);
+            golgiAttackHandler.postDelayed(golgiAttackRunnable,(long) (GOLGI_ATTACK_DURATION));
         }
     }
     private void startGolgiCooldown() {
@@ -279,14 +277,14 @@ public class Tower {
                     isOnCooldown = false; // Cooldown finished, tower can attack again
                     hasShot = false;
                 }
-            },(long) GOLGI_COOLDOWN_DURATION);
+            },(long) (GOLGI_COOLDOWN_DURATION * 10 / attackSpeed));
         }
     }
     private void doSplashDamage(float centerX, float centerY, float damageRadius, List<Enemy> enemiesInWave, boolean isCannon) {
         if(isCannon) {
             for (Enemy enemy : getAllEnemiesInRadius(centerX, centerY, damageRadius, enemiesInWave)) {
                 //enemy.takeDamage(50);
-                enemy.loseHealth(attackDamage);
+                enemy.loseHealth(attackDamage / 2);
                 if (enemy.getHealth() <= 0) {
                     deleteEnemy(enemy); // this deletes the closest enemy within range
                 }
@@ -294,7 +292,8 @@ public class Tower {
         }
         else {
             for (Enemy enemy : getAllEnemiesInRadius(centerX, centerY, damageRadius, enemiesInWave)) {
-                enemy.loseHealth(attackDamage);
+                enemy.loseHealth(attackDamage / 2);
+                spawnProjectiles(enemy.getImageView());
                 if (enemy.getHealth() <= 0) {
                     deleteEnemy(enemy); // this deletes the closest enemy within range
                 }
@@ -362,6 +361,61 @@ public class Tower {
     private int calculateCooldownDuration() {
 
         return (int) (1000000 / (attackSpeed * 50));
+    }
+
+    public void spawnProjectiles(ImageView enemyImageView) {
+        if (!hasPlacedDown || isAnimating) {
+            return;
+        }
+
+        isAnimating = true;
+        float towerX = imageView.getX() + imageView.getWidth() / 2 - 1100;
+        float towerY = imageView.getY() + imageView.getHeight() / 2 - 500;
+
+        float[][] directions = {
+                {0, -(attackRange)}, // Straight up
+                {0, attackRange},  // Straight down
+                {-(attackRange * 0.66f), -(attackRange * 0.66f)}, // Up and to the left
+                {attackRange * 0.66f, -(attackRange * 0.66f)}, // Up and to the right
+                {-(attackRange), 0}, // Left
+                {attackRange, 0}, // Right
+                {-(attackRange * 0.66f), attackRange * 0.66f}, // Down and to the left
+                {attackRange * 0.66f, attackRange * 0.66f} // Down and to the right
+        };
+
+        List<Animator> animators = new ArrayList<>();
+        FrameLayout containerLayout = (FrameLayout) enemyImageView.getParent();
+
+        for (float[] direction : directions) {
+            ImageView projectile = new ImageView(containerLayout.getContext());
+            containerLayout.addView(projectile);
+            projectile.setX(towerX);
+            projectile.setY(towerY);
+            projectile.setImageResource(R.drawable.tacframe8);
+            projectile.setScaleX(0.1f);
+            projectile.setScaleY(0.1f);
+            ObjectAnimator projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectile.getX() + direction[0]);
+            ObjectAnimator projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectile.getY() + direction[1]);
+
+            AnimatorSet projectileAnimation = new AnimatorSet();
+            projectileAnimation.playTogether(projectileAnimatorX, projectileAnimatorY);
+            projectileAnimation.setDuration(400); // Adjust duration as needed
+
+            projectileAnimation.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    containerLayout.removeView(projectile);
+                    isAnimating = false;
+                }
+            });
+
+            animators.add(projectileAnimation);
+        }
+
+        // Play all the projectile animations together
+        AnimatorSet allProjectilesAnimation = new AnimatorSet();
+        allProjectilesAnimation.playTogether(animators);
+        allProjectilesAnimation.start();
     }
 
 
