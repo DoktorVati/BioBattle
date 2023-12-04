@@ -3,6 +3,7 @@ package com.biobattle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -115,11 +116,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (towerSelected) {
+                    buyMediaPlayer.start();
                     // Buy the tower only when the "Buy" button is clicked
                     spawnDragTower(selectedTowerResource, 0, 0, false);
                     // Reset tower selection
                     towerSelected = false;
-                    buyMediaPlayer.start();
+
                     hideUpgradeMenus(true);
                 }
             }
@@ -452,7 +454,7 @@ public float towerRadius = 80f;
             animationResource = R.drawable.simpleidleanim;
             setAttackRange = 325;
             setAttackDamage = 100;
-            setAttackSpeed = 110;
+            setAttackSpeed = 60;
             towerRadius = 100;
             setMultiplier = 1.14f;
             projectile = R.drawable.singleshot1;
@@ -461,8 +463,8 @@ public float towerRadius = 80f;
             scale = 1.7f;
             animationResource = R.drawable.golgiidleanim;
             setAttackRange = 250;
-            setAttackDamage = 110;
-            setAttackSpeed = 90;
+            setAttackDamage = 50;
+            setAttackSpeed = 6;
             towerRadius = 170;
             setMultiplier = 1.25f;
             projectile = 0;
@@ -472,9 +474,9 @@ public float towerRadius = 80f;
             animationResource = R.drawable.cannonidleanim;
             setAttackRange = 375;
             setAttackDamage = 220;
-            setAttackSpeed = 75;
+            setAttackSpeed = 15;
             towerRadius = 100;
-            setMultiplier = 1.5f;
+            setMultiplier = 1.2f;
             projectile = R.drawable.cannonshot1;
             subtractGold(650);
         } else if (imageResource == R.drawable.killertframe1) {
@@ -482,9 +484,9 @@ public float towerRadius = 80f;
             animationResource = R.drawable.killeridleanim;
             setAttackRange = 450;
             setAttackDamage = 300;
-            setAttackSpeed = 300;
+            setAttackSpeed = 150;
             towerRadius = 170;
-            setMultiplier = 2f;
+            setMultiplier = 1.25f;
             projectile = R.drawable.killershot1;
             subtractGold(3250);
         }
@@ -1087,6 +1089,5 @@ public float towerRadius = 80f;
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-
     }
 }
