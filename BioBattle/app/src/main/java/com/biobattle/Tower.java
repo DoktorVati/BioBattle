@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,8 @@ public class Tower {
     private float GOLGI_ATTACK_DURATION = 300;
     private float GOLGI_COOLDOWN_DURATION = 3000;
     private boolean isInfiniteAttack = false;
+    private MediaPlayer deathMediaPlayer;
+
     public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed, MainActivity mainActivity, float upgradePercentages, boolean hasPlaced, int projectile)
     {
         this.hasPlacedDown = hasPlaced;
@@ -40,6 +43,9 @@ public class Tower {
         this.upgradePercentage = upgradePercentages;
         this.hasShot = true;
         this.projectileResource = projectile;
+        if(mainActivity != null) {
+            deathMediaPlayer = MediaPlayer.create(mainActivity, R.raw.death);
+        }
     }
     public void setTowerScript(TowerScript script) {
         this.towerScript = script;
@@ -339,6 +345,12 @@ public class Tower {
             //add to here so that the tower shoots something at the targeted enemy
             containerLayout.removeView(enemyImageView);
             mainActivity.deleteEnemyView(enemy);
+            if (deathMediaPlayer.isPlaying()) {
+                deathMediaPlayer.seekTo(0);
+            } else {
+                deathMediaPlayer.start();
+            }
+
             mainActivity.addGold(5);
         }
     }
