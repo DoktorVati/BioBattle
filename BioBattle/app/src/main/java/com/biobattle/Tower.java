@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
@@ -50,6 +51,7 @@ public class Tower {
             cannonFireMediaPlayer = MediaPlayer.create(mainActivity, R.raw.cannonf);
             cannonFireMediaPlayer.setVolume(0.2f,0.2f);
             cannonHitMediaPlayer = MediaPlayer.create(mainActivity, R.raw.cannonh);
+            cannonHitMediaPlayer.setVolume(0.5f, 0.5f);
         }
     }
     public void setTowerScript(TowerScript script) {
@@ -216,6 +218,7 @@ public class Tower {
                                 projectileAnimation.playTogether(projectileAnimatorX, projectileAnimatorY);
                                 projectileAnimation.setDuration(50);
                                 // animation duration(adjust as needed)
+                                Enemy finalTargetEnemy = targetEnemy;
                                 projectileAnimation.addListener(new AnimatorListenerAdapter() {
                                     @Override
                                     public void onAnimationEnd(Animator animation) {
@@ -227,6 +230,23 @@ public class Tower {
                                         else if(projectileResource == R.drawable.cannonshot1){
                                             doSplashDamage(enemy.getCenterX(), enemy.getCenterY(), 50, enemiesInWave, true);
                                             containerLayout.removeView(projectile);
+
+                                            ImageView explosion = new ImageView(containerLayout.getContext());
+                                            explosion.setX(finalTargetEnemy.getCenterX() - 1040);
+                                            explosion.setY(finalTargetEnemy.getCenterY() - 440);
+                                            explosion.setScaleX(0.3f);
+                                            explosion.setScaleY(0.3f);
+                                            explosion.setImageResource(R.drawable.explosionanim);
+                                            containerLayout.addView(explosion);
+                                            AnimationDrawable explosionAnimation = (AnimationDrawable) explosion.getDrawable();
+                                            explosionAnimation.start();
+                                            int explosionDuration = 1500;
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    containerLayout.removeView(explosion);
+                                                }
+                                            }, explosionDuration);
                                             hasShot = true;
                                             isAnimating = false;
                                             isCannon = true;
@@ -298,8 +318,11 @@ public class Tower {
     }
     private void doSplashDamage(float centerX, float centerY, float damageRadius, List<Enemy> enemiesInWave, boolean isCannon) {
         if(isCannon) {
-            cannonHitMediaPlayer.start();
-
+            if (cannonHitMediaPlayer.isPlaying()) {
+                cannonHitMediaPlayer.seekTo(0);
+            } else {
+                cannonHitMediaPlayer.start();
+            }
             for (Enemy enemy : getAllEnemiesInRadius(centerX, centerY, damageRadius, enemiesInWave)) {
                 //enemy.takeDamage(50);
                 enemy.loseHealth(attackDamage / 2);
@@ -318,13 +341,11 @@ public class Tower {
                 }
             }
         }
-
-
     }
     private List<Enemy> getAllEnemiesInRadius(float centerX, float centerY, float damageRadius,List<Enemy> enemiesInWave) {
         List<Enemy> enemiesInRadius = new ArrayList<>();
 
-        // Loop through all enemies to find those within the damage radius
+        // Loop through all enemies to find those within the tower's damage radius
         for (Enemy enemy : enemiesInWave) {
             float enemyX = enemy.getCenterX();
             float enemyY = enemy.getCenterY();
@@ -355,7 +376,6 @@ public class Tower {
         }
 
         if (containerLayout != null && towerScript != null && hasPlacedDown == true) {
-            //add to here so that the tower shoots something at the targeted enemy
             containerLayout.removeView(enemyImageView);
             mainActivity.deleteEnemyView(enemy);
             if (deathMediaPlayer.isPlaying()) {
@@ -371,7 +391,6 @@ public class Tower {
     private void startCooldown() {
         if (!isOnCooldown) {
             isOnCooldown = true;
-            // Cooldown period
             final int cooldownDuration = calculateCooldownDuration();
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -424,7 +443,7 @@ public class Tower {
 
             AnimatorSet projectileAnimation = new AnimatorSet();
             projectileAnimation.playTogether(projectileAnimatorX, projectileAnimatorY);
-            projectileAnimation.setDuration(400); // Adjust duration as needed
+            projectileAnimation.setDuration(400);
 
             projectileAnimation.addListener(new AnimatorListenerAdapter() {
                 @Override
