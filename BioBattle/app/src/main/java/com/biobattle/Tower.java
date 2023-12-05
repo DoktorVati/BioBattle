@@ -26,12 +26,14 @@ public class Tower {
     private boolean isCannon, isGolgi, hasShot, hasPlacedDown;
     private boolean isOnCooldown = false;
     private boolean isAnimating = false;
-    private float GOLGI_ATTACK_DURATION = 300;
+    private float GOLGI_ATTACK_DURATION = 100;
     private float GOLGI_COOLDOWN_DURATION = 3000;
     private boolean isInfiniteAttack = false;
     private MediaPlayer deathMediaPlayer;
     private MediaPlayer cannonFireMediaPlayer;
     private MediaPlayer cannonHitMediaPlayer;
+    private MediaPlayer golgiFireMediaPlayer;
+    private MediaPlayer killertFireMediaPlayer;
 
     public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed, MainActivity mainActivity, float upgradePercentages, boolean hasPlaced, int projectile)
     {
@@ -52,6 +54,9 @@ public class Tower {
             cannonFireMediaPlayer.setVolume(0.2f,0.2f);
             cannonHitMediaPlayer = MediaPlayer.create(mainActivity, R.raw.cannonh);
             cannonHitMediaPlayer.setVolume(0.5f, 0.5f);
+            golgiFireMediaPlayer = MediaPlayer.create(mainActivity, R.raw.golgishoot);
+            killertFireMediaPlayer = MediaPlayer.create(mainActivity, R.raw.killshoot);
+            killertFireMediaPlayer.setVolume(0.2f, 0.2f);
         }
     }
     public void setTowerScript(TowerScript script) {
@@ -74,7 +79,7 @@ public class Tower {
         attackRange = (newAttackRange += upgradePercentage);
         attackDamage = (newAttackDamage *= upgradePercentage);
         attackSpeed = (newAttackSpeed *= upgradePercentage);
-        GOLGI_COOLDOWN_DURATION /= upgradePercentage;
+        GOLGI_COOLDOWN_DURATION -= upgradePercentage;
         totalUpgrades ++;
     }
     public ImageView getImageView()
@@ -199,10 +204,24 @@ public class Tower {
                                     projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 550, enemyY - 440);
                                     projectile.setScaleX(0.1f);
                                     projectile.setScaleY(0.1f);
+
+                                    if (killertFireMediaPlayer.isPlaying()) {
+                                        killertFireMediaPlayer.seekTo(0);
+                                    } else {
+                                        killertFireMediaPlayer.start();
+                                    }
+
                                 } else if (imageView.getTag().equals(R.drawable.golgitower)) {
                                     projectileResource = 0;
-                                    isInfiniteAttack = true;
-                                    handleGolgiAttack(containerLayout, enemiesInWave, towerX, towerY);
+                                    if(!isOnCooldown) {
+                                        if (golgiFireMediaPlayer.isPlaying()) {
+                                            golgiFireMediaPlayer.seekTo(0);
+                                        } else {
+                                            golgiFireMediaPlayer.start();
+                                        }
+                                        handleGolgiAttack(containerLayout, enemiesInWave, towerX, towerY);
+                                        isInfiniteAttack = true;
+                                    }
                                     break;
                                 }
                             } else {
@@ -226,6 +245,7 @@ public class Tower {
                                             containerLayout.removeView(projectile);
                                             hasShot = true;
                                             isAnimating = false;
+
                                         }
                                         else if(projectileResource == R.drawable.cannonshot1){
                                             doSplashDamage(enemy.getCenterX(), enemy.getCenterY(), 50, enemiesInWave, true);
@@ -275,7 +295,11 @@ public class Tower {
                 startCooldown();
                 if(isCannon)
                 {
-                    cannonFireMediaPlayer.start();
+                    if (cannonFireMediaPlayer.isPlaying()) {
+                        cannonFireMediaPlayer.seekTo(0);
+                    } else {
+                        cannonFireMediaPlayer.start();
+                    }
                 }
                 targetEnemy.loseHealth(attackDamage);
                 if(targetEnemy.getHealth() <= 0) {
@@ -287,9 +311,9 @@ public class Tower {
     }
     private void handleGolgiAttack(FrameLayout containerLayout, List<Enemy> enemiesInWave, float towerX, float towerY) {
         if (isInfiniteAttack) {
-            // Simulating almost instant attack speed behavior with a cooldown
             isInfiniteAttack = false;
 
+            // Simulating almost instant attack speed behavior with a cooldown
             final Handler golgiAttackHandler = new Handler();
             Runnable golgiAttackRunnable = new Runnable() {
                 @Override
@@ -299,6 +323,7 @@ public class Tower {
                 }
             };
             golgiAttackHandler.postDelayed(golgiAttackRunnable,(long) (GOLGI_ATTACK_DURATION));
+
         }
     }
     private void startGolgiCooldown() {
