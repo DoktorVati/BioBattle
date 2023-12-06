@@ -4,7 +4,7 @@
             "outputFile": "com.biobattle.app-mergeDebugResources-29:/values-v24/values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Saint Marco\\.gradle\\caches\\transforms-3\\472558fa3b890572f3148dc73f917663\\transformed\\material-1.10.0\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\Saint Marco\\.gradle\\caches\\transforms-3\\a91f0144cf848f6321c24218166d2059\\transformed\\material-1.10.0\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,9,12,15",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Saint Marco\\.gradle\\caches\\transforms-3\\9673a320fe960df09b94b64d66a47e8a\\transformed\\appcompat-1.6.1\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\Saint Marco\\.gradle\\caches\\transforms-3\\186eb975c6aa24cc77a039791c897b47\\transformed\\appcompat-1.6.1\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
