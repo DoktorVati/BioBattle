@@ -90,8 +90,8 @@ public class Wave extends MainActivity {
         int bossType = 4;
         int imageResource = R.drawable.boss;
         int animationResource = R.drawable.bossanim;
-        int bossHealth = 3000;
-        int bossSpeed = 4500;
+        int bossHealth = 40000 ;
+        int bossSpeed = 8000;
         int bossWidth = 350;
         int bossHeight = 350;
 
@@ -106,6 +106,7 @@ public class Wave extends MainActivity {
 
         // Creates the Boss Enemy
         Enemy bossEnemy = new Enemy(newBossImageView, bossHealth, bossSpeed);
+        bossEnemy.setBoss();
 
         bossEnemy.setMainActivity(mainActivity);
         enemiesInWave.add(bossEnemy);
@@ -128,7 +129,7 @@ public class Wave extends MainActivity {
         if (waveNumber % 10 == 0) {
             startBossWave(waveNumber);
         } else {
-            startRegularWave(waveNumber);
+          startRegularWave(waveNumber);
         }
     }
     // Method to spawn a wave of enemies
@@ -152,35 +153,35 @@ public class Wave extends MainActivity {
         }
     }
 
-        private void startBossWave(int waveNumber) {
-            // Show boss incoming message
-            if (mainActivity != null) {
-                mainActivity.showBossIncomingMessage();
-            }
-            spawnBoss();
+    private void startBossWave(int waveNumber) {
+        // Show boss incoming message
+        if (mainActivity != null) {
+            mainActivity.showBossIncomingMessage();
         }
+        spawnBoss();
+    }
 
-        // Method to mark the end of the wave
-        public void endWave() {
-            if (mainActivity != null) {
-                mainActivity.onWaveEnd();
-            }
-            enemiesInWave.clear();
+    // Method to mark the end of the wave
+    public void endWave() {
+        if (mainActivity != null) {
+            mainActivity.onWaveEnd();
         }
+        enemiesInWave.clear();
+    }
     // Checks if there are enemies in current wave
     public boolean hasEnemiesInWave() {
         return !enemiesInWave.isEmpty();
     }
 
-        public void decrementEnemies() {
-            totalEnemies -= 1;
-        }
+    public void decrementEnemies() {
+        totalEnemies -= 1;
+    }
 
-        public int getTotalEnemies() {
-            return totalEnemies;
-        }
+    public int getTotalEnemies() {
+        return totalEnemies;
+    }
 
-        public int getWave() {
-            return waveNumber++;
-        }
+    public int getWave() {
+        return waveNumber++;
+    }
 }
