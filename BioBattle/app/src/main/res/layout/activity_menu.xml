@@ -80,5 +80,4 @@
         android:scaleType="center"
         android:scaleY="1.2"
         android:scaleX="1.2"/>
-    <!-- Add other menu items as needed -->
 </RelativeLayout>
