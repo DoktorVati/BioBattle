@@ -1082,4 +1082,9 @@ public class MainActivity extends AppCompatActivity {
             startWaveButton.setVisibility(View.VISIBLE);
         }
     }
+
+    public void showBossIncomingMessage() {
+        TextView bossIncomingTextView = findViewById(R.id.bossIncomingTextView);
+        bossIncomingTextView.setVisibility(View.VISIBLE);
+    }
 }

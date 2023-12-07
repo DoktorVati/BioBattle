@@ -2959,6 +2959,10 @@ int drawable avd_hide_password 0x7f070078
 int drawable avd_show_password 0x7f070079
 int drawable background1 0x7f07007a
 int drawable bio_battle_title 0x7f07007b
+int drawable boss 0x7f070131
+int drawable boss2 0x7f070132
+int drawable boss3 0x7f070134
+int drawable bossanim 0x7f070133
 int drawable btn_checkbox_checked_mtrl 0x7f07007c
 int drawable btn_checkbox_checked_to_unchecked_mtrl_animation 0x7f07007d
 int drawable btn_checkbox_unchecked_mtrl 0x7f07007e
@@ -3235,6 +3239,7 @@ int id beginOnFirstDraw 0x7f08005b
 int id beginning 0x7f08005c
 int id bestChoice 0x7f08005d
 int id blocking 0x7f08005e
+int id bossIncomingTextView 0x7f08020a
 int id bottom 0x7f08005f
 int id bounce 0x7f080060
 int id bounceBoth 0x7f080061
@@ -3908,6 +3913,7 @@ int string app_name 0x7f10001c
 int string appbar_scrolling_view_behavior 0x7f10001d
 int string back 0x7f10001e
 int string basicCost 0x7f10001f
+int string bossIncoming 0x7f1000da
 int string bottom_sheet_behavior 0x7f100020
 int string bottomsheet_action_collapse 0x7f100021
 int string bottomsheet_action_expand 0x7f100022

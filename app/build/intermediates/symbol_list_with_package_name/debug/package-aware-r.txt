@@ -2960,6 +2960,10 @@ drawable avd_hide_password
 drawable avd_show_password
 drawable background1
 drawable bio_battle_title
+drawable boss
+drawable boss2
+drawable boss3
+drawable bossanim
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -3236,6 +3240,7 @@ id beginOnFirstDraw
 id beginning
 id bestChoice
 id blocking
+id bossIncomingTextView
 id bottom
 id bounce
 id bounceBoth
@@ -3909,6 +3914,7 @@ string app_name
 string appbar_scrolling_view_behavior
 string back
 string basicCost
+string bossIncoming
 string bottom_sheet_behavior
 string bottomsheet_action_collapse
 string bottomsheet_action_expand

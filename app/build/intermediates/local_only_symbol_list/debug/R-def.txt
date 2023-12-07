@@ -23,6 +23,10 @@ color white
 color yellow
 drawable background1
 drawable bio_battle_title
+drawable boss
+drawable boss2
+drawable boss3
+drawable bossanim
 drawable buy_button
 drawable cannonframe1
 drawable cannonframe2
@@ -106,6 +110,7 @@ drawable tacframe9
 drawable test1
 id UpgradeMenu
 id attackRangeCircleView
+id bossIncomingTextView
 id buyButton
 id container
 id dragBasic
@@ -158,6 +163,7 @@ raw upgrade
 string app_name
 string back
 string basicCost
+string bossIncoming
 string buy_text
 string cannonCost
 string cannonTowerDesc

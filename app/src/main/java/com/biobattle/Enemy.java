@@ -168,7 +168,6 @@ public class Enemy {
         ninth.setDuration(speed * (1 + (70/100)));
         tenth.setDuration(speed/2);
         pathSet.start();
-
     }
 
     public static void startAnimation(ImageView enemyImageView, int animationResource){

@@ -64,7 +64,7 @@ public class Tower {
     }
 
     public void cleanupScriptIfImageViewDeleted() {
-        towerScript.stop(); // Assuming there's a method to stop the script execution
+        towerScript.stop();
         towerScript = null; // Clear the reference to the script
     }
     public void setTowerNumber(int towerNumber) {
