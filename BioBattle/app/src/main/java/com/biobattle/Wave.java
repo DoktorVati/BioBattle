@@ -2,6 +2,7 @@ package com.biobattle;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Wave {
+public class Wave extends MainActivity {
     private Context context; // Reference to the application context
     private List<Enemy> enemiesInWave; // List to keep track of enemies in the wave
     private int waveNumber; // Track the wave number
@@ -32,6 +33,7 @@ public class Wave {
     {
         return containerLayout;
     }
+
     // Method to spawn a single enemy of the specified type
     private void spawnEnemy(int type) {
         int imageResource;
@@ -42,12 +44,12 @@ public class Wave {
         if (type == 1) {
             imageResource = R.drawable.enemyb;
             animationResource = R.drawable.enemybanim;
-            enemyHealth = 200;
+            enemyHealth = 500;
             enemySpeed = 3500;
         } else if (type == 2) {
             imageResource = R.drawable.enemyy;
             animationResource = R.drawable.enemyyanim;
-            enemyHealth = 500;
+            enemyHealth = 200;
             enemySpeed = 1500;
         } else if (type == 3) {
             imageResource = R.drawable.enemyr;
@@ -55,23 +57,23 @@ public class Wave {
             enemyHealth = 1000;
             enemySpeed = 6000;
         } else {
-            imageResource = R.drawable.enemyb; // Default to a type if unspecified
+            imageResource = R.drawable.enemyb; // Default to a type if unspecified in call
             animationResource = R.drawable.enemybanim;
         }
 
         ImageView newEnemyImageView = new ImageView(context);
         newEnemyImageView.setImageResource(imageResource);
 
-        // Adjusting the position of the enemy
+        // Adjusting the position of the enemy to the background
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
         );
-        params.leftMargin = 0; // Set left margin to 0
-        params.topMargin = 0; // Set top margin to 0
+        params.leftMargin = 0;
+        params.topMargin = 0;
         newEnemyImageView.setLayoutParams(params);
 
-        // Create an Enemy object and add it to the wave
+        // Creates an Enemy object and add it to the wave
         Enemy enemy = new Enemy(newEnemyImageView, enemyHealth, enemySpeed);
 
         enemy.setMainActivity(mainActivity);
@@ -95,15 +97,15 @@ public class Wave {
     }
 
     // Method to spawn a wave of enemies
-    public void startWave() {
-        int numberOfEnemies = calculateNumberOfEnemies(1);
+    public void startWave(int waveNumber) {
+        int numberOfEnemies = calculateNumberOfEnemies(waveNumber);
         Random random = new Random();
         mainActivity.startEnemyCheck();
         final Handler handler = new Handler();
-        final long delayBetweenEnemies = 2000; //Sets delay in milliseconds
+        final long delayBetweenEnemies = 2000; //Sets delay in milliseconds (about 2 seconds)
 
         for (int i = 0; i < numberOfEnemies; i++) {
-            final int enemyType = random.nextInt(3) + 1; // Randomly select enemy type (1, 2, or 3)
+            final int enemyType = random.nextInt(3) + 1; // Randomly select enemy type
 
             handler.postDelayed(new Runnable() {
                 @Override
@@ -112,38 +114,43 @@ public class Wave {
                 }
             }, i * delayBetweenEnemies);
         }
-    }
 
+        // Checking for remaining enemies
+        checkEnemiesInWave();
+    }
+    // Periodically checks enemies in wave at an interval
+    private void checkEnemiesInWave() {
+        final Handler handler = new Handler();
+        final int delay = 2000; // Check every 2 seconds
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mainActivity != null) {
+                    mainActivity.onWaveEnd();
+                    handler.postDelayed(this, delay); // Schedule next check
+                }
+            }
+        }, delay);
+    }
     // Method to mark the end of the wave
     public void endWave() {
         for (Enemy enemy : enemiesInWave) {
-            //enemy.stopMovement();
-            mainActivity.stopEnemyCheck();
+            mainActivity.stopEnemyCheck(); //Stop checking enemy movements
             mainActivity.addGold(25 * waveNumber);
-            //play sound
+            Log.d("Goldy", "Gold added");
+            // Update button visibility at end of wave
+            if (mainActivity != null) {
+                mainActivity.onWaveEnd();
+            }
+
         }
         enemiesInWave.clear(); // Clear the list of enemies in the wave
     }
 
-    // Method to handle player defeat
-    public void playerDefeated() {
-        // Stop all enemy movements
-        for (Enemy enemy : enemiesInWave) {
-            //enemy.stopMovement();
-        }
-
-        // Clear the list of enemies in the wave
-        enemiesInWave.clear();
-
-        // Additional actions or logic for player defeat can be added here
-        // For example:
-        // - Show game over screen
-        // - Reset player status
-        // - Perform other game-related actions when the player is defeated
-
-        // To show the game over screen, you can invoke a method in MainActivity
-        if (context instanceof MainActivity) {
-            ((MainActivity) context).showGameOverScreen();
-        }
+    // Checks if there are enemies in current wave
+    public boolean hasEnemiesInWave() {
+        return !enemiesInWave.isEmpty();
     }
+
 }
