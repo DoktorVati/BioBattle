@@ -192,8 +192,8 @@ public class MainActivity extends AppCompatActivity {
                 if (selectedTower != null)
                 {
                     Tower tower = getTowerByImageView(selectedTower);
-                   float upgrades = tower.getTotalUpgrades();
-                   int upgradeCost = calculateUpgradeCost(upgrades);
+                    float upgrades = tower.getTotalUpgrades();
+                    int upgradeCost = calculateUpgradeCost(upgrades);
                     if(selectedTowerResource == R.drawable.simpletower)
                     {
                         if(upgradeCost == 125) {
@@ -301,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                 // Incrementing wave number
                 waveNumber ++;
             }
-    });
+        });
 
 
         FrameLayout enemyContainerLayout = findViewById(R.id.enemyContainerLayout);
@@ -338,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-    // Set up touch event listener for individual towers to prevent the upgrade menu from showing up when the shop tower is touched
+        // Set up touch event listener for individual towers to prevent the upgrade menu from showing up when the shop tower is touched
         towerImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -425,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-public boolean canPlace;
+    public boolean canPlace;
     private void createAttackRange(ImageView towerImageView) {
         if (!attackRangeMap.containsKey(towerImageView)) {
             AttackRangeView attackRangeView = new AttackRangeView(this);
@@ -433,7 +433,7 @@ public boolean canPlace;
             attackRangeMap.put(towerImageView, attackRangeView);
         }
     }
-public float towerRadius = 80f;
+    public float towerRadius = 80f;
 
     public void spawnDragTower(final int imageResource, float touchX, float touchY, boolean isMapPress) {
         int projectile = 0;
@@ -961,7 +961,7 @@ public float towerRadius = 80f;
     }
     public void checkEnemiesInRangeForAllTowers() {
         List<Enemy> enemiesInWave = wave.getEnemiesInWave(); // Get the list of enemies in the wave
-         // Get the list of towers
+        // Get the list of towers
         if(enemiesInWave != null) {
             for (Tower tower : purchasedTowers) {
                 if(tower.mainActivity != null && tower.dontrun == false) {
@@ -1002,7 +1002,7 @@ public float towerRadius = 80f;
             backgroundMediaPlayer.pause();
         }
         pauseTowerSounds();
-       
+
     }
 
     private void pauseTowerSounds() {
@@ -1087,11 +1087,11 @@ public float towerRadius = 80f;
             cashMoneyTextView.setText("Gold " + totalGold);
         }
     }
-    public void losePlayerHealth() {
+    public void losePlayerHealth(int damage) {
         final int minPlayerHealth = 0; // Player Health shouldn't go below 0
 
         // Decreasing playerHealth by 1, but not letting it go below 0
-        playerHealth = Math.max(playerHealth - 1, minPlayerHealth);
+        playerHealth = Math.max(playerHealth - damage, minPlayerHealth);
 
         stringPlayerHealth = "Health " + playerHealth;
         TextView playerHealthView = (TextView) findViewById(R.id.health);
