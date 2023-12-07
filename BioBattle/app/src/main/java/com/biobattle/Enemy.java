@@ -10,7 +10,9 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-public class Enemy {
+import java.util.ArrayList;
+
+public class Enemy extends MainActivity{
     private final int speed;
     private float health;
     private ImageView enemyImageView;
@@ -30,7 +32,7 @@ public class Enemy {
     }
 
     //public void setTower(Tower tower) {
-        //this.tower = tower;
+    //this.tower = tower;
     //}
     public Enemy(ImageView imageView, int enemyHealth, int enemySpeed) {
         this.speed = enemySpeed;
@@ -42,7 +44,22 @@ public class Enemy {
         this.isDead = false;
 
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
     public ImageView getImageView()
     {
         return enemyImageView;
@@ -201,10 +218,10 @@ public class Enemy {
     }
     public void loseHealth(float damage){
         health = health - damage;
-    if (health <= 0){
-        //if enemy health drops to zero or lower set to dead
-        isDead = true;
-    }
+        if (health <= 0){
+            //if enemy health drops to zero or lower set to dead
+            isDead = true;
+        }
     }
     public float getHealth(){
         return health;
