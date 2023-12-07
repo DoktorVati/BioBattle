@@ -11,7 +11,6 @@ import java.util.Random;
 
 
 public class Wave {
-    private int enemiesSpawned;
     private int totalEnemies;
     private Context context; // Reference to the application context
     private List<Enemy> enemiesInWave; // List to keep track of enemies in the wave
@@ -159,7 +158,6 @@ public class Wave {
         if (mainActivity != null) {
             mainActivity.showBossIncomingMessage();
         }
-
         spawnBoss();
     }
 
@@ -185,6 +183,6 @@ public class Wave {
     }
 
     public int getWave() {
-        return waveNumber;
+        return waveNumber++;
     }
 }

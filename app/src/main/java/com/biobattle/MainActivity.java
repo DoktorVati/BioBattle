@@ -897,8 +897,6 @@ public class MainActivity extends AppCompatActivity {
         wave.decrementEnemies();
         if (wave.getTotalEnemies() <= 0) {
             wave.endWave();
-
-            Log.d("deleteEnemy", "deleteEnemy");
         }
     }
     private void manipulateOpacity(RelativeLayout textbox) {
@@ -1084,10 +1082,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void onWaveEnd() {
         if (wave != null && wave.getTotalEnemies() <= 0) {
-            //wave.endWave();
             startWaveButton.setVisibility(View.VISIBLE);
             addGold(25 * wave.getWave());
-            Log.d("On Wave End", "On Wave End");
         }
     }
 
