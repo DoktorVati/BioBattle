@@ -2,10 +2,14 @@ package com.biobattle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
+import android.content.Intent;
+
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private Tower tacTower;
     private Tower cannonTower;
     private Tower killerTomTower;
-
+    private int waveNumber = 1;
+    private TextView waveTextView;
     private AttackRangeView attackRangeView;
     //These are the buyable towers in a list
     private List<Tower> towers = new ArrayList<>();
@@ -66,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     float setMultiplier;
     private int playerHealth = 100;
     private String stringPlayerHealth;
+    private ImageButton startWaveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +79,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         attackRangeView = findViewById(R.id.attackRangeCircleView);
         View backgroundView = findViewById(R.id.map);
+        boolean changeImage = getIntent().getBooleanExtra("CHANGE_IMAGE", false);
+
+        if (changeImage == true) {
+            ImageView backgroundImageView = findViewById(R.id.map);
+            // Set the image resource to map2
+            backgroundImageView.setImageResource(R.drawable.map2);
+        }else {
+            ImageView backgroundImageView = findViewById(R.id.map);
+            backgroundImageView.setImageResource(R.drawable.map);
+        }
         TextView cashMoneyTextView = findViewById(R.id.money);
         if (cashMoneyTextView != null) {
             cashMoneyTextView.setText("Gold " + totalGold);
         }
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        purchasedTowers.clear();
+
         // Find and associate ImageViews with buttons
         ImageView dragBasic = findViewById(R.id.dragBasic);
         ImageView dragTac = findViewById(R.id.dragTac);
@@ -250,7 +269,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         // This should turn menu invisible when selecting other stuff
         backgroundView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -275,18 +293,27 @@ public class MainActivity extends AppCompatActivity {
         // Call this method where you want the opacity transition to begin
         manipulateOpacity(textBox);
 
-        ImageButton startWaveButton = findViewById(R.id.startWave);
+        waveTextView = findViewById(R.id.wave);
+
+        startWaveButton = findViewById(R.id.startWave);
         startWaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Starting wave when the Start Wave button is clicked
-                wave.startWave();
+                //waveMediaPlayer.start();
+                wave.startWave(waveNumber);
+                startWaveButton.setVisibility(View.GONE);
+                // Update TextView with current wave number
+                waveTextView.setText("Wave: " + waveNumber);
+
+                // Incrementing wave number
+                waveNumber ++;
             }
-        });
+    });
 
 
         FrameLayout enemyContainerLayout = findViewById(R.id.enemyContainerLayout);
-        wave = new Wave (MainActivity.this, 1, enemyContainerLayout);
+        wave = new Wave (MainActivity.this, waveNumber, enemyContainerLayout);
         wave.setMainActivity(this);
     }
 
@@ -340,22 +367,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    //future Check if is in path so that towers cant be placed here
-    /*public boolean isWithinPath(float towerX, float towerY) {
-        // Define your path boundaries here
-        float pathStartX =  Start X coordinate of the path ;
-        float pathStartY =  Start Y coordinate of the path ;
-        float pathEndX =  End X coordinate of the path ;
-        float pathEndY =  End Y coordinate of the path ;
 
-        // Check if the tower's position intersects with the path boundaries
-        if (towerX >= pathStartX && towerX <= pathEndX &&
-                towerY >= pathStartY && towerY <= pathEndY) {
-            return true; // Tower spawn position is within the path boundaries
-        } else {
-            return false; // Tower spawn position is outside the path boundaries
-        }
-    } */
     private void setSelectFrameVisibility(ImageView towerImageView)
     {
         // Find the select frames
@@ -1003,8 +1015,19 @@ public float towerRadius = 80f;
         super.onPause();
         if (backgroundMediaPlayer != null && backgroundMediaPlayer.isPlaying()) {
             backgroundMediaPlayer.pause();
-            backgroundMediaPlayer.pause();
         }
+        pauseTowerSounds();
+       
+    }
+
+    private void pauseTowerSounds() {
+        for (Tower tower : purchasedTowers) {
+            tower.pauseMediaPlayers();
+        }
+    }
+    private void resumeTowerSounds() {
+        for (Tower tower : purchasedTowers) {
+            tower.resumeMediaPlayers();        }
     }
 
     @Override
@@ -1013,6 +1036,7 @@ public float towerRadius = 80f;
         if (backgroundMediaPlayer != null && !backgroundMediaPlayer.isPlaying()) {
             backgroundMediaPlayer.start();
         }
+        resumeTowerSounds();
     }
 
     @Override
@@ -1024,6 +1048,8 @@ public float towerRadius = 80f;
             selectMediaPlayer.release();
             backgroundMediaPlayer = null;
         }
+
+
     }
 
     public void showGameOverScreen() {
@@ -1038,28 +1064,27 @@ public float towerRadius = 80f;
         View activityMainLayout = findViewById(R.id.rootLayout);
         activityMainLayout.setVisibility(View.GONE);
 
-        // Maybe add restart button
-        Button playAgainButton = gameOverLayout.findViewById(R.id.playAgainButton);
+        // Restart button
+        ImageButton playAgainButton = gameOverLayout.findViewById(R.id.playAgainButton);
         playAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Implement logic to restart the game or perform necessary actions
-                // For example:
-                // - Restart the game by reloading initial state
-                // - Clear game data and reset scores
-                // - Show initial game screen
+                finish();
+                startActivity(getIntent());
+            }
+        });
 
-                // Remove the game over layout
-                rootView.removeView(gameOverLayout);
-
-                // Show the original map and/or any other elements
-                activityMainLayout.setVisibility(View.VISIBLE);
-
-                // Call a method to restart the game or perform necessary actions
-                // restartGame();
+        ImageButton quitButton = gameOverLayout.findViewById(R.id.quitButton);
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainMenu.class);
+                startActivity(intent);
+                finish(); // Prevent going back to Game Over screen when pressing back
             }
         });
     }
+
 
     public void addGold(int amount)
     {
@@ -1079,15 +1104,29 @@ public float towerRadius = 80f;
         }
     }
     public void losePlayerHealth() {
-        playerHealth = playerHealth - 1;
+        final int minPlayerHealth = 0; // Player Health shouldn't go below 0
+
+        // Decreasing playerHealth by 1, but not letting it go below 0
+        playerHealth = Math.max(playerHealth - 1, minPlayerHealth);
+
         stringPlayerHealth = "Health " + playerHealth;
         TextView playerHealthView = (TextView) findViewById(R.id.health);
-        if (playerHealthView != null) {
-            playerHealthView.setText(stringPlayerHealth);
+        playerHealthView.setText(stringPlayerHealth);
+
+        // Check if playerHealth is zero
+        if (playerHealth <= minPlayerHealth) {
+            showGameOverScreen();
         }
     }
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
+    }
+
+    public void onWaveEnd() {
+        if (wave != null && !wave.hasEnemiesInWave()) {
+            wave.endWave();
+            startWaveButton.setVisibility(View.VISIBLE);
+        }
     }
 }
