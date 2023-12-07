@@ -31,9 +31,7 @@ public class Enemy extends MainActivity{
         this.mainActivity = mainActivity;
     }
 
-    //public void setTower(Tower tower) {
-    //this.tower = tower;
-    //}
+
     public Enemy(ImageView imageView, int enemyHealth, int enemySpeed) {
         this.speed = enemySpeed;
         this.health = enemyHealth;
@@ -147,8 +145,6 @@ public class Enemy extends MainActivity{
             public void onAnimationEnd(Animator animation) {
                 if (!isDead) {
                     FrameLayout containerLayout = (FrameLayout) enemyImageView.getParent();
-                    //containerLayout.removeView(enemyImageView);
-                    //mainActivity.deleteEnemyView(Enemy.this);
                     containerLayout.removeView(enemyImageView);
                     mainActivity.deleteEnemyView(Enemy.this);
                     mainActivity.losePlayerHealth();
@@ -210,11 +206,11 @@ public class Enemy extends MainActivity{
         return height;
     }
     public float getXRelativeToTower(float towerX) {
-        return x - towerX + width / 2; // Subtract towerX from enemy's x and add half its width
+        return x - towerX + width / 2;
     }
 
     public float getYRelativeToTower(float towerY) {
-        return y - towerY + height / 2; // Subtract towerY from enemy's y and add half its height
+        return y - towerY + height / 2;
     }
     public void loseHealth(float damage){
         health = health - damage;
