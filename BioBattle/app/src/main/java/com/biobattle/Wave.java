@@ -11,10 +11,10 @@ import java.util.Random;
 
 
 public class Wave extends MainActivity {
+
     private Context context; // Reference to the application context
     private List<Enemy> enemiesInWave; // List to keep track of enemies in the wave
-    private int waveNumber; // Track the wave number
-    //private int enemyType; // Track the type of enemies in this wave
+    private int waveNumber; 
     private FrameLayout containerLayout;
     private MainActivity mainActivity;
     public void setMainActivity(MainActivity mainActivity) {
@@ -57,7 +57,7 @@ public class Wave extends MainActivity {
             enemyHealth = 1000;
             enemySpeed = 6000;
         } else {
-            imageResource = R.drawable.enemyb; // Default to a type if unspecified in call
+            imageResource = R.drawable.enemyb; 
             animationResource = R.drawable.enemybanim;
         }
 
@@ -92,7 +92,6 @@ public class Wave extends MainActivity {
 
     // Method to calculate the number of enemies for the wave based on wave number
     private int calculateNumberOfEnemies(int waveNumber) {
-        // Define an exponential equation for increasing difficulty
         return (int) Math.pow(waveNumber, 2) + 5; // Equation is: waveNumber^2 + 5
     }
 
@@ -102,7 +101,7 @@ public class Wave extends MainActivity {
         Random random = new Random();
         mainActivity.startEnemyCheck();
         final Handler handler = new Handler();
-        final long delayBetweenEnemies = 2000; //Sets delay in milliseconds (about 2 seconds)
+        final long delayBetweenEnemies = 2000; 
 
         for (int i = 0; i < numberOfEnemies; i++) {
             final int enemyType = random.nextInt(3) + 1; // Randomly select enemy type
@@ -115,10 +114,8 @@ public class Wave extends MainActivity {
             }, i * delayBetweenEnemies);
         }
 
-        // Checking for remaining enemies
         checkEnemiesInWave();
     }
-    // Periodically checks enemies in wave at an interval
     private void checkEnemiesInWave() {
         final Handler handler = new Handler();
         final int delay = 2000; // Check every 2 seconds
@@ -133,18 +130,17 @@ public class Wave extends MainActivity {
             }
         }, delay);
     }
-    // Method to mark the end of the wave
     public void endWave() {
         for (Enemy enemy : enemiesInWave) {
             mainActivity.stopEnemyCheck(); //Stop checking enemy movements
-            mainActivity.addGold(25 * waveNumber);
             Log.d("Goldy", "Gold added");
-            // Update button visibility at end of wave
+            
             if (mainActivity != null) {
                 mainActivity.onWaveEnd();
             }
 
         }
+        mainActivity.addGold(25 * waveNumber);
         enemiesInWave.clear(); // Clear the list of enemies in the wave
     }
 
