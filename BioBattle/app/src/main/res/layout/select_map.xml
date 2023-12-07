@@ -1,0 +1,54 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTintMode="src_atop"
+    android:backgroundTint="@color/invisible"
+    android:background="@drawable/main_menu_background">
+
+    <ImageView
+        android:id="@+id/selectAMAp"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:contentDescription="@string/menuContentDescription"
+        android:src="@drawable/selectamap1"
+        android:layout_centerHorizontal="true"
+        />
+
+    <ImageButton
+        android:onClick="playGame"
+        android:id="@+id/imageButton1"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:scaleY="2"
+        android:scaleX="2"
+        android:src="@drawable/map"
+        android:layout_below="@id/selectAMAp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="160dp"
+        android:layout_marginEnd="60dp"
+        android:scaleType="fitXY"
+        android:background="@drawable/invis"
+        android:contentDescription="@string/nothing"
+        />
+
+    <ImageButton
+        android:onClick="playGame2"
+        android:id="@+id/imageButton2"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:scaleY="2"
+        android:scaleX="2"
+        android:src="@drawable/map2"
+        android:layout_below="@id/selectAMAp"
+        android:layout_toEndOf="@id/imageButton1"
+        android:layout_marginStart="180dp"
+        android:layout_marginEnd="80dp"
+        android:scaleType="fitXY"
+        android:background="@drawable/invis"
+        android:contentDescription="@string/nothing"
+        />
+
+
+</RelativeLayout>
