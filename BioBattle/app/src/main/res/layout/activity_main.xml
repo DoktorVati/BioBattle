@@ -75,6 +75,16 @@
                 android:paddingBottom="1dp"
                 android:paddingVertical="2dp"
                 />
+
+            <TextView
+                android:id="@+id/bossIncomingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                android:text="@string/bossIncoming"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="20sp" />
         </RelativeLayout>
 
     </FrameLayout>
