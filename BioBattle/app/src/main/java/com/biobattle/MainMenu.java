@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.view.ViewGroup;
 
 public class MainMenu extends AppCompatActivity {
 
@@ -22,7 +23,16 @@ public class MainMenu extends AppCompatActivity {
         menuMediaPlayer.setLooping(true);
         menuMediaPlayer.start();
     }
+    public void chooseLevel(View view) {
+        View chooseLevelLayout = getLayoutInflater().inflate(R.layout.select_map, null);
+        // Add the game over layout as an overlay
+        ViewGroup rootView = findViewById(android.R.id.content);
+        rootView.addView(chooseLevelLayout);
 
+        // Hide the original map and/or any other elements
+        View activityMenuLayout = findViewById(R.id.menuroot);
+        activityMenuLayout.setVisibility(View.GONE);
+    }
     public void playGame(View view) {
         selectMediaPlayer.start();
         menuMediaPlayer.pause();
@@ -31,6 +41,16 @@ public class MainMenu extends AppCompatActivity {
 
 
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+    public void playGame2(View view) {
+        selectMediaPlayer.start();
+        menuMediaPlayer.pause();
+        menuMediaPlayer.seekTo(0);
+        selectMediaPlayer.stop();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("CHANGE_IMAGE", true);
         startActivity(intent);
     }
 
