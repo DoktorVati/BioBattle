@@ -11,10 +11,11 @@ import java.util.Random;
 
 
 public class Wave extends MainActivity {
+    private int totalEnemies;
 
     private Context context; // Reference to the application context
     private List<Enemy> enemiesInWave; // List to keep track of enemies in the wave
-    private int waveNumber; 
+    private int waveNumber;
     private FrameLayout containerLayout;
     private MainActivity mainActivity;
     public void setMainActivity(MainActivity mainActivity) {
@@ -57,7 +58,7 @@ public class Wave extends MainActivity {
             enemyHealth = 1000;
             enemySpeed = 6000;
         } else {
-            imageResource = R.drawable.enemyb; 
+            imageResource = R.drawable.enemyb;
             animationResource = R.drawable.enemybanim;
         }
 
@@ -85,6 +86,35 @@ public class Wave extends MainActivity {
 
     }
 
+    private void spawnBoss() {
+        int bossType = 4;
+        int imageResource = R.drawable.boss;
+        int animationResource = R.drawable.bossanim;
+        int bossHealth = 3000;
+        int bossSpeed = 4500;
+        int bossWidth = 350;
+        int bossHeight = 350;
+
+        ImageView newBossImageView = new ImageView(context);
+        newBossImageView.setImageResource(imageResource);
+
+        // Adjusting the position of the boss enemy
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(bossWidth, bossHeight);
+        params.leftMargin = 0;
+        params.topMargin = 0;
+        newBossImageView.setLayoutParams(params);
+
+        // Creates the Boss Enemy
+        Enemy bossEnemy = new Enemy(newBossImageView, bossHealth, bossSpeed);
+
+        bossEnemy.setMainActivity(mainActivity);
+        enemiesInWave.add(bossEnemy);
+
+        containerLayout.addView(newBossImageView);
+
+        bossEnemy.startPath(newBossImageView, containerLayout.getWidth(), containerLayout.getHeight(), animationResource);
+    }
+
     // Getter for accessing the list of enemies in the wave
     public List<Enemy> getEnemiesInWave() {
         return enemiesInWave;
@@ -92,16 +122,23 @@ public class Wave extends MainActivity {
 
     // Method to calculate the number of enemies for the wave based on wave number
     private int calculateNumberOfEnemies(int waveNumber) {
-        return (int) Math.pow(waveNumber, 2) + 5; // Equation is: waveNumber^2 + 5
+        return (int) (waveNumber * 1.5) + 5;
     }
-
-    // Method to spawn a wave of enemies
     public void startWave(int waveNumber) {
+        if (waveNumber % 10 == 0) {
+            startBossWave(waveNumber);
+        } else {
+            startRegularWave(waveNumber);
+        }
+    }
+    // Method to spawn a wave of enemies
+    public void startRegularWave(int waveNumber) {
         int numberOfEnemies = calculateNumberOfEnemies(waveNumber);
+        totalEnemies = numberOfEnemies;
         Random random = new Random();
         mainActivity.startEnemyCheck();
         final Handler handler = new Handler();
-        final long delayBetweenEnemies = 2000; 
+        final long delayBetweenEnemies = 500; //Sets delay in milliseconds (about .5 second)
 
         for (int i = 0; i < numberOfEnemies; i++) {
             final int enemyType = random.nextInt(3) + 1; // Randomly select enemy type
@@ -113,40 +150,37 @@ public class Wave extends MainActivity {
                 }
             }, i * delayBetweenEnemies);
         }
-
-        checkEnemiesInWave();
     }
-    private void checkEnemiesInWave() {
-        final Handler handler = new Handler();
-        final int delay = 2000; // Check every 2 seconds
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mainActivity != null) {
-                    mainActivity.onWaveEnd();
-                    handler.postDelayed(this, delay); // Schedule next check
-                }
+        private void startBossWave(int waveNumber) {
+            // Show boss incoming message
+            if (mainActivity != null) {
+                mainActivity.showBossIncomingMessage();
             }
-        }, delay);
-    }
-    public void endWave() {
-        for (Enemy enemy : enemiesInWave) {
-            mainActivity.stopEnemyCheck(); //Stop checking enemy movements
-            Log.d("Goldy", "Gold added");
-            
+            spawnBoss();
+        }
+
+        // Method to mark the end of the wave
+        public void endWave() {
             if (mainActivity != null) {
                 mainActivity.onWaveEnd();
             }
-
+            enemiesInWave.clear();
         }
-        mainActivity.addGold(25 * waveNumber);
-        enemiesInWave.clear(); // Clear the list of enemies in the wave
-    }
-
     // Checks if there are enemies in current wave
     public boolean hasEnemiesInWave() {
         return !enemiesInWave.isEmpty();
     }
 
+        public void decrementEnemies() {
+            totalEnemies -= 1;
+        }
+
+        public int getTotalEnemies() {
+            return totalEnemies;
+        }
+
+        public int getWave() {
+            return waveNumber++;
+        }
 }
