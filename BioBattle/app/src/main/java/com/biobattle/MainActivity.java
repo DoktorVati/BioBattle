@@ -907,6 +907,10 @@ public float towerRadius = 80f;
     public void deleteEnemyView(Enemy enemy)
     {
         wave.removeEnemy(enemy);
+        wave.decrementEnemies();
+        if (wave.getTotalEnemies() <= 0) {
+            wave.endWave();
+        }
     }
     private void manipulateOpacity(RelativeLayout textbox) {
         final Handler handler = new Handler();
@@ -1106,39 +1110,38 @@ public float towerRadius = 80f;
     }
 
     public void onWaveEnd() {
-        if (wave != null && !wave.hasEnemiesInWave()) {
-            wave.endWave();
-
+        if (wave != null && wave.getTotalEnemies() <= 0) {
+            startWaveButton.setVisibility(View.VISIBLE);
             int waveToMatch = waveNumber;
-            List<Integer> wavesToCheck = Arrays.asList(3,4,9,10,25,50,100,115);
+            List<Integer> wavesToCheck = Arrays.asList(4,5,10,11,26,51,101,116);
 
             if (wavesToCheck.contains(waveToMatch)) {
                 TextView textView = findViewById(R.id.tipBox);
                 int textToShow = 0;
 
                 switch (waveToMatch) {
-                    case 3:
+                    case 4:
                         textToShow = (R.string.level3);
                         break;
-                    case 4:
+                    case 5:
                         textToShow = R.string.level4;
                         break;
-                    case 9:
+                    case 10:
                         textToShow = R.string.level9;
                         break;
-                    case 10:
+                    case 11:
                         textToShow = R.string.level10;
                         break;
-                    case 25:
+                    case 26:
                         textToShow = (R.string.level25);
                         break;
-                    case 50:
+                    case 51:
                         textToShow = R.string.level50;
                         break;
-                    case 100:
+                    case 101:
                         textToShow = R.string.level100;
                         break;
-                    case 115:
+                    case 116:
                         textToShow = R.string.level115;
                         break;
 
@@ -1151,8 +1154,12 @@ public float towerRadius = 80f;
                 manipulateOpacity(textBox);
             }
 
-            startWaveButton.setVisibility(View.VISIBLE);
+            addGold(25 * wave.getWave());
         }
+    }
+    public void showBossIncomingMessage() {
+        TextView bossIncomingTextView = findViewById(R.id.bossIncomingTextView);
+        bossIncomingTextView.setVisibility(View.VISIBLE);
     }
 
 }
