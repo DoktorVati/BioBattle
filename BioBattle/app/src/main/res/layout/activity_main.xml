@@ -1,84 +1,562 @@
-<RelativeLayout
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id = "@+id/menuroot"
-    android:backgroundTintMode="src_atop"
-    android:backgroundTint="@color/invisible"
-    android:background="@drawable/main_menu_background">
+    android:fitsSystemWindows="true"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
 
-    <ImageView
-        android:id ="@+id/mainMenu"
+    <FrameLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gridLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <com.biobattle.AttackRangeView
+            android:id="@+id/attackRangeCircleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:visibility="invisible"
+            android:elevation="1dp" />
+        <ImageView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/play_text"
+            android:scaleType="fitXY"
+            android:src="@drawable/map2" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/textbox"
+            android:fitsSystemWindows="true"
+            android:scaleType ="fitCenter"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:alpha="0"
+            android:visibility="invisible">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/test1"
+                android:scaleType="fitXY"
+                android:scaleY="1.5"
+                android:scaleX="1.5"
+                android:layout_marginTop="220dp"
+                android:layout_marginBottom="-50dp"
+                android:layout_marginStart="200dp"
+                android:layout_marginEnd="200dp"
+                />
+
+            <TextView
+                android:id="@+id/tipBox"
+                android:layout_width="374dp"
+                android:layout_height="wrap_content"
+                android:text="@string/placement"
+                android:textAlignment="center"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="285dp"
+                android:layout_marginBottom="10dp"
+                android:scaleType="fitXY"
+                android:scaleY="1"
+                android:scaleX="1"
+                android:textSize="18sp"
+                android:paddingBottom="1dp"
+                android:paddingVertical="2dp"
+                />
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/enemyContainerLayout"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:layout_alignParentTop="false"
-        android:contentDescription="@string/menuContentDescription"
-        android:src="@drawable/bio_battle_title"
-        android:layout_centerHorizontal="true"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- This FrameLayout will serve as the container for displaying enemies -->
+    </FrameLayout>
 
-    <ImageButton
-        android:id="@+id/playButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/mainMenu"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-100dp"
-        android:layout_marginBottom="40dp"
-        android:text="@string/play_text"
-        android:onClick="chooseLevel"
-        android:src="@drawable/playbutton1"
-        android:background="@color/invisible"
-        android:scaleType="fitCenter"
-        android:scaleY="0.5"
-        android:scaleX="0.5"
-        android:contentDescription="@string/play_text"
-        />
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="107dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/background1"
+        android:columnCount="2"
+        android:rowCount="8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/wave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="start"
+            android:shadowColor="@color/black"
+            android:shadowRadius="2"
+            android:text="@string/wave"
+            android:textColor="@color/yellow"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/health"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="start"
+            android:shadowColor="@color/black"
+            android:shadowRadius="2"
+            android:text="@string/health"
+            android:textColor="@color/yellow"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="start"
+            android:shadowColor="@color/black"
+            android:shadowRadius="2"
+            android:text="@string/gold"
+            android:textColor="@color/yellow"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/store"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0dp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="1"
+            android:text="@string/store"
+            android:textColor="@color/pathGreen"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Image 1 -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/frameContentDescription"
+                android:src="@drawable/frame_tower" />
+
+            <ImageView
+                android:id="@+id/selectframe1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="2dp"
+                android:src="@drawable/selectframe"
+                android:visibility="invisible"
+                android:contentDescription="@string/nothing" />
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="0.6dp"
+                android:contentDescription="@string/simpleTowerDesc"
+                android:scaleType="fitXY"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:src="@drawable/simpletower"
+                android:tag ="simple"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text="@string/basicCost"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"></TextView>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/frameContentDescription" />
+
+            <ImageButton
+                android:soundEffectsEnabled="false"
+                android:id="@+id/dragBasic"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="2dp"
+                android:background="@color/invisible"
+                android:contentDescription="@string/buy_text"
+                android:onClick="spawnDragTower"
+                android:text="@string/buy_text" />
+        </RelativeLayout>
+
+        <!-- Image 2 -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/frameContentDescription"
+                android:src="@drawable/frame_tower" />
+
+            <ImageView
+                android:id="@+id/selectframe2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/selectframe"
+                android:visibility="invisible"
+                android:contentDescription="@string/nothing" />
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="-2dp"
+                android:contentDescription="@string/golgiTowerDesc"
+                android:scaleType="fitXY"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:src="@drawable/golgitower"
+                android:tag ="golgi"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="30dp"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text="@string/tacCost"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"></TextView>
+
+            <ImageButton
+                android:soundEffectsEnabled="false"
+                android:id="@+id/dragTac"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="-1dp"
+                android:background="@color/invisible"
+                android:contentDescription="@string/buy_text"
+                android:onClick="spawnDragTower"
+                android:text="@string/buy_text" />
+        </RelativeLayout>
+
+        <!-- Image 3 -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/frameContentDescription"
+                android:src="@drawable/frame_tower" />
+
+            <ImageView
+                android:id="@+id/selectframe3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="2dp"
+                android:src="@drawable/selectframe"
+                android:visibility="invisible"
+                android:contentDescription="@string/nothing" />
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/cannonTowerDesc"
+                android:scaleType="fitXY"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:src="@drawable/cannontower"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text="@string/cannonCost"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"></TextView>
+
+            <ImageButton
+                android:soundEffectsEnabled="false"
+                android:id="@+id/dragCannon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="2dp"
+                android:background="@color/invisible"
+                android:contentDescription="@string/buy_text"
+                android:onClick="spawnDragTower"
+                android:text="@string/buy_text" />
+        </RelativeLayout>
+
+        <!-- Image 4 -->
+        <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/frameContentDescription"
+                android:src="@drawable/frame_tower" />
+
+            <ImageView
+                android:id="@+id/selectframe4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="-0.3dp"
+                android:src="@drawable/selectframe"
+                android:visibility="invisible"
+                android:contentDescription="@string/nothing" />
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="-3dp"
+                android:contentDescription="@string/killerTCellDescription"
+                android:tag = "anim4"
+                android:scaleType="fitXY"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:src="@drawable/killertcellp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="30dp"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text="@string/killerTCost"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"></TextView>
+
+            <ImageButton
+                android:soundEffectsEnabled="false"
+                android:id="@+id/dragKillerTom"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@color/invisible"
+                android:contentDescription="@string/buy_text"
+                android:onClick="spawnDragTower"
+                android:text="@string/buy_text" />
+        </RelativeLayout>
+
+        <ImageButton
+            android:soundEffectsEnabled="false"
+            android:id="@+id/buyButton"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_columnSpan="1"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/invisible"
+            android:contentDescription="@string/buy_text"
+            android:onClick="BuyButtonClick"
+            android:scaleType="fitXY"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:src="@drawable/buybutton" />
+
+        <ImageButton
+            android:soundEffectsEnabled="false"
+            android:id="@+id/sellButton"
+            android:layout_width="50dp"
+            android:layout_height="48dp"
+            android:layout_columnSpan="1"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/invisible"
+            android:contentDescription="@string/sell_text"
+            android:onClick="deleteSelectedTower"
+            android:scaleType="fitXY"
+            android:scaleX="0.96"
+            android:scaleY="1"
+            android:src="@drawable/sellbutton" />
+        <!-- start tags for upgrade menu -->
+        <ImageButton
+            android:soundEffectsEnabled="false"
+            android:id="@+id/upgradeMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_columnSpan="2"
+            android:background="@color/invisible"
+            android:contentDescription="@string/nothing"
+            android:scaleType="fitCenter"
+            android:scaleX="1.25"
+            android:scaleY="1.45"
+            android:src="@drawable/frame_tower"
+            android:tag="UpgradeMenu"
+            android:visibility="invisible"
+            android:layout_marginTop="4dp"
+            android:paddingBottom="1dp"
+            android:paddingVertical="2dp"
+            />
+
+        <TextView
+            android:layout_columnSpan="2"
+            android:layout_columnWeight="0"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="-94dp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="1"
+            android:tag="UpgradeMenu"
+            android:text="@string/upgrade"
+            android:textColor="@color/yellow"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <!-- This will be the stats that are increasing -->
+        <TextView
+            android:layout_columnSpan="2"
+            android:layout_columnWeight="0"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="9dp"
+            android:shadowColor="@color/black"
+            android:tag="UpgradeMenu"
+            android:text="@string/upgradeStatOne"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_columnSpan="2"
+            android:layout_columnWeight="0"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="2dp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="0.6"
+            android:tag="UpgradeMenu"
+            android:text="@string/upgradeStatTwo"
+            android:textColor="@color/lightBlue"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_columnSpan="2"
+            android:layout_columnWeight="0"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="2dp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="0.1"
+            android:tag="UpgradeMenu"
+            android:text="@string/upgradeStatThree"
+            android:textColor="@color/pathGreen"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <!--this is the one that displays upgrade cost -->
+        <TextView
+            android:id = "@+id/UpgradeMenu"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="0"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="1"
+            android:tag="UpgradeMenu"
+            android:paddingBottom="1dp"
+            android:text="@string/upgradeCostOne"
+            android:textColor="@color/yellow"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="0"
+            android:layout_gravity="start"
+            android:layout_marginTop="0dp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="1"
+            android:tag="UpgradeMenu"
+            android:paddingBottom="1dp"
+            android:text="@string/gold"
+            android:textColor="@color/yellow"
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/simpletower"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="255dp" />
+        <ImageButton
+            android:id="@+id/startWave"
+            android:layout_width="107dp"
+            android:layout_height="50dp"
+            android:layout_columnSpan="2"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="1dp"
+            android:background="@color/invisible"
+            android:contentDescription="@string/startWave"
+            android:onClick="startWave"
+            android:scaleType="fitXY"
+            android:scaleX="0.96"
+            android:scaleY="1"
+            android:soundEffectsEnabled="false"
+            android:src="@drawable/start_wave"
+            />
+    </GridLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/golgitower"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="150dp"
-        android:layout_marginBottom="255dp"
-        android:scaleType="center"
-        android:scaleY="2"
-        android:scaleX="2"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/killeridleanim"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="130dp"
-        android:layout_marginBottom="90dp"
-        android:scaleX="1.2"
-        android:scaleType="center"
-        android:scaleY = "1.2"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/cannontower"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="150dp"
-        android:layout_marginBottom="105dp"
-        android:scaleType="center"
-        android:scaleY="1.2"
-        android:scaleX="1.2"/>
-    <!-- Add other menu items as needed -->
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
