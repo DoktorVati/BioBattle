@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id = "@+id/menuroot"
     android:backgroundTintMode="src_atop"
     android:backgroundTint="@color/invisible"
     android:background="@drawable/main_menu_background">
@@ -26,7 +27,7 @@
         android:layout_marginTop="-100dp"
         android:layout_marginBottom="40dp"
         android:text="@string/play_text"
-        android:onClick="playGame"
+        android:onClick="chooseLevel"
         android:src="@drawable/playbutton1"
         android:background="@color/invisible"
         android:scaleType="fitCenter"
@@ -34,6 +35,7 @@
         android:scaleX="0.5"
         android:contentDescription="@string/play_text"
         />
+
 
     <ImageView
         android:layout_width="wrap_content"
@@ -78,4 +80,5 @@
         android:scaleType="center"
         android:scaleY="1.2"
         android:scaleX="1.2"/>
+    <!-- Add other menu items as needed -->
 </RelativeLayout>
