@@ -24,6 +24,7 @@
     <string name="app_name">Bio Battle</string>
     <string name="back">Back</string>
     <string name="basicCost">$250</string>
+    <string name="bossIncoming">BOSS INCOMING!</string>
     <string name="buy_text">Buy Tower</string>
     <string name="cannonCost">$650</string>
     <string name="cannonTowerDesc">Cannon Cell</string>

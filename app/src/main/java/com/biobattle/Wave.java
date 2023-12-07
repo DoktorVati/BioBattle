@@ -136,10 +136,11 @@ public class Wave {
     // Method to spawn a wave of enemies
     public void startRegularWave(int waveNumber) {
         int numberOfEnemies = calculateNumberOfEnemies(waveNumber);
+        totalEnemies = numberOfEnemies;
         Random random = new Random();
         mainActivity.startEnemyCheck();
         final Handler handler = new Handler();
-        final long delayBetweenEnemies = 1000; //Sets delay in milliseconds (about 1 second)
+        final long delayBetweenEnemies = 500; //Sets delay in milliseconds (about .5 second)
 
         for (int i = 0; i < numberOfEnemies; i++) {
             final int enemyType = random.nextInt(3) + 1; // Randomly select enemy type
@@ -151,8 +152,6 @@ public class Wave {
                 }
             }, i * delayBetweenEnemies);
         }
-        // Checking for remaining enemies
-        checkEnemiesInWave();
     }
 
     private void startBossWave(int waveNumber) {
@@ -162,41 +161,30 @@ public class Wave {
         }
 
         spawnBoss();
-        checkEnemiesInWave();
-    }
-
-    // Periodically checks enemies in wave at an interval
-    private void checkEnemiesInWave() {
-        final Handler handler = new Handler();
-        final int delay = 5000; // Check every 5 seconds
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mainActivity != null) {
-                    mainActivity.onWaveEnd();
-                    handler.postDelayed(this, delay); // Schedule next check
-                }
-            }
-        }, delay);
     }
 
     // Method to mark the end of the wave
     public void endWave() {
-        for (Enemy enemy : enemiesInWave) {
-            mainActivity.stopEnemyCheck(); //Stop checking enemy movements
-            mainActivity.addGold(25 * waveNumber);
-
-            // Update button visibility at end of wave
-            if (mainActivity != null) {
-                mainActivity.onWaveEnd();
-            }
+        if (mainActivity != null) {
+            mainActivity.onWaveEnd();
         }
-        enemiesInWave.clear(); // Clear the list of enemies in the wave
+        enemiesInWave.clear();
     }
 
     // Checks if there are enemies in current wave
     public boolean hasEnemiesInWave() {
         return !enemiesInWave.isEmpty();
+    }
+
+    public void decrementEnemies() {
+        totalEnemies -= 1;
+    }
+
+    public int getTotalEnemies() {
+        return totalEnemies;
+    }
+
+    public int getWave() {
+        return waveNumber;
     }
 }

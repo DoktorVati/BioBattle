@@ -894,6 +894,12 @@ public class MainActivity extends AppCompatActivity {
     public void deleteEnemyView(Enemy enemy)
     {
         wave.removeEnemy(enemy);
+        wave.decrementEnemies();
+        if (wave.getTotalEnemies() <= 0) {
+            wave.endWave();
+
+            Log.d("deleteEnemy", "deleteEnemy");
+        }
     }
     private void manipulateOpacity(RelativeLayout textbox) {
         final Handler handler = new Handler();
@@ -1077,9 +1083,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onWaveEnd() {
-        if (wave != null && !wave.hasEnemiesInWave()) {
-            wave.endWave();
+        if (wave != null && wave.getTotalEnemies() <= 0) {
+            //wave.endWave();
             startWaveButton.setVisibility(View.VISIBLE);
+            addGold(25 * wave.getWave());
+            Log.d("On Wave End", "On Wave End");
         }
     }
 
