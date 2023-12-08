@@ -34,6 +34,18 @@
             android:contentDescription="@string/play_text"
             android:scaleType="fitXY"
             android:src="@drawable/map2" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/enemyContainerLayout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- This FrameLayout will serve as the container for displaying enemies -->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,7 +56,8 @@
             android:scaleX="1"
             android:scaleY="1"
             android:alpha="0"
-            android:visibility="invisible">
+            android:visibility="invisible"
+            android:elevation="2dp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -54,9 +67,10 @@
                 android:scaleY="1.5"
                 android:scaleX="1.5"
                 android:layout_marginTop="220dp"
-                android:layout_marginBottom="-50dp"
-                android:layout_marginStart="200dp"
-                android:layout_marginEnd="200dp"
+                android:layout_marginBottom="-30dp"
+                android:layout_marginStart="250dp"
+                android:layout_marginEnd="250dp"
+                android:elevation="2dp"
                 />
 
             <TextView
@@ -74,30 +88,9 @@
                 android:textSize="18sp"
                 android:paddingBottom="1dp"
                 android:paddingVertical="2dp"
+                android:elevation="2dp"
                 />
-
-            <TextView
-                android:id="@+id/bossIncomingTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"
-                android:text="@string/bossIncoming"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="20sp" />
         </RelativeLayout>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/enemyContainerLayout"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent">
-        <!-- This FrameLayout will serve as the container for displaying enemies -->
     </FrameLayout>
 
     <GridLayout
@@ -549,7 +542,6 @@
             android:textStyle="bold"
             android:visibility="invisible" />
 
-
         <ImageButton
             android:id="@+id/startWave"
             android:layout_width="107dp"
@@ -568,5 +560,4 @@
             android:src="@drawable/start_wave"
             />
     </GridLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
