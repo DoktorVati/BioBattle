@@ -321,7 +321,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+   public int callWave()
+   {
+       return waveNumber - 1;
+   }
 
     private void setupTowerSelection(final ImageView towerImageView, final int imageResource, final int towerCostAmount) {
         towerImageView.setOnClickListener(new View.OnClickListener() {
