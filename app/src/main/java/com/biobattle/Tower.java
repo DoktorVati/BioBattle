@@ -196,6 +196,15 @@ public class Tower {
             for (Enemy enemy : enemiesInWave) {
                 float enemyX = enemy.getCenterX();
                 float enemyY = enemy.getCenterY();
+
+                if((mainActivity.callWave() % 10) == 0) {
+                    enemyX += 50f;
+                    enemyY += 80f;
+                }
+                else {
+                    enemyX = enemy.getCenterX();
+                    enemyY = enemy.getCenterY();
+                }
                 ImageView enemyImageView = enemy.getImageView();
                 FrameLayout containerLayout = (FrameLayout) enemyImageView.getParent();
                 float towerX = imageView.getX() + imageView.getWidth() / 2 - 120;
@@ -287,8 +296,15 @@ public class Tower {
                                             containerLayout.removeView(projectile);
 
                                             ImageView explosion = new ImageView(containerLayout.getContext());
-                                            explosion.setX(finalTargetEnemy.getCenterX() - 1040);
-                                            explosion.setY(finalTargetEnemy.getCenterY() - 440);
+                                            if(mainActivity.callWave() % 10 == 0)
+                                            {
+                                                explosion.setX(finalTargetEnemy.getCenterX() - 940);
+                                                explosion.setY(finalTargetEnemy.getCenterY() - 490);
+                                            }
+                                            else {
+                                                explosion.setX(finalTargetEnemy.getCenterX() - 1040);
+                                                explosion.setY(finalTargetEnemy.getCenterY() - 440);
+                                            }
                                             explosion.setScaleX(0.3f);
                                             explosion.setScaleY(0.3f);
                                             explosion.setImageResource(R.drawable.explosionanim);
@@ -451,6 +467,7 @@ public class Tower {
                     deathMediaPlayer.start();
                 }
             }
+            mainActivity.incrementEnemies();
             mainActivity.addGold(5);
         }
     }
