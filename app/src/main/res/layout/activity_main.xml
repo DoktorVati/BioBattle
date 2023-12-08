@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:orientation="horizontal"
     tools:context=".MainActivity">
 
     <FrameLayout
@@ -32,7 +33,7 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/play_text"
             android:scaleType="fitXY"
-            android:src="@drawable/map" />
+            android:src="@drawable/map2" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -59,6 +60,7 @@
                 />
 
             <TextView
+                android:id="@+id/tipBox"
                 android:layout_width="374dp"
                 android:layout_height="wrap_content"
                 android:text="@string/placement"
@@ -73,18 +75,7 @@
                 android:paddingBottom="1dp"
                 android:paddingVertical="2dp"
                 />
-
-            <TextView
-                android:id="@+id/bossIncomingTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"
-                android:text="@string/bossIncoming"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="20sp" />
         </RelativeLayout>
-
     </FrameLayout>
 
     <FrameLayout
@@ -95,7 +86,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="parent">
-    <!-- This FrameLayout will serve as the container for displaying enemies -->
+        <!-- This FrameLayout will serve as the container for displaying enemies -->
     </FrameLayout>
 
     <GridLayout
@@ -554,7 +545,8 @@
             android:layout_height="50dp"
             android:layout_columnSpan="2"
             android:layout_marginStart="1dp"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="1dp"
             android:background="@color/invisible"
             android:contentDescription="@string/startWave"
             android:onClick="startWave"
@@ -562,7 +554,8 @@
             android:scaleX="0.96"
             android:scaleY="1"
             android:soundEffectsEnabled="false"
-            android:src="@drawable/start_wave" />
+            android:src="@drawable/start_wave"
+            />
     </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,7 +38,7 @@
     <string name="game_over">Game Over</string>
     <string name="gold">Gold</string>
     <string name="golgiTowerDesc">Golgi Cell</string>
-    <string name="health">Health</string>
+    <string name="health">Health 100</string>
     <string name="killerTCellDescription">Killer Tim</string>
     <string name="killerTCost">$3250</string>
     <string name="level1">You defeated the first wave, the next one wont be so easy.</string>

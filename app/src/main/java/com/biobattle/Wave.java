@@ -10,11 +10,12 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Wave {
+public class Wave extends MainActivity {
     private int totalEnemies;
+    private float difficultyMultiplier = 1;
     private Context context; // Reference to the application context
     private List<Enemy> enemiesInWave; // List to keep track of enemies in the wave
-    private int waveNumber; // Track the wave number
+    private int waveNumber;
     private FrameLayout containerLayout;
     private MainActivity mainActivity;
     public void setMainActivity(MainActivity mainActivity) {
@@ -33,6 +34,7 @@ public class Wave {
     {
         return containerLayout;
     }
+
     // Method to spawn a single enemy of the specified type
     private void spawnEnemy(int type) {
         int imageResource;
@@ -43,36 +45,36 @@ public class Wave {
         if (type == 1) {
             imageResource = R.drawable.enemyb;
             animationResource = R.drawable.enemybanim;
-            enemyHealth = 200;
+            enemyHealth = 500 * (int) difficultyMultiplier;
             enemySpeed = 3500;
         } else if (type == 2) {
             imageResource = R.drawable.enemyy;
             animationResource = R.drawable.enemyyanim;
-            enemyHealth = 500;
+            enemyHealth = 200 * (int) difficultyMultiplier;
             enemySpeed = 1500;
         } else if (type == 3) {
             imageResource = R.drawable.enemyr;
             animationResource = R.drawable.enemyranim;
-            enemyHealth = 1000;
+            enemyHealth = 1000 * (int) difficultyMultiplier;
             enemySpeed = 6000;
         } else {
-            imageResource = R.drawable.enemyb; // Default to a type if unspecified
+            imageResource = R.drawable.enemyb;
             animationResource = R.drawable.enemybanim;
         }
 
         ImageView newEnemyImageView = new ImageView(context);
         newEnemyImageView.setImageResource(imageResource);
 
-        // Adjusting the position of the enemy
+        // Adjusting the position of the enemy to the background
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
         );
-        params.leftMargin = 0; // Set left margin to 0
-        params.topMargin = 0; // Set top margin to 0
+        params.leftMargin = 0;
+        params.topMargin = 0;
         newEnemyImageView.setLayoutParams(params);
 
-        // Create an Enemy object and add it to the wave
+        // Creates an Enemy object and add it to the wave
         Enemy enemy = new Enemy(newEnemyImageView, enemyHealth, enemySpeed);
 
         enemy.setMainActivity(mainActivity);
@@ -88,22 +90,28 @@ public class Wave {
         int bossType = 4;
         int imageResource = R.drawable.boss;
         int animationResource = R.drawable.bossanim;
-        int bossHealth = 3000;
-        int bossSpeed = 4500;
+        int bossHealth = 20000 * (int) difficultyMultiplier;
+        int bossSpeed = 8000;
         int bossWidth = 350;
         int bossHeight = 350;
+
+        if (waveNumber % 10 == 0) {
+            difficultyMultiplier = (waveNumber / 10 + 1);
+            Log.d("Test", "Test");
+        }
 
         ImageView newBossImageView = new ImageView(context);
         newBossImageView.setImageResource(imageResource);
 
         // Adjusting the position of the boss enemy
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(bossWidth, bossHeight);
-        params.leftMargin = 0; // Set left margin to 0
-        params.topMargin = 0; // Set top margin to 0
+        params.leftMargin = 0;
+        params.topMargin = 0;
         newBossImageView.setLayoutParams(params);
 
-        // Create a Boss Enemy object and add it to the wave
+        // Creates the Boss Enemy
         Enemy bossEnemy = new Enemy(newBossImageView, bossHealth, bossSpeed);
+        bossEnemy.setBoss();
 
         bossEnemy.setMainActivity(mainActivity);
         enemiesInWave.add(bossEnemy);
@@ -120,10 +128,8 @@ public class Wave {
 
     // Method to calculate the number of enemies for the wave based on wave number
     private int calculateNumberOfEnemies(int waveNumber) {
-        // Define an equation for increasing difficulty
         return (int) (waveNumber * 1.5) + 5;
     }
-
     public void startWave(int waveNumber) {
         if (waveNumber % 10 == 0) {
             startBossWave(waveNumber);
@@ -131,7 +137,6 @@ public class Wave {
             startRegularWave(waveNumber);
         }
     }
-
     // Method to spawn a wave of enemies
     public void startRegularWave(int waveNumber) {
         int numberOfEnemies = calculateNumberOfEnemies(waveNumber);
@@ -154,10 +159,6 @@ public class Wave {
     }
 
     private void startBossWave(int waveNumber) {
-        // Show boss incoming message
-        if (mainActivity != null) {
-            mainActivity.showBossIncomingMessage();
-        }
         spawnBoss();
     }
 
@@ -168,7 +169,6 @@ public class Wave {
         }
         enemiesInWave.clear();
     }
-
     // Checks if there are enemies in current wave
     public boolean hasEnemiesInWave() {
         return !enemiesInWave.isEmpty();

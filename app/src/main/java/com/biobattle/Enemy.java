@@ -10,7 +10,9 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-public class Enemy {
+import java.util.ArrayList;
+
+public class Enemy extends MainActivity{
     private final int speed;
     private float health;
     private ImageView enemyImageView;
@@ -25,13 +27,17 @@ public class Enemy {
     private Tower tower;
     private boolean isDead;
 
+    private boolean isBoss;
+
+    private float offsetY;
+
+    private float offsetX;
+
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
-    //public void setTower(Tower tower) {
-    //this.tower = tower;
-    //}
+
     public Enemy(ImageView imageView, int enemyHealth, int enemySpeed) {
         this.speed = enemySpeed;
         this.health = enemyHealth;
@@ -40,9 +46,25 @@ public class Enemy {
         this.currentX = imageView.getX();
         this.currentY = imageView.getY();
         this.isDead = false;
+        this.isBoss = false;
 
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
     public ImageView getImageView()
     {
         return enemyImageView;
@@ -55,67 +77,79 @@ public class Enemy {
         return this.currentY;
     }
     public void startPath(ImageView enemyImageView, float width, float height, int animationResource) {
-        float offset = 0.08f * height;
+        //float offset = 0.08f * height;
 
-        enemyImageView.setY(offset);
+        if (checkIsBoss()){
+            //offsetY = 0.20f * height;
+            //offsetX = 0.20f * width;
+            //offsetY = 225;
+            //offsetX = 175;
+            offsetY = 0.20f * height;
+            offsetX = 0.15f * height;
+        }
+        else {
+            offsetY = 0.08f * height;
+            offsetX = offsetY;
+        }
+        //enemyImageView.setY(offset);
         enemyImageView.setImageResource(R.drawable.invis);
         startAnimation(enemyImageView, animationResource);
 
-        ObjectAnimator first = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0 - offset, 0.14f * width - offset);
+        ObjectAnimator first = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0 - offsetX, 0.14f * width - offsetX);
         first.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
         });
 
-        ObjectAnimator second = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.16f * height - offset, 0.845f * height - offset);
+        ObjectAnimator second = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.16f * height - offsetY, 0.845f * height - offsetY);
         second.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
         });
 
-        ObjectAnimator third = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0.14f * width - offset, 0.32f * width - offset);
+        ObjectAnimator third = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0.14f * width - offsetX, 0.32f * width - offsetX);
         third.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
         });
 
-        ObjectAnimator fourth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.845f * height - offset, 0.175f * height - offset);
+        ObjectAnimator fourth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.845f * height - offsetY, 0.175f * height - offsetY);
         fourth.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
         });
 
-        ObjectAnimator fifth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0.32f * width - offset, 0.71f * width - offset);
+        ObjectAnimator fifth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0.32f * width - offsetX, 0.71f * width - offsetX);
         fifth.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
         });
 
-        ObjectAnimator sixth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.175f * height - offset, 0.505f * height - offset);
+        ObjectAnimator sixth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.175f * height - offsetY, 0.505f * height - offsetY);
         sixth.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
         });
 
-        ObjectAnimator seventh = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0.71f * width - offset, 0.49f * width - offset);
+        ObjectAnimator seventh = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0.71f * width - offsetX, 0.49f * width - offsetX);
         seventh.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
         });
 
-        ObjectAnimator eighth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.505f * height - offset, 0.84f * height - offset);
+        ObjectAnimator eighth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.505f * height - offsetY, 0.84f * height - offsetY);
         eighth.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
         });
 
-        ObjectAnimator ninth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0.49f * width - offset, 0.708f * width - offset);
+        ObjectAnimator ninth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_X, 0.49f * width - offsetX, 0.708f * width - offsetX);
         ninth.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
         });
 
-        ObjectAnimator tenth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.84f * height - offset, height - offset - 1);
+        ObjectAnimator tenth = ObjectAnimator.ofFloat(enemyImageView, View.TRANSLATION_Y, 0.84f * height - offsetY, height - offsetY - 1);
         tenth.addUpdateListener(animation -> {
             currentX = enemyImageView.getX();
             currentY = enemyImageView.getY();
@@ -130,14 +164,10 @@ public class Enemy {
             public void onAnimationEnd(Animator animation) {
                 if (!isDead) {
                     FrameLayout containerLayout = (FrameLayout) enemyImageView.getParent();
-                    //containerLayout.removeView(enemyImageView);
-                    //mainActivity.deleteEnemyView(Enemy.this);
                     containerLayout.removeView(enemyImageView);
                     mainActivity.deleteEnemyView(Enemy.this);
-                    mainActivity.losePlayerHealth();
+                    mainActivity.losePlayerHealth((int) (health/ 100));
                 }
-
-
             }
 
             @Override
@@ -168,6 +198,7 @@ public class Enemy {
         ninth.setDuration(speed * (1 + (70/100)));
         tenth.setDuration(speed/2);
         pathSet.start();
+
     }
 
     public static void startAnimation(ImageView enemyImageView, int animationResource){
@@ -192,11 +223,11 @@ public class Enemy {
         return height;
     }
     public float getXRelativeToTower(float towerX) {
-        return x - towerX + width / 2; // Subtract towerX from enemy's x and add half its width
+        return x - towerX + width / 2;
     }
 
     public float getYRelativeToTower(float towerY) {
-        return y - towerY + height / 2; // Subtract towerY from enemy's y and add half its height
+        return y - towerY + height / 2;
     }
     public void loseHealth(float damage){
         health = health - damage;
@@ -214,5 +245,13 @@ public class Enemy {
     }
     public Boolean checkIsDead(){
         return isDead;
+    }
+
+    public void setBoss(){
+        isBoss = true;
+    }
+
+    public Boolean checkIsBoss(){
+        return isBoss;
     }
 }

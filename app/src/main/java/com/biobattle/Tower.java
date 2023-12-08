@@ -23,7 +23,7 @@ public class Tower {
     private float upgradePercentage = 1.15f;
     public MainActivity mainActivity;
     private TowerScript towerScript;
-    private boolean isCannon, isGolgi, hasShot, hasPlacedDown;
+    private boolean isCannon, isGolgi, hasShot, hasPlacedDown, isPaused;
     private boolean isOnCooldown = false;
     private boolean isAnimating = false;
     private float GOLGI_ATTACK_DURATION = 100;
@@ -34,6 +34,7 @@ public class Tower {
     private MediaPlayer cannonHitMediaPlayer;
     private MediaPlayer golgiFireMediaPlayer;
     private MediaPlayer killertFireMediaPlayer;
+
 
     public Tower(ImageView imageView, float attackRange, float attackDamage, float attackSpeed, MainActivity mainActivity, float upgradePercentages, boolean hasPlaced, int projectile)
     {
@@ -65,11 +66,42 @@ public class Tower {
 
     public void cleanupScriptIfImageViewDeleted() {
         towerScript.stop();
-        towerScript = null; // Clear the reference to the script
+        towerScript = null;
     }
     public void setTowerNumber(int towerNumber) {
         this.towerNumber = towerNumber;
     }
+
+    public void pauseMediaPlayers() {
+        isPaused = true;
+        pauseMediaPlayer(deathMediaPlayer);
+        pauseMediaPlayer(cannonFireMediaPlayer);
+        pauseMediaPlayer(cannonHitMediaPlayer);
+        pauseMediaPlayer(golgiFireMediaPlayer);
+        pauseMediaPlayer(killertFireMediaPlayer);
+    }
+    public void pauseMediaPlayer(MediaPlayer mediaPlayer) {
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+        }
+    }
+
+
+    public void resumeMediaPlayers() {
+        isPaused = false;
+        startMediaPlayer(deathMediaPlayer);
+        startMediaPlayer(cannonFireMediaPlayer);
+        startMediaPlayer(cannonHitMediaPlayer);
+        startMediaPlayer(golgiFireMediaPlayer);
+        startMediaPlayer(killertFireMediaPlayer);
+    }
+
+    private void startMediaPlayer(MediaPlayer mediaPlayer) {
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
+
 
     public void upgrade(int imageResource) {
         newAttackRange = attackRange * upgradePercentage;
@@ -113,7 +145,7 @@ public class Tower {
     public float getTotalUpgrades()
     {
         if (imageView == null) {
-            return 0; // Return default value for towers without an image view
+            return 0;
         } else if (imageView.getTag().equals(R.drawable.simpletower)) {
             return totalUpgrades * 1;
         } else if (imageView.getTag().equals(R.drawable.golgitower)) {
@@ -123,13 +155,13 @@ public class Tower {
         } else if (imageView.getTag().equals(R.drawable.killertframe1)) {
             return totalUpgrades * 3;
         } else {
-            return totalUpgrades; // Default multiplier for unrecognized towers
+            return totalUpgrades;
         }
     }
     public boolean hasReachedMaxUpgrades(boolean upgradeMenu) {
         int maxUpgrades = 3; // Maximum upgrades allowed
         if (imageView == null) {
-            return totalUpgrades >= maxUpgrades; // Return true if upgrades reach the limit for towers without an image view
+            return totalUpgrades >= maxUpgrades; // Return true if upgrades reach the limit
         } else if (imageView.getTag().equals(R.drawable.simpletower)) {
             if(upgradeMenu)
                 return totalUpgrades >= 5;
@@ -180,44 +212,47 @@ public class Tower {
                             ImageView projectile = new ImageView(containerLayout.getContext());
                             float projectileStartX = towerX + imageView.getWidth() / 2 - projectile.getWidth() / 2;
                             float projectileStartY = towerY + imageView.getHeight() / 2 - projectile.getHeight() / 2;
-                            projectile.setX(projectileStartX);
-                            projectile.setY(projectileStartY);
+                            projectile.setX(projectileStartX - 80);
+                            projectile.setY(projectileStartY - 20);
                             ObjectAnimator projectileAnimatorX = null;
                             ObjectAnimator projectileAnimatorY = null;
 
                             if (imageView.getTag() != null && targetEnemy != null && !isOnCooldown) {
                                 if (imageView.getTag().equals(R.drawable.simpletower)) {
                                     projectileResource = R.drawable.singleshot1;
-                                    projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1060, enemyX - 1040);
-                                    projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 500, enemyY - 440);
+                                    projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1070, enemyX - 1040);
+                                    projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 510, enemyY - 440);
                                     projectile.setScaleX(0.5f);
                                     projectile.setScaleY(0.5f);
                                 } else if (imageView.getTag().equals(R.drawable.cannontower)) {
                                     projectileResource = R.drawable.cannonshot1;
-                                    projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1055, enemyX - 1040);
-                                    projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 500, enemyY - 440);
+                                    projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1075, enemyX - 1040);
+                                    projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 510, enemyY - 440);
                                     projectile.setScaleX(0.2f);
                                     projectile.setScaleY(0.2f);
                                 } else if (imageView.getTag().equals(R.drawable.killertframe1)) {
                                     projectileResource = R.drawable.killershot1;
-                                    projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1150, enemyX - 1040);
-                                    projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 550, enemyY - 440);
+                                    projectileAnimatorX = ObjectAnimator.ofFloat(projectile, View.X, projectileStartX - 1120, enemyX - 1040);
+                                    projectileAnimatorY = ObjectAnimator.ofFloat(projectile, View.Y, projectileStartY - 620, enemyY - 440);
                                     projectile.setScaleX(0.1f);
                                     projectile.setScaleY(0.1f);
 
-                                    if (killertFireMediaPlayer.isPlaying()) {
-                                        killertFireMediaPlayer.seekTo(0);
-                                    } else {
-                                        killertFireMediaPlayer.start();
+                                    if(isPaused == false) {
+                                        if (killertFireMediaPlayer.isPlaying()) {
+                                            killertFireMediaPlayer.seekTo(0);
+                                        } else {
+                                            killertFireMediaPlayer.start();
+                                        }
                                     }
-
                                 } else if (imageView.getTag().equals(R.drawable.golgitower)) {
                                     projectileResource = 0;
-                                    if(!isOnCooldown) {
-                                        if (golgiFireMediaPlayer.isPlaying()) {
-                                            golgiFireMediaPlayer.seekTo(0);
-                                        } else {
-                                            golgiFireMediaPlayer.start();
+                                    if(isPaused == false) {
+                                        if(!isOnCooldown) {
+                                            if (golgiFireMediaPlayer.isPlaying()) {
+                                                golgiFireMediaPlayer.seekTo(0);
+                                            } else {
+                                                golgiFireMediaPlayer.start();
+                                            }
                                         }
                                         handleGolgiAttack(containerLayout, enemiesInWave, towerX, towerY);
                                         isInfiniteAttack = true;
@@ -236,7 +271,7 @@ public class Tower {
                                 AnimatorSet projectileAnimation = new AnimatorSet();
                                 projectileAnimation.playTogether(projectileAnimatorX, projectileAnimatorY);
                                 projectileAnimation.setDuration(50);
-                                // animation duration(adjust as needed)
+
                                 Enemy finalTargetEnemy = targetEnemy;
                                 projectileAnimation.addListener(new AnimatorListenerAdapter() {
                                     @Override
@@ -293,12 +328,13 @@ public class Tower {
             }
             if (targetEnemy != null && hasShot == true && !isGolgi) {
                 startCooldown();
-                if(isCannon)
-                {
-                    if (cannonFireMediaPlayer.isPlaying()) {
-                        cannonFireMediaPlayer.seekTo(0);
-                    } else {
-                        cannonFireMediaPlayer.start();
+                if(isPaused == false) {
+                    if (isCannon) {
+                        if (cannonFireMediaPlayer.isPlaying()) {
+                            cannonFireMediaPlayer.seekTo(0);
+                        } else {
+                            cannonFireMediaPlayer.start();
+                        }
                     }
                 }
                 targetEnemy.loseHealth(attackDamage);
@@ -323,6 +359,7 @@ public class Tower {
                 }
             };
             golgiAttackHandler.postDelayed(golgiAttackRunnable,(long) (GOLGI_ATTACK_DURATION));
+
         }
     }
     private void startGolgiCooldown() {
@@ -342,10 +379,13 @@ public class Tower {
     }
     private void doSplashDamage(float centerX, float centerY, float damageRadius, List<Enemy> enemiesInWave, boolean isCannon) {
         if(isCannon) {
-            if (cannonHitMediaPlayer.isPlaying()) {
-                cannonHitMediaPlayer.seekTo(0);
-            } else {
-                cannonHitMediaPlayer.start();
+            if(isPaused == false) {
+
+                if (cannonHitMediaPlayer.isPlaying()) {
+                    cannonHitMediaPlayer.seekTo(0);
+                } else {
+                    cannonHitMediaPlayer.start();
+                }
             }
             for (Enemy enemy : getAllEnemiesInRadius(centerX, centerY, damageRadius, enemiesInWave)) {
                 //enemy.takeDamage(50);
@@ -396,18 +436,22 @@ public class Tower {
 
         if (mainActivity == null) {
             Log.d("WaveNull", "Wave object is null");
-            return; // Exit the method if wave is null
+            return;
         }
 
         if (containerLayout != null && towerScript != null && hasPlacedDown == true) {
             containerLayout.removeView(enemyImageView);
             mainActivity.deleteEnemyView(enemy);
-            if (deathMediaPlayer.isPlaying()) {
-                deathMediaPlayer.seekTo(0);
-            } else {
-                deathMediaPlayer.start();
-            }
 
+            if(isPaused == false) {
+
+                if (deathMediaPlayer.isPlaying()) {
+                    deathMediaPlayer.seekTo(0);
+                } else {
+                    deathMediaPlayer.start();
+                }
+            }
+            mainActivity.incrementEnemies();
             mainActivity.addGold(5);
         }
     }
@@ -437,8 +481,8 @@ public class Tower {
         }
 
         isAnimating = true;
-        float towerX = imageView.getX() + imageView.getWidth() / 2 - 1100;
-        float towerY = imageView.getY() + imageView.getHeight() / 2 - 500;
+        float towerX = imageView.getX() + imageView.getDrawable().getIntrinsicWidth() / 2 - 1050 ;
+        float towerY = imageView.getY() + imageView.getDrawable().getIntrinsicHeight() / 2 - 480;
 
         float[][] directions = {
                 {0, -(attackRange)}, // Straight up
@@ -480,10 +524,11 @@ public class Tower {
             animators.add(projectileAnimation);
         }
 
-        // Play all the projectile animations together
+        // Play the x and y projectile animations together
         AnimatorSet allProjectilesAnimation = new AnimatorSet();
         allProjectilesAnimation.playTogether(animators);
         allProjectilesAnimation.start();
     }
-}
 
+
+}

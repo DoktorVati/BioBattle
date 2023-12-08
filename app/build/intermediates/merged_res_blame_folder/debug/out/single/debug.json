@@ -40,12 +40,12 @@
         "source": "com.biobattle.app-main-33:/layout/activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_killertframe7.png.flat",
-        "source": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-main-33:\\drawable\\killertframe7.png"
-    },
-    {
         "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_tacframe10.png.flat",
         "source": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-main-33:\\drawable\\tacframe10.png"
+    },
+    {
+        "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_killertframe7.png.flat",
+        "source": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-main-33:\\drawable\\killertframe7.png"
     },
     {
         "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_cloud6.png.flat",
@@ -54,6 +54,10 @@
     {
         "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_cannonframe1.png.flat",
         "source": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-main-33:\\drawable\\cannonframe1.png"
+    },
+    {
+        "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_map2.png.flat",
+        "source": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-main-33:\\drawable\\map2.png"
     },
     {
         "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_enemybanim.xml.flat",
@@ -120,6 +124,10 @@
         "source": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-main-33:\\drawable\\killertframe6.png"
     },
     {
+        "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_selectamap1.png.flat",
+        "source": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-main-33:\\drawable\\selectamap1.png"
+    },
+    {
         "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_cannonframe2.png.flat",
         "source": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-main-33:\\drawable\\cannonframe2.png"
     },
@@ -146,6 +154,10 @@
     {
         "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_tacframe12.png.flat",
         "source": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-main-33:\\drawable\\tacframe12.png"
+    },
+    {
+        "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\layout_select_map.xml.flat",
+        "source": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-main-33:\\layout\\select_map.xml"
     },
     {
         "merged": "C:\\Users\\Saint Marco\\.gradle\\daemon\\8.2\\com.biobattle.app-merged_res-31:\\drawable_enemyr.png.flat",
