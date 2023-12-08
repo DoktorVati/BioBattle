@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private int initialX;
     private int initialY;
     private Toast currentToast;
-    public int totalGold = 25500;
+    public int totalGold = 500;
     public int animationResource;
     public RelativeLayout textBox;
     public float setAttackRange, setAttackDamage, setAttackSpeed;
