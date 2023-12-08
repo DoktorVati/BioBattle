@@ -28,10 +28,12 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    private int score;
+    private boolean isGameOver;
     private int initialX;
     private int initialY;
     private Toast currentToast;
-    public int totalGold = 25500;
+    public int totalGold = 500;
     public int animationResource;
     public RelativeLayout textBox;
     public float setAttackRange, setAttackDamage, setAttackSpeed;
@@ -60,10 +62,13 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer upgradeMediaPlayer;
     private MediaPlayer bossMediaPlayer;
     private MediaPlayer backgroundMediaPlayer;
+    private MediaPlayer waveMediaPlayer;
     private Wave wave;
     private FrameLayout enemyContainerLayout;
     float setMultiplier;
     private int playerHealth = 100;
+    private int enemiesKilled = 0;
+
     private String stringPlayerHealth;
     private ImageButton startWaveButton;
 
@@ -117,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
         buyMediaPlayer = MediaPlayer.create(this, R.raw.place);
         sellMediaPlayer = MediaPlayer.create(this, R.raw.sell);
         upgradeMediaPlayer = MediaPlayer.create(this, R.raw.upgrade);
+        waveMediaPlayer = MediaPlayer.create(this, R.raw.roundchange);
+
         // Set up the tower button selection
         setupTowerSelection(dragBasic, R.drawable.simpletower, 250);
         setupTowerSelection(dragTac, R.drawable.golgitower, 450);
@@ -192,8 +199,8 @@ public class MainActivity extends AppCompatActivity {
                 if (selectedTower != null)
                 {
                     Tower tower = getTowerByImageView(selectedTower);
-                    float upgrades = tower.getTotalUpgrades();
-                    int upgradeCost = calculateUpgradeCost(upgrades);
+                   float upgrades = tower.getTotalUpgrades();
+                   int upgradeCost = calculateUpgradeCost(upgrades);
                     if(selectedTowerResource == R.drawable.simpletower)
                     {
                         if(upgradeCost == 125) {
@@ -291,16 +298,24 @@ public class MainActivity extends AppCompatActivity {
         startWaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Starting wave when the Start Wave button is clicked
-                //waveMediaPlayer.start();
+                waveMediaPlayer.start();
+                waveMediaPlayer.setVolume(0.8f, 0.8f);
+                backgroundMediaPlayer.setVolume(0.1f, 0.1f);
+
+                waveMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        // When waveMediaPlayer finishes playing
+                        backgroundMediaPlayer.setVolume(0.5f, 0.5f); // Reset volume to full
+                    }
+                });
+
                 wave.startWave(waveNumber);
                 startWaveButton.setVisibility(View.GONE);
-                // Update TextView with current wave number
                 waveTextView.setText("Wave: " + waveNumber);
-
-                // Incrementing wave number
-                waveNumber ++;
+                waveNumber++;
             }
+
         });
 
 
@@ -310,7 +325,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+   public int callWave()
+   {
+       return waveNumber - 1;
+   }
 
     private void setupTowerSelection(final ImageView towerImageView, final int imageResource, final int towerCostAmount) {
         towerImageView.setOnClickListener(new View.OnClickListener() {
@@ -338,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // Set up touch event listener for individual towers to prevent the upgrade menu from showing up when the shop tower is touched
+    // Set up touch event listener for individual towers to prevent the upgrade menu from showing up when the shop tower is touched
         towerImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -425,7 +443,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    public boolean canPlace;
+public boolean canPlace;
     private void createAttackRange(ImageView towerImageView) {
         if (!attackRangeMap.containsKey(towerImageView)) {
             AttackRangeView attackRangeView = new AttackRangeView(this);
@@ -433,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
             attackRangeMap.put(towerImageView, attackRangeView);
         }
     }
-    public float towerRadius = 80f;
+public float towerRadius = 80f;
 
     public void spawnDragTower(final int imageResource, float touchX, float touchY, boolean isMapPress) {
         int projectile = 0;
@@ -961,7 +979,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void checkEnemiesInRangeForAllTowers() {
         List<Enemy> enemiesInWave = wave.getEnemiesInWave(); // Get the list of enemies in the wave
-        // Get the list of towers
+         // Get the list of towers
         if(enemiesInWave != null) {
             for (Tower tower : purchasedTowers) {
                 if(tower.mainActivity != null && tower.dontrun == false) {
@@ -1002,7 +1020,7 @@ public class MainActivity extends AppCompatActivity {
             backgroundMediaPlayer.pause();
         }
         pauseTowerSounds();
-
+       
     }
 
     private void pauseTowerSounds() {
@@ -1047,6 +1065,10 @@ public class MainActivity extends AppCompatActivity {
         // Hides the original map and things
         View activityMainLayout = findViewById(R.id.rootLayout);
         activityMainLayout.setVisibility(View.GONE);
+
+        TextView scoreCount = findViewById(R.id.scoreTextView);
+        score = wave.getWave() * 100 + enemiesKilled * 10 - 100;
+        scoreCount.setText("Score: " + score);
 
         // the restart button
         ImageButton playAgainButton = gameOverLayout.findViewById(R.id.playAgainButton);
@@ -1098,8 +1120,11 @@ public class MainActivity extends AppCompatActivity {
         playerHealthView.setText(stringPlayerHealth);
 
         // Check if playerHealth is zero
-        if (playerHealth <= minPlayerHealth) {
-            showGameOverScreen();
+        if (playerHealth <= minPlayerHealth && isGameOver == false) {
+            {
+                isGameOver = true;
+                showGameOverScreen();
+            }
         }
     }
 
@@ -1113,7 +1138,7 @@ public class MainActivity extends AppCompatActivity {
         if (wave != null && wave.getTotalEnemies() <= 0) {
             startWaveButton.setVisibility(View.VISIBLE);
             int waveToMatch = waveNumber;
-            List<Integer> wavesToCheck = Arrays.asList(4,5,10,11,26,51,101,116);
+            List<Integer> wavesToCheck = Arrays.asList(4,5,10,11,12,26,51,101,116);
 
             if (wavesToCheck.contains(waveToMatch)) {
                 TextView textView = findViewById(R.id.tipBox);
@@ -1131,6 +1156,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 11:
                         textToShow = R.string.level10;
+                        break;
+                    case 12:
+                        textToShow = R.string.level11;
                         break;
                     case 26:
                         textToShow = (R.string.level25);
@@ -1157,9 +1185,7 @@ public class MainActivity extends AppCompatActivity {
             addGold(25 * wave.getWave());
         }
     }
-    public void showBossIncomingMessage() {
-        TextView bossIncomingTextView = findViewById(R.id.bossIncomingTextView);
-        bossIncomingTextView.setVisibility(View.VISIBLE);
+    public void incrementEnemies() {
+        enemiesKilled += 1;
     }
-
 }
