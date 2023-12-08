@@ -1,6 +1,7 @@
 package com.biobattle;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.FrameLayout;
@@ -12,6 +13,7 @@ import java.util.Random;
 
 public class Wave extends MainActivity {
     private int totalEnemies;
+    private float difficultyMultiplier = 1;
 
     private Context context; // Reference to the application context
     private List<Enemy> enemiesInWave; // List to keep track of enemies in the wave
@@ -45,17 +47,17 @@ public class Wave extends MainActivity {
         if (type == 1) {
             imageResource = R.drawable.enemyb;
             animationResource = R.drawable.enemybanim;
-            enemyHealth = 500;
+            enemyHealth = 500 * (int) difficultyMultiplier;;
             enemySpeed = 3500;
         } else if (type == 2) {
             imageResource = R.drawable.enemyy;
             animationResource = R.drawable.enemyyanim;
-            enemyHealth = 200;
+            enemyHealth = 200 * (int) difficultyMultiplier;;
             enemySpeed = 1500;
         } else if (type == 3) {
             imageResource = R.drawable.enemyr;
             animationResource = R.drawable.enemyranim;
-            enemyHealth = 1000;
+            enemyHealth = 1000 * (int) difficultyMultiplier;;
             enemySpeed = 6000;
         } else {
             imageResource = R.drawable.enemyb;
@@ -90,11 +92,14 @@ public class Wave extends MainActivity {
         int bossType = 4;
         int imageResource = R.drawable.boss;
         int animationResource = R.drawable.bossanim;
-        int bossHealth = 40000 ;
+        int bossHealth = 40000 * (int) difficultyMultiplier;;
         int bossSpeed = 8000;
         int bossWidth = 350;
         int bossHeight = 350;
 
+        if (waveNumber % 10 == 0) {
+            difficultyMultiplier = (waveNumber / 10 + 1);
+        }
         ImageView newBossImageView = new ImageView(context);
         newBossImageView.setImageResource(imageResource);
 
@@ -129,7 +134,7 @@ public class Wave extends MainActivity {
         if (waveNumber % 10 == 0) {
             startBossWave(waveNumber);
         } else {
-          startRegularWave(waveNumber);
+            startRegularWave(waveNumber);
         }
     }
     // Method to spawn a wave of enemies
@@ -140,7 +145,6 @@ public class Wave extends MainActivity {
         mainActivity.startEnemyCheck();
         final Handler handler = new Handler();
         final long delayBetweenEnemies = 500; //Sets delay in milliseconds (about .5 second)
-
         for (int i = 0; i < numberOfEnemies; i++) {
             final int enemyType = random.nextInt(3) + 1; // Randomly select enemy type
 
@@ -153,35 +157,31 @@ public class Wave extends MainActivity {
         }
     }
 
-    private void startBossWave(int waveNumber) {
-        // Show boss incoming message
-        if (mainActivity != null) {
-            mainActivity.showBossIncomingMessage();
+        private void startBossWave(int waveNumber) {
+            spawnBoss();
         }
-        spawnBoss();
-    }
 
-    // Method to mark the end of the wave
-    public void endWave() {
-        if (mainActivity != null) {
-            mainActivity.onWaveEnd();
+        // Method to mark the end of the wave
+        public void endWave() {
+            if (mainActivity != null) {
+                mainActivity.onWaveEnd();
+            }
+            enemiesInWave.clear();
         }
-        enemiesInWave.clear();
-    }
     // Checks if there are enemies in current wave
     public boolean hasEnemiesInWave() {
         return !enemiesInWave.isEmpty();
     }
 
-    public void decrementEnemies() {
-        totalEnemies -= 1;
-    }
+        public void decrementEnemies() {
+            totalEnemies -= 1;
+        }
 
-    public int getTotalEnemies() {
-        return totalEnemies;
-    }
+        public int getTotalEnemies() {
+            return totalEnemies;
+        }
 
-    public int getWave() {
-        return waveNumber++;
-    }
+        public int getWave() {
+            return waveNumber++;
+        }
 }
